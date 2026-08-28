@@ -1,135 +1,117 @@
 import 'package:flutter/material.dart';
-
+import 'package:introduction_screen/introduction_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../app/colors.dart';
-import 'widgets/onboarding_page.dart';
 
-class OnboardingView extends StatefulWidget {
+class OnboardingView extends StatelessWidget {
   const OnboardingView({super.key});
 
-  @override
-  State<OnboardingView> createState() => _OnboardingViewState();
-}
-
-class _OnboardingViewState extends State<OnboardingView> {
-  final PageController _pageController = PageController();
-  int _currentPage = 0;
-
-  // يمكن إضافة عناصر أخرى لاحقاً عند استلام تصاميمها.
-  final List<OnboardingPage> _pages = const [
-    OnboardingPage(
-      imagePath: 'assets/images/onboarding/reports.png',
-      title: 'تقارير دقيقة و واضحة',
-      description: 'احصل على تقارير مالية شاملة واتخذ قراراتك\nبناءً على بيانات دقيقة.',
-    ),
-    OnboardingPage(
-      imagePath: 'assets/images/onboarding/onboarding_2.png',
-      title: 'تتبع الإيرادات والمدفوعات',
-      description: 'سجل الإيجارات والمدفوعات واطلع على التقارير\nوأصدر سندات قبض رسمية.',
-    ),
-    OnboardingPage(
-      imagePath: 'assets/images/onboarding/onboarding_3.png',
-      title: 'إدارة عقاراتك بسهولة',
-      description: 'أضف مبانيك ووحداتك وتابع حالة كل وحدة\nمن مكان واحد بكل سهولة.',
-    ),
-  ];
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  void _handleButtonPressed() {
-    if (_currentPage < _pages.length - 1) {
-      _pageController.nextPage(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
-      return;
+  Future<void> _onIntroEnd(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('hasSeenOnboarding', true);
+    if (context.mounted) {
+      Navigator.pushReplacementNamed(context, '/login');
     }
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('تم الوصول إلى نهاية شاشة التعريف.'),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
+    const pageDecoration = PageDecoration(
+      titleTextStyle: TextStyle(
+        fontSize: 22.0,
+        fontWeight: FontWeight.bold,
+        color: AppColors.primary,
+        fontFamily: 'Cairo',
+      ),
+      bodyTextStyle: TextStyle(
+        fontSize: 14.0,
+        color: AppColors.textSecondary,
+        fontFamily: 'Cairo',
+        height: 1.6,
+      ),
+      imagePadding: EdgeInsets.only(top: 40, bottom: 20),
+      pageColor: AppColors.surface,
+    );
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(10, 10, 10, 12),
-          child: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.circular(22),
-              border: Border.all(color: AppColors.border),
-              boxShadow: const [
-                BoxShadow(
-                  color: AppColors.cardShadow,
-                  blurRadius: 16,
-                  offset: Offset(0, 5),
+          padding: const EdgeInsets.all(12),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(24),
+            child: IntroductionScreen(
+              globalBackgroundColor: AppColors.surface,
+              pages: [
+                PageViewModel(
+                  title: 'تقارير دقيقة وواضحة',
+                  body:
+                      'احصل على تقارير مالية شاملة واستعرض أداء عقاراتك في مكان واحد.',
+                  image: Image.asset(
+                    'assets/images/onboarding/reports.png',
+                    height: 260,
+                  ),
+                  decoration: pageDecoration,
+                ),
+                PageViewModel(
+                  title: 'تتبع الإيرادات والمدفوعات',
+                  body:
+                      'سجل الإيجارات والمدفوعات واطلع على المتأخرات وأصدر سندات قبض رسمية.',
+                  image: Image.asset(
+                    'assets/images/onboarding/onboarding_2.png',
+                    height: 260,
+                  ),
+                  decoration: pageDecoration,
+                ),
+                PageViewModel(
+                  title: 'إدارة عقاراتك بسهولة',
+                  body:
+                      'أضف مبانيك ووحداتك وتابع حالة كل وحدة بكل سهولة واحترافية.',
+                  image: Image.asset(
+                    'assets/images/onboarding/onboarding_3.png',
+                    height: 260,
+                  ),
+                  decoration: pageDecoration,
                 ),
               ],
-            ),
-            child: Column(
-              children: [
-                Expanded(
-                  child: PageView.builder(
-                    controller: _pageController,
-                    itemCount: _pages.length,
-                    onPageChanged: (page) {
-                      setState(() => _currentPage = page);
-                    },
-                    itemBuilder: (context, index) => _pages[index],
-                  ),
+              onDone: () => _onIntroEnd(context),
+              onSkip: () => _onIntroEnd(context),
+              showSkipButton: true,
+              skip: const Text(
+                'تخطي',
+                style: TextStyle(
+                  fontFamily: 'Cairo',
+                  color: AppColors.textSecondary,
+                  fontWeight: FontWeight.bold,
                 ),
-                _PageIndicators(currentPage: _currentPage),
-                const SizedBox(height: 22),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 18),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: _handleButtonPressed,
-                      child: Text(_currentPage == 0 ? 'ابدأ الآن' : 'التالي'),
-                    ),
-                  ),
+              ),
+              next: const Text(
+                'التالي',
+                style: TextStyle(
+                  fontFamily: 'Cairo',
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.bold,
                 ),
-              ],
+              ),
+              done: const Text(
+                'تسجيل الدخول',
+                style: TextStyle(
+                  fontFamily: 'Cairo',
+                  color: AppColors.gold,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              dotsDecorator: DotsDecorator(
+                size: const Size.square(10.0),
+                activeSize: const Size(22.0, 10.0),
+                activeColor: AppColors.gold,
+                color: AppColors.border,
+                spacing: const EdgeInsets.symmetric(horizontal: 4.0),
+                activeShape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25.0),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _PageIndicators extends StatelessWidget {
-  const _PageIndicators({required this.currentPage});
-
-  final int currentPage;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      textDirection: TextDirection.rtl,
-      children: List.generate(
-        3,
-        (index) => AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          width: 12,
-          height: 12,
-          margin: const EdgeInsets.symmetric(horizontal: 6),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: index == currentPage ? AppColors.gold : const Color(0xFFD9DEE7),
           ),
         ),
       ),
