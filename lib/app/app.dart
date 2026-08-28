@@ -1,11 +1,30 @@
 import 'package:flutter/material.dart';
 
+import '../views/layout/main_layout.dart';
 import '../views/onboarding/onboarding_view.dart';
+import '../views/pages/auth/login_page.dart';
+import '../views/pages/contracts/add_contract_page.dart';
+import '../views/pages/contracts/contracts_page.dart';
+import '../views/pages/dashboard/dashboard_page.dart';
+import '../views/pages/notifications/notifications_page.dart';
+import '../views/pages/properties/buildings_page.dart';
+import '../views/pages/properties/unit_details_page.dart';
+import '../views/pages/properties/units_grid_page.dart';
+import '../views/pages/reports/financial_report_page.dart';
+import '../views/pages/settings/currencies_page.dart';
+import '../views/pages/settings/settings_page.dart';
+import '../views/pages/tenants/tenant_statement_page.dart';
+import '../views/pages/tenants/tenants_page.dart';
+import '../views/pages/transactions/add_maintenance_page.dart';
+import '../views/pages/transactions/add_payment_page.dart';
+import '../views/pages/transactions/payments_page.dart';
 import 'routes.dart';
 import 'theme.dart';
 
 class EmtilakApp extends StatelessWidget {
-  const EmtilakApp({super.key});
+  final bool hasSeenOnboarding;
+
+  const EmtilakApp({super.key, this.hasSeenOnboarding = false});
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +39,26 @@ class EmtilakApp extends StatelessWidget {
           child: child ?? const SizedBox.shrink(),
         );
       },
-      initialRoute: AppRoutes.onboarding,
+      initialRoute: hasSeenOnboarding ? AppRoutes.login : AppRoutes.onboarding,
       routes: {
         AppRoutes.onboarding: (_) => const OnboardingView(),
+        AppRoutes.login: (_) => const LoginPage(),
+        AppRoutes.mainLayout: (_) => const MainLayout(),
+        AppRoutes.dashboard: (_) => const DashboardPage(),
+        AppRoutes.buildings: (_) => const BuildingsPage(),
+        AppRoutes.unitsGrid: (_) => const UnitsGridPage(),
+        AppRoutes.unitDetails: (_) => const UnitDetailsPage(),
+        AppRoutes.contracts: (_) => const ContractsPage(),
+        AppRoutes.addContract: (_) => const AddContractPage(),
+        AppRoutes.tenants: (_) => const TenantsPage(),
+        AppRoutes.tenantStatement: (_) => const TenantStatementPage(),
+        AppRoutes.payments: (_) => const PaymentsPage(),
+        AppRoutes.addPayment: (_) => const AddPaymentPage(),
+        AppRoutes.addMaintenance: (_) => const AddMaintenancePage(),
+        AppRoutes.financialReport: (_) => const FinancialReportPage(),
+        AppRoutes.currencies: (_) => const CurrenciesPage(),
+        AppRoutes.notifications: (_) => const NotificationsPage(),
+        AppRoutes.settings: (_) => const SettingsPage(),
       },
     );
   }
