@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
+import '../../routes/routes.dart';
+import '../../views/contracts/contracts_page.dart';
 import '../../views/dashboard/dashboard_page.dart';
 import '../../views/properties/buildings_page.dart';
-import '../../views/contracts/contracts_page.dart';
 import '../../views/tenants/tenants_page.dart';
 import '../../views/transactions/payments_page.dart';
 import '../common/custom_app_bar.dart';
@@ -43,18 +44,19 @@ class _MainLayoutState extends State<MainLayout> {
         showBackButton: false,
         actions: [
           IconButton(
-            icon: const Icon(Icons.notifications_none_outlined, color: AppColors.primary),
+            icon: const Icon(
+              Icons.notifications_none_outlined,
+              color: AppColors.primary,
+            ),
             onPressed: () {
-              Navigator.pushNamed(context, '/notifications');
+              Navigator.pushNamed(context, AppRoutes.notifications);
             },
           ),
         ],
       ),
       drawer: const MainDrawer(),
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _pages,
-      ),
+      body: IndexedStack(index: _currentIndex, children: _pages),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: AppColors.surface,
@@ -73,33 +75,44 @@ class _MainLayoutState extends State<MainLayout> {
               _currentIndex = index;
             });
           },
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: AppColors.surface,
-          selectedItemColor: AppColors.primary,
+          type: BottomNavigationBarType.shifting,
+          selectedItemColor: AppColors.gold,
           unselectedItemColor: AppColors.navUnselected,
-          selectedLabelStyle: const TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold, fontSize: 11),
-          unselectedLabelStyle: const TextStyle(fontFamily: 'Cairo', fontSize: 11),
-          elevation: 0,
+          selectedLabelStyle: const TextStyle(
+            fontFamily: 'Cairo',
+            fontWeight: FontWeight.bold,
+            fontSize: 12,
+          ),
+          unselectedLabelStyle: const TextStyle(
+            fontFamily: 'Cairo',
+            fontSize: 11,
+          ),
+          elevation: 4,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_filled),
               label: 'الرئيسية',
+              backgroundColor: AppColors.surface,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.apartment_rounded),
               label: 'المباني',
+              backgroundColor: AppColors.surface,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.assignment_outlined),
               label: 'العقود',
+              backgroundColor: AppColors.surface,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.receipt_outlined),
               label: 'الدفعات',
+              backgroundColor: AppColors.surface,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.group_outlined),
               label: 'المستأجرون',
+              backgroundColor: AppColors.surface,
             ),
           ],
         ),

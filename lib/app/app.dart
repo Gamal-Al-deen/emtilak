@@ -20,7 +20,6 @@ import '../views/tenants/tenants_page.dart';
 import '../views/transactions/add_maintenance_page.dart';
 import '../views/transactions/add_payment_page.dart';
 import '../views/transactions/payments_page.dart';
-import '../core/colors.dart';
 import '../core/theme.dart';
 import '../routes/routes.dart';
 
@@ -59,6 +58,7 @@ class EmtilakApp extends StatelessWidget {
         AppRoutes.tenantStatement: (_) => const TenantStatementPage(),
         AppRoutes.payments: (_) => const PaymentsPage(),
         AppRoutes.addPayment: (_) => const AddPaymentPage(),
+        AppRoutes.maintenance: (_) => const AddMaintenancePage(),
         AppRoutes.addMaintenance: (_) => const AddMaintenancePage(),
         AppRoutes.financialReport: (_) => const FinancialReportPage(),
         AppRoutes.currencies: (_) => const CurrenciesPage(),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
+import '../../routes/routes.dart';
 import '../../widgets/dashboard/stat_card.dart';
 import '../../widgets/dashboard/collection_chart.dart';
 
@@ -18,7 +19,7 @@ class DashboardPage extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
-                colors: [AppColors.primary, Color(0xFF0D3B7A)],
+                colors: [AppColors.primary, AppColors.primaryDark],
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
               ),
@@ -42,7 +43,7 @@ class DashboardPage extends StatelessWidget {
                         Text(
                           'مرحباً بك',
                           style: TextStyle(
-                            color: Colors.white70,
+                            color: AppColors.white70,
                             fontSize: 12,
                             fontFamily: 'Cairo',
                           ),
@@ -50,7 +51,7 @@ class DashboardPage extends StatelessWidget {
                         Text(
                           'أحمد محمد',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: AppColors.white,
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'Cairo',
@@ -60,8 +61,8 @@ class DashboardPage extends StatelessWidget {
                     ),
                     const CircleAvatar(
                       radius: 24,
-                      backgroundColor: Colors.white24,
-                      child: Icon(Icons.person, color: Colors.white, size: 28),
+                      backgroundColor: AppColors.white24,
+                      child: Icon(Icons.person, color: AppColors.white, size: 28),
                     ),
                   ],
                 ),
@@ -70,52 +71,52 @@ class DashboardPage extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.1),
+                    color: AppColors.white.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(14),
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            'إجمالي التدفق',
-                            style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 11,
-                              fontFamily: 'Cairo',
-                            ),
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text(
+                          'إجمالي التدفق',
+                          style: TextStyle(
+                            color: AppColors.white70,
+                            fontSize: 11,
+                            fontFamily: 'Cairo',
                           ),
-                          SizedBox(height: 2),
-                          Text(
-                            '125,000 \$',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Cairo',
-                            ),
+                        ),
+                        SizedBox(height: 2),
+                        Text(
+                          '125,000 \$',
+                          style: TextStyle(
+                            color: AppColors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Cairo',
                           ),
-                          SizedBox(height: 2),
-                          Text(
-                            '12.5%+ عن الشهر الماضي',
-                            style: TextStyle(
-                              color: AppColors.gold,
-                              fontSize: 10,
-                              fontFamily: 'Cairo',
-                            ),
+                        ),
+                        SizedBox(height: 2),
+                        Text(
+                          '12.5%+ عن الشهر الماضي',
+                          style: TextStyle(
+                            color: AppColors.gold,
+                            fontSize: 10,
+                            fontFamily: 'Cairo',
                           ),
-                        ],
-                      ),
-                      const Icon(
-                        Icons.show_chart,
-                        color: AppColors.gold,
-                        size: 48,
-                      ),
-                    ],
-                  ),
+                        ),
+                      ],
+                    ),
+                    const Icon(
+                      Icons.show_chart,
+                      color: AppColors.gold,
+                      size: 48,
+                    ),
+                  ],
                 ),
+              ),
               ],
             ),
           ),
@@ -176,7 +177,7 @@ class DashboardPage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/add-payment');
+                    Navigator.pushNamed(context, AppRoutes.addPayment);
                   },
                   icon: const Icon(Icons.add_card, size: 18),
                   label: const Text(
@@ -196,7 +197,7 @@ class DashboardPage extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/add-contract');
+                    Navigator.pushNamed(context, AppRoutes.addContract);
                   },
                   icon: const Icon(
                     Icons.note_add_outlined,

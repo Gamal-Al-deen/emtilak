@@ -52,8 +52,8 @@ class _AddContractPageState extends State<AddContractPage> {
         data: Theme.of(context).copyWith(
           colorScheme: const ColorScheme.light(
             primary: AppColors.primary,
-            onPrimary: Colors.white,
-            surface: Colors.white,
+            onPrimary: AppColors.white,
+            surface: AppColors.white,
             onSurface: AppColors.textPrimary,
           ),
         ),

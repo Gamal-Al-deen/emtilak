@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
+import '../../routes/routes.dart';
 import '../../widgets/auth/auth_text_field.dart';
 import '../../widgets/common/custom_search_field.dart';
 
@@ -143,7 +144,7 @@ class _TenantsPageState extends State<TenantsPage> {
                 style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary, minimumSize: const Size.fromHeight(48)),
                 onPressed: () {
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, '/tenant-statement', arguments: t['name']);
+                  Navigator.pushNamed(context, AppRoutes.tenantStatement, arguments: t['name']);
                 },
                 icon: const Icon(Icons.receipt_long),
                 label: const Text('عرض كشف الحساب التفضيلى', style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold)),
@@ -173,7 +174,7 @@ class _TenantsPageState extends State<TenantsPage> {
                   backgroundColor: AppColors.gold,
                   elevation: 2,
                   onPressed: _showAddTenantDialog,
-                  child: const Icon(Icons.person_add_alt_1, color: Colors.white),
+                  child: const Icon(Icons.person_add_alt_1, color: AppColors.white),
                 ),
               ],
             ),
@@ -228,7 +229,7 @@ class _TenantsPageState extends State<TenantsPage> {
                           IconButton(
                             icon: const Icon(Icons.receipt_long_outlined, color: AppColors.gold),
                             onPressed: () {
-                              Navigator.pushNamed(context, '/tenant-statement', arguments: t['name']);
+                              Navigator.pushNamed(context, AppRoutes.tenantStatement, arguments: t['name']);
                             },
                           ),
                         ],

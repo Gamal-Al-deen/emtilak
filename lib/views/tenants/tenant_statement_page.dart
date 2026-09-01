@@ -69,18 +69,18 @@ class TenantStatementPage extends StatelessWidget {
                     children: [
                       Text(
                         tenantName,
-                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16, fontFamily: 'Cairo'),
+                        style: const TextStyle(color: AppColors.white, fontWeight: FontWeight.bold, fontSize: 16, fontFamily: 'Cairo'),
                       ),
                       const Text(
                         'عمارة القدس - شقة A102',
-                        style: TextStyle(color: Colors.white70, fontSize: 12, fontFamily: 'Cairo'),
+                        style: TextStyle(color: AppColors.white70, fontSize: 12, fontFamily: 'Cairo'),
                       ),
                     ],
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: const [
-                      Text('الرصيد الحالي', style: TextStyle(color: Colors.white70, fontSize: 11, fontFamily: 'Cairo')),
+                      Text('الرصيد الحالي', style: TextStyle(color: AppColors.white70, fontSize: 11, fontFamily: 'Cairo')),
                       Text(
                         '0 \$ (مستوفى)',
                         style: TextStyle(color: AppColors.gold, fontWeight: FontWeight.bold, fontSize: 16, fontFamily: 'Cairo'),
