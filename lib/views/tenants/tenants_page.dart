@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
+import '../../widgets/auth/auth_text_field.dart';
 import '../../widgets/common/custom_search_field.dart';
 
 class TenantsPage extends StatefulWidget {
@@ -34,6 +35,7 @@ class _TenantsPageState extends State<TenantsPage> {
   ];
 
   void _showAddTenantDialog() {
+    final formKey = GlobalKey<FormState>();
     final nameCtrl = TextEditingController();
     final phoneCtrl = TextEditingController();
     final idCtrl = TextEditingController();
@@ -45,23 +47,33 @@ class _TenantsPageState extends State<TenantsPage> {
           backgroundColor: AppColors.surface,
           title: const Text('إضافة مستأجر جديد', style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold, fontSize: 16)),
           content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: nameCtrl,
-                  decoration: const InputDecoration(labelText: 'الاسم الكامل'),
-                ),
-                TextField(
-                  controller: phoneCtrl,
-                  keyboardType: TextInputType.phone,
-                  decoration: const InputDecoration(labelText: 'رقم الهاتف'),
-                ),
-                TextField(
-                  controller: idCtrl,
-                  decoration: const InputDecoration(labelText: 'رقم الهوية / الوثيقة'),
-                ),
-              ],
+            child: Form(
+              key: formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  AuthFormField(
+                    controller: nameCtrl,
+                    hintText: 'الاسم الكامل',
+                    fieldType: AuthFieldType.name,
+                    prefixIcon: Icons.person_outline,
+                  ),
+                  const SizedBox(height: 12),
+                  AuthFormField(
+                    controller: phoneCtrl,
+                    hintText: 'رقم الهاتف',
+                    fieldType: AuthFieldType.phone,
+                    prefixIcon: Icons.phone_outlined,
+                  ),
+                  const SizedBox(height: 12),
+                  AuthFormField(
+                    controller: idCtrl,
+                    hintText: 'رقم الهوية / الوثيقة',
+                    fieldType: AuthFieldType.text,
+                    prefixIcon: Icons.badge_outlined,
+                  ),
+                ],
+              ),
             ),
           ),
           actions: [
@@ -71,11 +83,11 @@ class _TenantsPageState extends State<TenantsPage> {
             ),
             ElevatedButton(
               onPressed: () {
-                if (nameCtrl.text.isNotEmpty) {
+                if (formKey.currentState!.validate()) {
                   setState(() {
                     tenants.add({
                       'name': nameCtrl.text,
-                      'phone': phoneCtrl.text.isEmpty ? '777 000 000' : phoneCtrl.text,
+                      'phone': phoneCtrl.text,
                       'unit': 'بدون وحدة سكنية حالياً',
                     });
                   });

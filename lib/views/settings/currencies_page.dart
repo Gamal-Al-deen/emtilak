@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
+import '../../widgets/auth/auth_text_field.dart';
 import '../../widgets/common/custom_app_bar.dart';
 
 class CurrenciesPage extends StatefulWidget {
@@ -35,6 +36,7 @@ class _CurrenciesPageState extends State<CurrenciesPage> {
   ];
 
   void _showAddCurrencyDialog() {
+    final formKey = GlobalKey<FormState>();
     final codeController = TextEditingController();
     final nameController = TextEditingController();
     final symbolController = TextEditingController();
@@ -47,27 +49,40 @@ class _CurrenciesPageState extends State<CurrenciesPage> {
           backgroundColor: AppColors.surface,
           title: const Text('إضافة عملة جديدة', style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold, fontSize: 16)),
           content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: codeController,
-                  decoration: const InputDecoration(labelText: 'رمز العملة (USD, SAR...)'),
-                ),
-                TextField(
-                  controller: nameController,
-                  decoration: const InputDecoration(labelText: 'اسم العملة'),
-                ),
-                TextField(
-                  controller: symbolController,
-                  decoration: const InputDecoration(labelText: 'الرمز (\$, ﷼...)'),
-                ),
-                TextField(
-                  controller: rateController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(labelText: 'سعر الصرف مقابل الأساسية'),
-                ),
-              ],
+            child: Form(
+              key: formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  AuthFormField(
+                    controller: codeController,
+                    hintText: 'رمز العملة (USD, SAR...)',
+                    fieldType: AuthFieldType.text,
+                    prefixIcon: Icons.code,
+                  ),
+                  const SizedBox(height: 12),
+                  AuthFormField(
+                    controller: nameController,
+                    hintText: 'اسم العملة',
+                    fieldType: AuthFieldType.name,
+                    prefixIcon: Icons.label_outline,
+                  ),
+                  const SizedBox(height: 12),
+                  AuthFormField(
+                    controller: symbolController,
+                    hintText: 'الرمز (\$, ﷼...)',
+                    fieldType: AuthFieldType.text,
+                    prefixIcon: Icons.monetization_on_outlined,
+                  ),
+                  const SizedBox(height: 12),
+                  AuthFormField(
+                    controller: rateController,
+                    hintText: 'سعر الصرف مقابل الأساسية',
+                    fieldType: AuthFieldType.number,
+                    prefixIcon: Icons.currency_exchange,
+                  ),
+                ],
+              ),
             ),
           ),
           actions: [
@@ -77,14 +92,14 @@ class _CurrenciesPageState extends State<CurrenciesPage> {
             ),
             ElevatedButton(
               onPressed: () {
-                if (codeController.text.isNotEmpty && nameController.text.isNotEmpty) {
+                if (formKey.currentState!.validate()) {
                   setState(() {
                     _currencies.add({
                       'code': codeController.text,
                       'name': nameController.text,
                       'symbol': symbolController.text,
                       'isBase': false,
-                      'rate': rateController.text.isEmpty ? '1.0' : rateController.text,
+                      'rate': rateController.text,
                     });
                   });
                   Navigator.pop(context);
