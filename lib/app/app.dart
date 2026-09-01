@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../widgets/layout/main_layout.dart';
 import '../views/onboarding/onboarding_view.dart';
 import '../views/auth/login_page.dart';
+import '../views/auth/sign_up_page.dart';
+import '../views/auth/forgot_password_page.dart';
 import '../views/contracts/add_contract_page.dart';
 import '../views/contracts/contracts_page.dart';
 import '../views/dashboard/dashboard_page.dart';
@@ -44,6 +46,8 @@ class EmtilakApp extends StatelessWidget {
       routes: {
         AppRoutes.onboarding: (_) => const OnboardingView(),
         AppRoutes.login: (_) => const LoginPage(),
+        AppRoutes.signUp: (_) => const SignUpPage(),
+        AppRoutes.forgotPassword: (_) => const ForgotPasswordPage(),
         AppRoutes.mainLayout: (_) => const MainLayout(),
         AppRoutes.dashboard: (_) => const DashboardPage(),
         AppRoutes.buildings: (_) => const BuildingsPage(),

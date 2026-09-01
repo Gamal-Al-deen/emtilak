@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
 import '../../routes/routes.dart';
+import '../../widgets/auth/auth_text_field.dart';
 import '../../widgets/common/custom_app_bar.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -64,6 +65,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void _showChangePasswordDialog() {
+    final formKey = GlobalKey<FormState>();
     final oldPass = TextEditingController();
     final newPass = TextEditingController();
 
@@ -80,24 +82,30 @@ class _SettingsPageState extends State<SettingsPage> {
               fontSize: 16,
             ),
           ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: oldPass,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'كلمة المرور الحالية',
-                ),
+          content: SingleChildScrollView(
+            child: Form(
+              key: formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  AuthFormField(
+                    controller: oldPass,
+                    hintText: 'كلمة المرور الحالية',
+                    fieldType: AuthFieldType.password,
+                    obscureText: true,
+                    prefixIcon: Icons.lock_outline,
+                  ),
+                  const SizedBox(height: 12),
+                  AuthFormField(
+                    controller: newPass,
+                    hintText: 'كلمة المرور الجديدة',
+                    fieldType: AuthFieldType.password,
+                    obscureText: true,
+                    prefixIcon: Icons.lock_reset_outlined,
+                  ),
+                ],
               ),
-              TextField(
-                controller: newPass,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'كلمة المرور الجديدة',
-                ),
-              ),
-            ],
+            ),
           ),
           actions: [
             TextButton(
@@ -112,13 +120,15 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('تم تغيير كلمة المرور بنجاح'),
-                    behavior: SnackBarBehavior.floating,
-                  ),
-                );
+                if (formKey.currentState!.validate()) {
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('تم تغيير كلمة المرور بنجاح'),
+                      behavior: SnackBarBehavior.floating,
+                    ),
+                  );
+                }
               },
               child: const Text('تغيير'),
             ),

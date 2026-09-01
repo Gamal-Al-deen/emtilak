@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import '../../core/colors.dart';
+import '../../widgets/auth/auth_text_field.dart';
 import '../../widgets/common/custom_app_bar.dart';
 
 class AddContractPage extends StatefulWidget {
@@ -15,12 +17,22 @@ class _AddContractPageState extends State<AddContractPage> {
   final _notesController = TextEditingController();
   DateTime? _startDate;
   DateTime? _endDate;
-  String? _selectedTenant;
-  String? _selectedUnit;
+  String? _selectedTenant = 'محمد أحمد';
+  String? _selectedUnit = 'A101 - عمارة القدس';
   String? _selectedCurrency = 'USD';
 
-  final List<String> _tenants = ['محمد أحمد', 'أحمد علي', 'عبدالله حسين', 'يوسف محمد'];
-  final List<String> _units = ['A101 - عمارة القدس', 'A102 - عمارة القدس', 'B101 - عمارة النور', 'B103 - عمارة الريان'];
+  final List<String> _tenants = [
+    'محمد أحمد',
+    'أحمد علي',
+    'عبدالله حسين',
+    'يوسف محمد',
+  ];
+  final List<String> _units = [
+    'A101 - عمارة القدس',
+    'A102 - عمارة القدس',
+    'B101 - عمارة النور',
+    'B103 - عمارة الريان',
+  ];
   final List<String> _currencies = ['USD', 'SAR', 'YER'];
 
   @override
@@ -104,8 +116,8 @@ class _AddContractPageState extends State<AddContractPage> {
                     label: 'قيمة الإيجار الشهري',
                     hint: '0.00',
                     keyboardType: TextInputType.number,
+                    fieldType: AuthFieldType.number,
                     icon: Icons.attach_money,
-                    validator: (v) => v == null || v.isEmpty ? 'أدخل قيمة الإيجار' : null,
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -175,7 +187,10 @@ class _AddContractPageState extends State<AddContractPage> {
                 }
               },
               icon: const Icon(Icons.save_outlined),
-              label: const Text('حفظ العقد', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              label: const Text(
+                'حفظ العقد',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
             ),
           ],
         ),
@@ -206,7 +221,14 @@ class _AddContractPageState extends State<AddContractPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary, fontFamily: 'Cairo')),
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 12,
+            color: AppColors.textSecondary,
+            fontFamily: 'Cairo',
+          ),
+        ),
         const SizedBox(height: 6),
         Container(
           decoration: BoxDecoration(
@@ -216,8 +238,25 @@ class _AddContractPageState extends State<AddContractPage> {
           ),
           child: DropdownButtonFormField<String>(
             initialValue: value,
-            hint: Text(hint, style: const TextStyle(fontSize: 13, color: AppColors.textLight, fontFamily: 'Cairo')),
-            items: items.map((e) => DropdownMenuItem(value: e, child: Text(e, style: const TextStyle(fontFamily: 'Cairo', fontSize: 13)))).toList(),
+            hint: Text(
+              hint,
+              style: const TextStyle(
+                fontSize: 13,
+                color: AppColors.textLight,
+                fontFamily: 'Cairo',
+              ),
+            ),
+            items: items
+                .map(
+                  (e) => DropdownMenuItem(
+                    value: e,
+                    child: Text(
+                      e,
+                      style: const TextStyle(fontFamily: 'Cairo', fontSize: 13),
+                    ),
+                  ),
+                )
+                .toList(),
             onChanged: onChanged,
             decoration: InputDecoration(
               prefixIcon: Icon(icon, color: AppColors.textSecondary, size: 20),
@@ -239,29 +278,29 @@ class _AddContractPageState extends State<AddContractPage> {
     required IconData icon,
     TextInputType keyboardType = TextInputType.text,
     int maxLines = 1,
+    AuthFieldType fieldType = AuthFieldType.text,
     String? Function(String?)? validator,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary, fontFamily: 'Cairo')),
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 12,
+            color: AppColors.textSecondary,
+            fontFamily: 'Cairo',
+          ),
+        ),
         const SizedBox(height: 6),
-        TextFormField(
+        AuthFormField(
           controller: controller,
+          hintText: hint,
+          prefixIcon: icon,
           keyboardType: keyboardType,
           maxLines: maxLines,
+          fieldType: fieldType,
           validator: validator,
-          style: const TextStyle(fontFamily: 'Cairo', fontSize: 14),
-          decoration: InputDecoration(
-            hintText: hint,
-            hintStyle: const TextStyle(fontSize: 13, color: AppColors.textLight, fontFamily: 'Cairo'),
-            prefixIcon: Icon(icon, color: AppColors.textSecondary, size: 20),
-            filled: true,
-            fillColor: AppColors.surface,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.border)),
-            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.border)),
-            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.primary, width: 1.5)),
-          ),
         ),
       ],
     );
@@ -275,7 +314,14 @@ class _AddContractPageState extends State<AddContractPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary, fontFamily: 'Cairo')),
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 12,
+            color: AppColors.textSecondary,
+            fontFamily: 'Cairo',
+          ),
+        ),
         const SizedBox(height: 6),
         GestureDetector(
           onTap: onTap,
@@ -288,13 +334,21 @@ class _AddContractPageState extends State<AddContractPage> {
             ),
             child: Row(
               children: [
-                const Icon(Icons.calendar_month_outlined, color: AppColors.textSecondary, size: 20),
+                const Icon(
+                  Icons.calendar_month_outlined,
+                  color: AppColors.textSecondary,
+                  size: 20,
+                ),
                 const SizedBox(width: 8),
                 Text(
-                  date != null ? '${date.year}/${date.month.toString().padLeft(2, '0')}/${date.day.toString().padLeft(2, '0')}' : 'اختر تاريخ',
+                  date != null
+                      ? '${date.year}/${date.month.toString().padLeft(2, '0')}/${date.day.toString().padLeft(2, '0')}'
+                      : 'اختر تاريخ',
                   style: TextStyle(
                     fontSize: 13,
-                    color: date != null ? AppColors.textPrimary : AppColors.textLight,
+                    color: date != null
+                        ? AppColors.textPrimary
+                        : AppColors.textLight,
                     fontFamily: 'Cairo',
                   ),
                 ),

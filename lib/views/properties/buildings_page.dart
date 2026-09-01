@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
+import '../../widgets/auth/auth_text_field.dart';
 import '../../widgets/common/custom_search_field.dart';
 
 class BuildingsPage extends StatefulWidget {
@@ -35,6 +36,7 @@ class _BuildingsPageState extends State<BuildingsPage> {
   ];
 
   void _showAddBuildingDialog() {
+    final formKey = GlobalKey<FormState>();
     final nameCtrl = TextEditingController();
     final locCtrl = TextEditingController();
     final totalCtrl = TextEditingController();
@@ -46,23 +48,33 @@ class _BuildingsPageState extends State<BuildingsPage> {
           backgroundColor: AppColors.surface,
           title: const Text('إضافة مبنى جديد', style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold, fontSize: 16)),
           content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: nameCtrl,
-                  decoration: const InputDecoration(labelText: 'اسم المبنى (مثال: عمارة السلام)'),
-                ),
-                TextField(
-                  controller: locCtrl,
-                  decoration: const InputDecoration(labelText: 'العنوان / الموقع'),
-                ),
-                TextField(
-                  controller: totalCtrl,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(labelText: 'عدد الوحدات الكلي'),
-                ),
-              ],
+            child: Form(
+              key: formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  AuthFormField(
+                    controller: nameCtrl,
+                    hintText: 'اسم المبنى (مثال: عمارة السلام)',
+                    fieldType: AuthFieldType.name,
+                    prefixIcon: Icons.domain_outlined,
+                  ),
+                  const SizedBox(height: 12),
+                  AuthFormField(
+                    controller: locCtrl,
+                    hintText: 'العنوان / الموقع',
+                    fieldType: AuthFieldType.text,
+                    prefixIcon: Icons.location_on_outlined,
+                  ),
+                  const SizedBox(height: 12),
+                  AuthFormField(
+                    controller: totalCtrl,
+                    hintText: 'عدد الوحدات الكلي',
+                    fieldType: AuthFieldType.number,
+                    prefixIcon: Icons.numbers_outlined,
+                  ),
+                ],
+              ),
             ),
           ),
           actions: [
@@ -72,14 +84,15 @@ class _BuildingsPageState extends State<BuildingsPage> {
             ),
             ElevatedButton(
               onPressed: () {
-                if (nameCtrl.text.isNotEmpty) {
+                if (formKey.currentState!.validate()) {
+                  final totalStr = totalCtrl.text.trim();
                   setState(() {
                     buildings.add({
-                      'name': nameCtrl.text,
-                      'location': locCtrl.text.isEmpty ? 'صنعاء' : locCtrl.text,
-                      'total': totalCtrl.text.isEmpty ? '10' : totalCtrl.text,
+                      'name': nameCtrl.text.trim(),
+                      'location': locCtrl.text.trim(),
+                      'total': totalStr,
                       'rented': '0',
-                      'vacant': totalCtrl.text.isEmpty ? '10' : totalCtrl.text,
+                      'vacant': totalStr,
                     });
                   });
                   Navigator.pop(context);
