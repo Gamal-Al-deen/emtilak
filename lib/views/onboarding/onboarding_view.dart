@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../app/colors.dart';
+import '../../core/colors.dart';
+import '../../routes/routes.dart';
 
 class OnboardingView extends StatelessWidget {
   const OnboardingView({super.key});
@@ -10,7 +11,7 @@ class OnboardingView extends StatelessWidget {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('hasSeenOnboarding', true);
     if (context.mounted) {
-      Navigator.pushReplacementNamed(context, '/login');
+      Navigator.pushReplacementNamed(context, AppRoutes.login);
     }
   }
 

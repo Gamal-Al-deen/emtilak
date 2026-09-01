@@ -1,0 +1,15 @@
+# الإعداد الافتراضي: دع Git يقرر نوع الملف ويعالج نهايات الأسطر
+* text=auto
+
+# فرض استخدام LF لنصوص برمجية معينة (مثل شل سكريبت)
+*.sh text eol=lf
+*.bash text eol=lf
+
+# فرض استخدام CRLF لملفات ويندوز الدفعية
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# إعلان الملفات الثنائية (لن يمسها Git)
+*.png binary
+*.jpg binary
+*.pdf binary

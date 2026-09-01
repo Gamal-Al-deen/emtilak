@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
 
-import '../views/layout/main_layout.dart';
+import '../widgets/layout/main_layout.dart';
 import '../views/onboarding/onboarding_view.dart';
-import '../views/pages/auth/login_page.dart';
-import '../views/pages/contracts/add_contract_page.dart';
-import '../views/pages/contracts/contracts_page.dart';
-import '../views/pages/dashboard/dashboard_page.dart';
-import '../views/pages/notifications/notifications_page.dart';
-import '../views/pages/properties/buildings_page.dart';
-import '../views/pages/properties/unit_details_page.dart';
-import '../views/pages/properties/units_grid_page.dart';
-import '../views/pages/reports/financial_report_page.dart';
-import '../views/pages/settings/currencies_page.dart';
-import '../views/pages/settings/settings_page.dart';
-import '../views/pages/tenants/tenant_statement_page.dart';
-import '../views/pages/tenants/tenants_page.dart';
-import '../views/pages/transactions/add_maintenance_page.dart';
-import '../views/pages/transactions/add_payment_page.dart';
-import '../views/pages/transactions/payments_page.dart';
-import 'routes.dart';
-import 'theme.dart';
+import '../views/auth/login_page.dart';
+import '../views/contracts/add_contract_page.dart';
+import '../views/contracts/contracts_page.dart';
+import '../views/dashboard/dashboard_page.dart';
+import '../views/notifications/notifications_page.dart';
+import '../views/properties/buildings_page.dart';
+import '../views/properties/unit_details_page.dart';
+import '../views/properties/units_grid_page.dart';
+import '../views/reports/financial_report_page.dart';
+import '../views/settings/currencies_page.dart';
+import '../views/settings/settings_page.dart';
+import '../views/tenants/tenant_statement_page.dart';
+import '../views/tenants/tenants_page.dart';
+import '../views/transactions/add_maintenance_page.dart';
+import '../views/transactions/add_payment_page.dart';
+import '../views/transactions/payments_page.dart';
+import '../core/colors.dart';
+import '../core/theme.dart';
+import '../routes/routes.dart';
 
 class EmtilakApp extends StatelessWidget {
   final bool hasSeenOnboarding;
