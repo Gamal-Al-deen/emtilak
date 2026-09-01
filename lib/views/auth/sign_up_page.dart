@@ -4,29 +4,36 @@ import '../../routes/routes.dart';
 import '../../core/colors.dart';
 import '../../widgets/auth/auth_text_field.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
-  final _emailPhoneController = TextEditingController();
+  final _fullNameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   @override
   void dispose() {
-    _emailPhoneController.dispose();
+    _fullNameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
-      Navigator.pushReplacementNamed(context, AppRoutes.mainLayout);
+      Navigator.pushReplacementNamed(context, AppRoutes.login);
     }
   }
 
@@ -106,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           const Text(
-                            'تسجيل الدخول',
+                            'إنشاء حساب جديد',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 22,
@@ -117,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           const SizedBox(height: 6),
                           const Text(
-                            'مرحباً بك مرة أخرى',
+                            'أدخل بياناتك للانضمام إلى منصة إمتلاك',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 13,
@@ -127,10 +134,24 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           const SizedBox(height: 24),
                           AuthFormField(
-                            controller: _emailPhoneController,
-                            hintText: 'البريد الإلكتروني أو رقم الهاتف',
+                            controller: _fullNameController,
+                            hintText: 'الاسم الكامل',
+                            prefixIcon: Icons.person_outline,
+                            fieldType: AuthFieldType.name,
+                          ),
+                          const SizedBox(height: 16),
+                          AuthFormField(
+                            controller: _emailController,
+                            hintText: 'البريد الإلكتروني',
                             prefixIcon: Icons.email_outlined,
                             fieldType: AuthFieldType.email,
+                          ),
+                          const SizedBox(height: 16),
+                          AuthFormField(
+                            controller: _phoneController,
+                            hintText: 'رقم الهاتف',
+                            prefixIcon: Icons.phone_outlined,
+                            fieldType: AuthFieldType.phone,
                           ),
                           const SizedBox(height: 16),
                           AuthFormField(
@@ -151,79 +172,38 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 8),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: TextButton(
-                              onPressed: () => Navigator.pushReplacementNamed(
-                                context,
-                                AppRoutes.forgotPassword,
+                          const SizedBox(height: 16),
+                          AuthFormField(
+                            controller: _confirmPasswordController,
+                            hintText: 'تأكيد كلمة المرور',
+                            prefixIcon: Icons.lock_reset_outlined,
+                            fieldType: AuthFieldType.confirmPassword,
+                            compareValue: _passwordController.text,
+                            obscureText: _obscureConfirmPassword,
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscureConfirmPassword
+                                    ? Icons.visibility_off_outlined
+                                    : Icons.visibility_outlined,
+                                color: AppColors.textSecondary,
                               ),
-                              child: const Text(
-                                'نسيت كلمة المرور؟',
-                                style: TextStyle(
-                                  color: AppColors.gold,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Cairo',
-                                ),
+                              onPressed: () => setState(
+                                () => _obscureConfirmPassword =
+                                    !_obscureConfirmPassword,
                               ),
                             ),
                           ),
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 24),
                           ElevatedButton(
                             onPressed: _submit,
-                            child: const Text('تسجيل الدخول'),
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
-                            children: const [
-                              Expanded(child: Divider(color: AppColors.border)),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 12),
-                                child: Text(
-                                  'أو',
-                                  style: TextStyle(
-                                    color: AppColors.textSecondary,
-                                    fontFamily: 'Cairo',
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                              Expanded(child: Divider(color: AppColors.border)),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          OutlinedButton.icon(
-                            style: OutlinedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              side: const BorderSide(color: AppColors.border),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            onPressed: _submit,
-                            icon: const Icon(
-                              Icons.g_mobiledata,
-                              size: 28,
-                              color: Colors.red,
-                            ),
-                            label: const Text(
-                              'تسجيل الدخول باستخدام Google',
-                              style: TextStyle(
-                                color: AppColors.textPrimary,
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Cairo',
-                              ),
-                            ),
+                            child: const Text('إنشاء الحساب'),
                           ),
                           const SizedBox(height: 20),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Text(
-                                'ليس لديك حساب؟ ',
+                                'لديك حساب بالفعل؟ ',
                                 style: TextStyle(
                                   color: AppColors.textSecondary,
                                   fontSize: 13,
@@ -233,10 +213,10 @@ class _LoginPageState extends State<LoginPage> {
                               GestureDetector(
                                 onTap: () => Navigator.pushReplacementNamed(
                                   context,
-                                  AppRoutes.signUp,
+                                  AppRoutes.login,
                                 ),
                                 child: const Text(
-                                  'إنشاء حساب',
+                                  'تسجيل الدخول',
                                   style: TextStyle(
                                     color: AppColors.gold,
                                     fontSize: 13,
@@ -261,3 +241,4 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+
