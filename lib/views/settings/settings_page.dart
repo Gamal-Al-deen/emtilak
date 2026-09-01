@@ -157,7 +157,7 @@ class _SettingsPageState extends State<SettingsPage> {
             title: 'العملة الافتراضية وإدارتها',
             subtitle: 'دولار أمريكي - USD',
             onTap: () {
-              Navigator.pushNamed(context, '/currencies');
+              Navigator.pushNamed(context, AppRoutes.currencies);
             },
           ),
           _buildSettingsItem(

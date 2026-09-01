@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
+import '../../routes/routes.dart';
 import '../../widgets/common/custom_search_field.dart';
 import '../../widgets/common/status_badge.dart';
 
@@ -74,7 +75,7 @@ class ContractsPage extends StatelessWidget {
                         style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
                         onPressed: () {
                           Navigator.pop(context);
-                          Navigator.pushNamed(context, '/tenant-statement', arguments: c['tenant']);
+                          Navigator.pushNamed(context, AppRoutes.tenantStatement, arguments: c['tenant']);
                         },
                         icon: const Icon(Icons.receipt_long, size: 18),
                         label: const Text('كشف الحساب', style: TextStyle(fontFamily: 'Cairo')),
@@ -86,7 +87,7 @@ class ContractsPage extends StatelessWidget {
                         style: OutlinedButton.styleFrom(side: const BorderSide(color: AppColors.primary)),
                         onPressed: () {
                           Navigator.pop(context);
-                          Navigator.pushNamed(context, '/add-payment');
+                          Navigator.pushNamed(context, AppRoutes.addPayment);
                         },
                         icon: const Icon(Icons.add_card, size: 18, color: AppColors.primary),
                         label: const Text('تسجيل دفعة', style: TextStyle(fontFamily: 'Cairo', color: AppColors.primary, fontWeight: FontWeight.bold)),
@@ -117,9 +118,9 @@ class ContractsPage extends StatelessWidget {
                   backgroundColor: AppColors.gold,
                   elevation: 2,
                   onPressed: () {
-                    Navigator.pushNamed(context, '/add-contract');
+                    Navigator.pushNamed(context, AppRoutes.addContract);
                   },
-                  child: const Icon(Icons.add, color: Colors.white),
+                  child: const Icon(Icons.add, color: AppColors.white),
                 ),
               ],
             ),

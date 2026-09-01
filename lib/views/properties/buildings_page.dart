@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
+import '../../routes/routes.dart';
 import '../../widgets/auth/auth_text_field.dart';
 import '../../widgets/common/custom_search_field.dart';
 
@@ -124,7 +125,7 @@ class _BuildingsPageState extends State<BuildingsPage> {
                   backgroundColor: AppColors.gold,
                   elevation: 2,
                   onPressed: _showAddBuildingDialog,
-                  child: const Icon(Icons.add, color: Colors.white),
+                  child: const Icon(Icons.add, color: AppColors.white),
                 ),
               ],
             ),
@@ -152,7 +153,7 @@ class _BuildingsPageState extends State<BuildingsPage> {
                       borderRadius: BorderRadius.circular(16),
                       onTap: () {
                         // Pass building name in arguments so the units grid reflects the selected building correctly!
-                        Navigator.pushNamed(context, '/units-grid', arguments: b['name']);
+                        Navigator.pushNamed(context, AppRoutes.unitsGrid, arguments: b['name']);
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(16),

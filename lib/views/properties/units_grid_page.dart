@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
+import '../../routes/routes.dart';
 import '../../widgets/common/custom_app_bar.dart';
 import '../../widgets/unit/unit_card.dart';
 
@@ -145,7 +146,7 @@ class UnitsGridPage extends StatelessWidget {
                 title: const Text('عرض التفاصيل والعقد', style: TextStyle(fontFamily: 'Cairo')),
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, '/unit-details', arguments: unitNumber);
+                  Navigator.pushNamed(context, AppRoutes.unitDetails, arguments: unitNumber);
                 },
               ),
               ListTile(
@@ -158,7 +159,7 @@ class UnitsGridPage extends StatelessWidget {
                 title: const Text('تسجيل مصروف صيانة', style: TextStyle(fontFamily: 'Cairo')),
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, '/add-maintenance');
+                  Navigator.pushNamed(context, AppRoutes.addMaintenance);
                 },
               ),
             ],

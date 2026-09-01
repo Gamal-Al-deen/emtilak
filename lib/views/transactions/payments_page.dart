@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
+import '../../routes/routes.dart';
 import '../../widgets/common/custom_search_field.dart';
 import '../../widgets/common/status_badge.dart';
 
@@ -117,9 +118,9 @@ class _PaymentsPageState extends State<PaymentsPage> {
                   backgroundColor: AppColors.gold,
                   elevation: 2,
                   onPressed: () {
-                    Navigator.pushNamed(context, '/add-payment');
+                    Navigator.pushNamed(context, AppRoutes.addPayment);
                   },
-                  child: const Icon(Icons.add, color: Colors.white),
+                  child: const Icon(Icons.add, color: AppColors.white),
                 ),
               ],
             ),
@@ -243,7 +244,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? Colors.white : AppColors.textSecondary,
+            color: isSelected ? AppColors.white : AppColors.textSecondary,
             fontSize: 12,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
             fontFamily: 'Cairo',

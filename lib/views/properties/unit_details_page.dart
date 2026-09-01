@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
+import '../../routes/routes.dart';
 import '../../widgets/common/custom_app_bar.dart';
 
 class UnitDetailsPage extends StatelessWidget {
@@ -88,7 +89,7 @@ class UnitDetailsPage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 14),
             ),
             onPressed: () {
-              Navigator.pushNamed(context, '/tenant-statement', arguments: 'محمد أحمد');
+              Navigator.pushNamed(context, AppRoutes.tenantStatement, arguments: 'محمد أحمد');
             },
             icon: const Icon(Icons.receipt_long),
             label: const Text('عرض كشف حساب المستأجر', style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold)),
@@ -101,7 +102,7 @@ class UnitDetailsPage extends StatelessWidget {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
             onPressed: () {
-              Navigator.pushNamed(context, '/add-maintenance');
+              Navigator.pushNamed(context, AppRoutes.addMaintenance);
             },
             icon: const Icon(Icons.build_outlined, color: AppColors.primary),
             label: const Text('تسجيل مصروف صيانة للوحدة', style: TextStyle(color: AppColors.primary, fontFamily: 'Cairo', fontWeight: FontWeight.bold)),
