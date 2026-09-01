@@ -22,11 +22,13 @@ class AppColors {
   static const Color info = Color(0xFF2563EB);
 
   // Unit Visual Grid Status Colors (Matches Design Image 4)
-  static const Color rented = Color(0xFF16A34A);       // مؤجرة (أخضر)
-  static const Color vacant = Color(0xFF2563EB);       // فارغة (أزرق)
-  static const Color maintenance = Color(0xFFEF4444);  // صيانة (أحمر)
-  static const Color preparing = Color(0xFFF59E0B);    // قيد التجهيز (أصفر/برتقالي)
-  static const Color afterExit = Color(0xFF8B5CF6);    // بعد الخروج (بنفسجي)
+  static const Color rented = Color(0xFF16A34A); // مؤجرة (أخضر)
+  static const Color vacant = Color(0xFF2563EB); // فارغة (أزرق)
+  static const Color maintenance = Color(0xFFEF4444); // صيانة (أحمر)
+  static const Color preparing = Color(
+    0xFFF59E0B,
+  ); // قيد التجهيز (أصفر/برتقالي)
+  static const Color afterExit = Color(0xFF8B5CF6); // بعد الخروج (بنفسجي)
 
   // Borders & Divider
   static const Color border = Color(0xFFE2E8F0);
@@ -39,4 +41,10 @@ class AppColors {
   // Navigation
   static const Color navSelected = primary;
   static const Color navUnselected = Color(0xFF94A3B8);
+
+  // Common Shading & Accents
+  static const Color white = Color(0xFFFFFFFF);
+  static const Color white70 = Color(0xB3FFFFFF);
+  static const Color white24 = Color(0x3DFFFFFF);
+  static const Color primaryDark = Color(0xFF0D3B7A);
 }

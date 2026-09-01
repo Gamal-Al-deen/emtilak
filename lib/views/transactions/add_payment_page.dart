@@ -48,8 +48,8 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
         data: Theme.of(context).copyWith(
           colorScheme: const ColorScheme.light(
             primary: AppColors.primary,
-            onPrimary: Colors.white,
-            surface: Colors.white,
+            onPrimary: AppColors.white,
+            surface: AppColors.white,
             onSurface: AppColors.textPrimary,
           ),
         ),
@@ -406,7 +406,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
       label: Text(
         label,
         style: TextStyle(
-          color: isSelected ? Colors.white : AppColors.textPrimary,
+          color: isSelected ? AppColors.white : AppColors.textPrimary,
           fontSize: 12,
           fontFamily: 'Cairo',
         ),

@@ -206,7 +206,7 @@ class _LoginPageState extends State<LoginPage> {
                             icon: const Icon(
                               Icons.g_mobiledata,
                               size: 28,
-                              color: Colors.red,
+                              color: AppColors.error,
                             ),
                             label: const Text(
                               'تسجيل الدخول باستخدام Google',

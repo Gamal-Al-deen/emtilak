@@ -15,7 +15,7 @@ class MainDrawer extends StatelessWidget {
             decoration: const BoxDecoration(color: AppColors.primary),
             currentAccountPicture: const CircleAvatar(
               backgroundColor: AppColors.gold,
-              child: Icon(Icons.person, color: Colors.white, size: 36),
+              child: Icon(Icons.person, color: AppColors.white, size: 36),
             ),
             accountName: const Text(
               'أحمد محمد',
@@ -29,7 +29,7 @@ class MainDrawer extends StatelessWidget {
               'مدير العقارات',
               style: TextStyle(
                 fontFamily: 'Cairo',
-                color: Colors.white70,
+                color: AppColors.white70,
                 fontSize: 12,
               ),
             ),
@@ -45,7 +45,7 @@ class MainDrawer extends StatelessWidget {
             ),
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushNamed(context, '/financial-report');
+              Navigator.pushNamed(context, AppRoutes.financialReport);
             },
           ),
           ListTile(
@@ -59,7 +59,7 @@ class MainDrawer extends StatelessWidget {
             ),
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushNamed(context, '/currencies');
+              Navigator.pushNamed(context, AppRoutes.currencies);
             },
           ),
           ListTile(
@@ -70,7 +70,7 @@ class MainDrawer extends StatelessWidget {
             ),
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushNamed(context, '/maintenance');
+              Navigator.pushNamed(context, AppRoutes.addMaintenance);
             },
           ),
           const Divider(),
@@ -85,7 +85,7 @@ class MainDrawer extends StatelessWidget {
             ),
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushNamed(context, '/settings');
+              Navigator.pushNamed(context, AppRoutes.settings);
             },
           ),
           ListTile(

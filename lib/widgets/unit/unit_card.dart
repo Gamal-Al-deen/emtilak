@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/colors.dart';
 
 class UnitCard extends StatelessWidget {
   final String unitNumber;
@@ -36,7 +37,7 @@ class UnitCard extends StatelessWidget {
             Text(
               unitNumber,
               style: const TextStyle(
-                color: Colors.white,
+                color: AppColors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
                 fontFamily: 'Cairo',
@@ -46,13 +47,13 @@ class UnitCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
-                color: Colors.black.withValues(alpha: 0.15),
+                color: AppColors.primary.withValues(alpha: 0.18),
                 borderRadius: BorderRadius.circular(6),
               ),
               child: Text(
                 statusText,
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: AppColors.white,
                   fontSize: 10,
                   fontFamily: 'Cairo',
                 ),
