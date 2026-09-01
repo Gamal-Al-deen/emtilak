@@ -47,7 +47,14 @@ class _CurrenciesPageState extends State<CurrenciesPage> {
       builder: (context) {
         return AlertDialog(
           backgroundColor: AppColors.surface,
-          title: const Text('إضافة عملة جديدة', style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold, fontSize: 16)),
+          title: const Text(
+            'إضافة عملة جديدة',
+            style: TextStyle(
+              fontFamily: 'Cairo',
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
           content: SingleChildScrollView(
             child: Form(
               key: formKey,
@@ -88,7 +95,13 @@ class _CurrenciesPageState extends State<CurrenciesPage> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('إلغاء', style: TextStyle(fontFamily: 'Cairo', color: AppColors.textSecondary)),
+              child: const Text(
+                'إلغاء',
+                style: TextStyle(
+                  fontFamily: 'Cairo',
+                  color: AppColors.textSecondary,
+                ),
+              ),
             ),
             ElevatedButton(
               onPressed: () {
@@ -127,7 +140,9 @@ class _CurrenciesPageState extends State<CurrenciesPage> {
               decoration: BoxDecoration(
                 color: AppColors.primary.withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
+                border: Border.all(
+                  color: AppColors.primary.withValues(alpha: 0.2),
+                ),
               ),
               child: Row(
                 children: const [
@@ -136,7 +151,11 @@ class _CurrenciesPageState extends State<CurrenciesPage> {
                   Expanded(
                     child: Text(
                       'العملة الأساسية هي التي تُستخدم في التقارير المالية وحسابات الصافي.',
-                      style: TextStyle(fontSize: 12, color: AppColors.primary, fontFamily: 'Cairo'),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.primary,
+                        fontFamily: 'Cairo',
+                      ),
                     ),
                   ),
                 ],
@@ -155,16 +174,21 @@ class _CurrenciesPageState extends State<CurrenciesPage> {
                     decoration: BoxDecoration(
                       color: AppColors.surface,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: isBase ? AppColors.gold : AppColors.border, width: isBase ? 1.5 : 1),
+                      border: Border.all(
+                        color: isBase ? AppColors.gold : AppColors.border,
+                        width: isBase ? 1.5 : 1,
+                      ),
                     ),
                     child: ListTile(
                       contentPadding: const EdgeInsets.all(16),
                       leading: CircleAvatar(
-                        backgroundColor: isBase ? AppColors.gold : AppColors.primary.withValues(alpha: 0.1),
+                        backgroundColor: isBase
+                            ? AppColors.gold
+                            : AppColors.primary.withValues(alpha: 0.1),
                         child: Text(
                           c['symbol'] as String,
                           style: TextStyle(
-                            color: isBase ? Colors.white : AppColors.primary,
+                            color: isBase ? AppColors.white : AppColors.primary,
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
@@ -174,20 +198,41 @@ class _CurrenciesPageState extends State<CurrenciesPage> {
                         children: [
                           Text(
                             c['name'] as String,
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Cairo', fontSize: 15),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Cairo',
+                              fontSize: 15,
+                            ),
                           ),
                           const SizedBox(width: 8),
                           if (isBase)
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                              decoration: BoxDecoration(color: AppColors.gold, borderRadius: BorderRadius.circular(10)),
-                              child: const Text('الأساسية', style: TextStyle(color: Colors.white, fontSize: 10, fontFamily: 'Cairo')),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColors.gold,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: const Text(
+                                'الأساسية',
+                                style: TextStyle(
+                                  color: AppColors.white,
+                                  fontSize: 10,
+                                  fontFamily: 'Cairo',
+                                ),
+                              ),
                             ),
                         ],
                       ),
                       subtitle: Text(
                         'الرمز: ${c['code']} | سعر الصرف: ${c['rate']}',
-                        style: const TextStyle(fontSize: 12, color: AppColors.textSecondary, fontFamily: 'Cairo'),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: AppColors.textSecondary,
+                          fontFamily: 'Cairo',
+                        ),
                       ),
                       trailing: PopupMenuButton<String>(
                         onSelected: (val) {
@@ -204,11 +249,17 @@ class _CurrenciesPageState extends State<CurrenciesPage> {
                           if (!isBase)
                             const PopupMenuItem(
                               value: 'setBase',
-                              child: Text('تعيين كعملة أساسية', style: TextStyle(fontFamily: 'Cairo')),
+                              child: Text(
+                                'تعيين كعملة أساسية',
+                                style: TextStyle(fontFamily: 'Cairo'),
+                              ),
                             ),
                           const PopupMenuItem(
                             value: 'edit',
-                            child: Text('تعديل سعر الصرف', style: TextStyle(fontFamily: 'Cairo')),
+                            child: Text(
+                              'تعديل سعر الصرف',
+                              style: TextStyle(fontFamily: 'Cairo'),
+                            ),
                           ),
                         ],
                       ),
@@ -220,11 +271,19 @@ class _CurrenciesPageState extends State<CurrenciesPage> {
           ],
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: AppColors.gold,
         onPressed: _showAddCurrencyDialog,
-        icon: const Icon(Icons.add, color: Colors.white),
-        label: const Text('إضافة عملة', style: TextStyle(fontFamily: 'Cairo', color: Colors.white, fontWeight: FontWeight.bold)),
+        icon: const Icon(Icons.add, color: AppColors.white),
+        label: const Text(
+          'إضافة عملة',
+          style: TextStyle(
+            fontFamily: 'Cairo',
+            color: AppColors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
   }
