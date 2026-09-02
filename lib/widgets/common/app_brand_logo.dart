@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../core/colors.dart';
-
 class AppBrandLogo extends StatelessWidget {
   final double size;
   final bool showTitle;
@@ -22,27 +20,13 @@ class AppBrandLogo extends StatelessWidget {
       width: size * 1.5,
       height: size * 1.5,
       padding: EdgeInsets.all(size * 0.12),
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        // color: AppColors.surface,
-        // border: Border.all(color: AppColors.gold.withValues(alpha: 0.35), width: 2),
-        // boxShadow: const [
-        //   BoxShadow(
-        //     color: AppColors.cardShadow,
-        //     blurRadius: 18,
-        //     offset: Offset(0, 8),
-        //   ),
-        // ],
-      ),
-      child: Container(
-        child: Image.asset(
-          'assets/images/logo-trans.png',
-          width: size,
-          height: size,
-          fit: BoxFit.contain,
-          filterQuality: FilterQuality.high,
-          alignment: Alignment.center,
-        ),
+      child: Image.asset(
+        'assets/images/logo-trans.png',
+        width: size,
+        height: size,
+        fit: BoxFit.contain,
+        filterQuality: FilterQuality.high,
+        alignment: Alignment.center,
       ),
     );
 

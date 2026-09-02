@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/colors.dart';
+import '../../utils/responsive.dart';
 import '../../mockData/mock_data_service.dart';
 import '../../widgets/auth/auth_text_field.dart';
 import '../../widgets/common/custom_app_bar.dart';
@@ -78,158 +79,162 @@ class _AddContractPageState extends State<AddContractPage> {
         .map((u) => '${u.number} - ${u.buildingName}')
         .toList();
     final currencyOptions = _dataService.currencies.map((c) => c.code).toList();
+    final horizontalPadding = Responsive.getHorizontalPadding(context);
 
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: const CustomAppBar(title: 'إنشاء عقد جديد'),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            _buildSectionTitle('بيانات العقد'),
-            const SizedBox(height: 12),
+      body: ResponsiveContainer(
+        maxWidth: 800,
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 16),
+            children: [
+              _buildSectionTitle('بيانات العقد'),
+              const SizedBox(height: 12),
 
-            // Tenant Dropdown
-            _buildDropdown(
-              label: 'المستأجر',
-              hint: 'اختر المستأجر',
-              value: _selectedTenant,
-              items: tenantOptions.isNotEmpty
-                  ? tenantOptions
-                  : ['مستأجر افتراضي'],
-              onChanged: (v) => setState(() => _selectedTenant = v),
-              icon: Icons.person_outline,
-            ),
-            const SizedBox(height: 12),
-
-            // Unit Dropdown
-            _buildDropdown(
-              label: 'الوحدة',
-              hint: 'اختر الوحدة',
-              value: _selectedUnit,
-              items: unitOptions.isNotEmpty ? unitOptions : ['وحدة افتراضية'],
-              onChanged: (v) => setState(() => _selectedUnit = v),
-              icon: Icons.home_outlined,
-            ),
-            const SizedBox(height: 12),
-
-            // Rent Amount + Currency Row
-            Row(
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: _buildTextField(
-                    controller: _rentController,
-                    label: 'قيمة الإيجار الشهري',
-                    hint: '0.00',
-                    keyboardType: TextInputType.number,
-                    fieldType: AuthFieldType.number,
-                    icon: Icons.attach_money,
-                    validator: (v) =>
-                        v == null || v.isEmpty ? 'أدخل قيمة الإيجار' : null,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  flex: 2,
-                  child: _buildDropdown(
-                    label: 'العملة',
-                    hint: 'العملة',
-                    value: _selectedCurrency,
-                    items: currencyOptions.isNotEmpty
-                        ? currencyOptions
-                        : ['USD', 'SAR', 'YER'],
-                    onChanged: (v) => setState(() => _selectedCurrency = v),
-                    icon: Icons.currency_exchange,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-
-            // Date Range Row
-            Row(
-              children: [
-                Expanded(
-                  child: _buildDatePicker(
-                    label: 'تاريخ البداية',
-                    date: _startDate,
-                    onTap: () => _pickDate(context, true),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildDatePicker(
-                    label: 'تاريخ النهاية',
-                    date: _endDate,
-                    onTap: () => _pickDate(context, false),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-
-            // Notes
-            _buildTextField(
-              controller: _notesController,
-              label: 'ملاحظات',
-              hint: 'أي ملاحظات إضافية...',
-              maxLines: 3,
-              icon: Icons.notes_outlined,
-            ),
-            const SizedBox(height: 24),
-
-            // Submit Button
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                padding: const EdgeInsets.symmetric(vertical: 16),
+              // Tenant Dropdown
+              _buildDropdown(
+                label: 'المستأجر',
+                hint: 'اختر المستأجر',
+                value: _selectedTenant,
+                items: tenantOptions.isNotEmpty
+                    ? tenantOptions
+                    : ['مستأجر افتراضي'],
+                onChanged: (v) => setState(() => _selectedTenant = v),
+                icon: Icons.person_outline,
               ),
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  final rent =
-                      double.tryParse(_rentController.text.trim()) ?? 0.0;
-                  final startFormatted = _startDate != null
-                      ? '${_startDate!.year}/${_startDate!.month.toString().padLeft(2, '0')}/${_startDate!.day.toString().padLeft(2, '0')}'
-                      : '2024/05/01';
-                  final endFormatted = _endDate != null
-                      ? '${_endDate!.year}/${_endDate!.month.toString().padLeft(2, '0')}/${_endDate!.day.toString().padLeft(2, '0')}'
-                      : '2025/05/01';
+              const SizedBox(height: 12),
 
-                  final selectedUnitStr = _selectedUnit ?? 'A101';
-                  final bName = selectedUnitStr.contains('-')
-                      ? selectedUnitStr.split('-').last.trim()
-                      : 'عمارة عامة';
+              // Unit Dropdown
+              _buildDropdown(
+                label: 'الوحدة',
+                hint: 'اختر الوحدة',
+                value: _selectedUnit,
+                items: unitOptions.isNotEmpty ? unitOptions : ['وحدة افتراضية'],
+                onChanged: (v) => setState(() => _selectedUnit = v),
+                icon: Icons.home_outlined,
+              ),
+              const SizedBox(height: 12),
 
-                  _dataService.addContract(
-                    tenantName: _selectedTenant ?? 'مستأجر عام',
-                    unitName: selectedUnitStr,
-                    buildingName: bName,
-                    monthlyRent: rent,
-                    currency: _selectedCurrency ?? 'USD',
-                    startDate: startFormatted,
-                    endDate: endFormatted,
-                    notes: _notesController.text.trim(),
-                  );
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('تم إنشاء وحفظ العقد بنجاح!'),
-                      backgroundColor: AppColors.success,
-                      behavior: SnackBarBehavior.floating,
+              // Rent Amount + Currency Row
+              Row(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: _buildTextField(
+                      controller: _rentController,
+                      label: 'قيمة الإيجار الشهري',
+                      hint: '0.00',
+                      keyboardType: TextInputType.number,
+                      fieldType: AuthFieldType.number,
+                      icon: Icons.attach_money,
+                      validator: (v) =>
+                          v == null || v.isEmpty ? 'أدخل قيمة الإيجار' : null,
                     ),
-                  );
-                  Navigator.pop(context);
-                }
-              },
-              icon: const Icon(Icons.save_outlined),
-              label: const Text(
-                'حفظ العقد',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    flex: 2,
+                    child: _buildDropdown(
+                      label: 'العملة',
+                      hint: 'العملة',
+                      value: _selectedCurrency,
+                      items: currencyOptions.isNotEmpty
+                          ? currencyOptions
+                          : ['USD', 'SAR', 'YER'],
+                      onChanged: (v) => setState(() => _selectedCurrency = v),
+                      icon: Icons.currency_exchange,
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
+              const SizedBox(height: 12),
+
+              // Date Range Row
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildDatePicker(
+                      label: 'تاريخ البداية',
+                      date: _startDate,
+                      onTap: () => _pickDate(context, true),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _buildDatePicker(
+                      label: 'تاريخ النهاية',
+                      date: _endDate,
+                      onTap: () => _pickDate(context, false),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+
+              // Notes
+              _buildTextField(
+                controller: _notesController,
+                label: 'ملاحظات',
+                hint: 'أي ملاحظات إضافية...',
+                maxLines: 3,
+                icon: Icons.notes_outlined,
+              ),
+              const SizedBox(height: 24),
+
+              // Submit Button
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    final rent =
+                        double.tryParse(_rentController.text.trim()) ?? 0.0;
+                    final startFormatted = _startDate != null
+                        ? '${_startDate!.year}/${_startDate!.month.toString().padLeft(2, '0')}/${_startDate!.day.toString().padLeft(2, '0')}'
+                        : '2024/05/01';
+                    final endFormatted = _endDate != null
+                        ? '${_endDate!.year}/${_endDate!.month.toString().padLeft(2, '0')}/${_endDate!.day.toString().padLeft(2, '0')}'
+                        : '2025/05/01';
+
+                    final selectedUnitStr = _selectedUnit ?? 'A101';
+                    final bName = selectedUnitStr.contains('-')
+                        ? selectedUnitStr.split('-').last.trim()
+                        : 'عمارة عامة';
+
+                    _dataService.addContract(
+                      tenantName: _selectedTenant ?? 'مستأجر عام',
+                      unitName: selectedUnitStr,
+                      buildingName: bName,
+                      monthlyRent: rent,
+                      currency: _selectedCurrency ?? 'USD',
+                      startDate: startFormatted,
+                      endDate: endFormatted,
+                      notes: _notesController.text.trim(),
+                    );
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('تم إنشاء وحفظ العقد بنجاح!'),
+                        backgroundColor: AppColors.success,
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                    Navigator.pop(context);
+                  }
+                },
+                icon: const Icon(Icons.save_outlined),
+                label: const Text(
+                  'حفظ العقد',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

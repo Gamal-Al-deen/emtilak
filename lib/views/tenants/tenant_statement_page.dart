@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
+import '../../utils/responsive.dart';
 import '../../mockData/mock_data_service.dart';
 import '../../widgets/common/custom_app_bar.dart';
 
@@ -24,193 +25,198 @@ class TenantStatementPage extends StatelessWidget {
         .where((p) => p.tenantName == tenantName)
         .toList();
 
+    final horizontalPadding = Responsive.getHorizontalPadding(context);
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: CustomAppBar(title: 'كشف حساب: $tenantName'),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            // Tenant summary card
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.primary,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        tenantName,
-                        style: const TextStyle(
-                          color: AppColors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          fontFamily: 'Cairo',
-                        ),
-                      ),
-                      Text(
-                        tenantUnit,
-                        style: const TextStyle(
-                          color: AppColors.white70,
-                          fontSize: 12,
-                          fontFamily: 'Cairo',
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: const [
-                      Text(
-                        'الرصيد الحالي',
-                        style: TextStyle(
-                          color: AppColors.white70,
-                          fontSize: 11,
-                          fontFamily: 'Cairo',
-                        ),
-                      ),
-                      Text(
-                        '0 \$ (مستوفى)',
-                        style: TextStyle(
-                          color: AppColors.gold,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          fontFamily: 'Cairo',
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Transactions Table Header
-            Expanded(
-              child: Container(
+      body: ResponsiveContainer(
+        maxWidth: 900,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 16),
+          child: Column(
+            children: [
+              // Tenant summary card
+              Container(
+                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppColors.surface,
+                  color: AppColors.primary,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: AppColors.border),
                 ),
-                child: tenantPayments.isEmpty
-                    ? const Center(
-                        child: Text(
-                          'لا توجد حركات مسجلة لهذا المستأجر حالياً',
-                          style: TextStyle(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          tenantName,
+                          style: const TextStyle(
+                            color: AppColors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
                             fontFamily: 'Cairo',
-                            color: AppColors.textSecondary,
                           ),
                         ),
-                      )
-                    : ListView.separated(
-                        itemCount: tenantPayments.length,
-                        separatorBuilder: (context, index) =>
-                            const Divider(height: 1, color: AppColors.divider),
-                        itemBuilder: (context, index) {
-                          final p = tenantPayments[index];
-                          final isPaid = p.status == 'مدفوع';
+                        Text(
+                          tenantUnit,
+                          style: const TextStyle(
+                            color: AppColors.white70,
+                            fontSize: 12,
+                            fontFamily: 'Cairo',
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: const [
+                        Text(
+                          'الرصيد الحالي',
+                          style: TextStyle(
+                            color: AppColors.white70,
+                            fontSize: 11,
+                            fontFamily: 'Cairo',
+                          ),
+                        ),
+                        Text(
+                          '0 \$ (مستوفى)',
+                          style: TextStyle(
+                            color: AppColors.gold,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            fontFamily: 'Cairo',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
 
-                          return Padding(
-                            padding: const EdgeInsets.all(14),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  isPaid
-                                      ? Icons.arrow_downward
-                                      : Icons.arrow_upward,
-                                  color: isPaid
-                                      ? AppColors.success
-                                      : AppColors.error,
-                                  size: 20,
-                                ),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+              // Transactions Table Header
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: AppColors.border),
+                  ),
+                  child: tenantPayments.isEmpty
+                      ? const Center(
+                          child: Text(
+                            'لا توجد حركات مسجلة لهذا المستأجر حالياً',
+                            style: TextStyle(
+                              fontFamily: 'Cairo',
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                        )
+                      : ListView.separated(
+                          itemCount: tenantPayments.length,
+                          separatorBuilder: (context, index) =>
+                              const Divider(height: 1, color: AppColors.divider),
+                          itemBuilder: (context, index) {
+                            final p = tenantPayments[index];
+                            final isPaid = p.status == 'مدفوع';
+
+                            return Padding(
+                              padding: const EdgeInsets.all(14),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    isPaid
+                                        ? Icons.arrow_downward
+                                        : Icons.arrow_upward,
+                                    color: isPaid
+                                        ? AppColors.success
+                                        : AppColors.error,
+                                    size: 20,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'دفعة عن ${p.contractInfo} (${p.method})',
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 13,
+                                            fontFamily: 'Cairo',
+                                          ),
+                                        ),
+                                        Text(
+                                          p.paymentDate,
+                                          style: const TextStyle(
+                                            fontSize: 11,
+                                            color: AppColors.textLight,
+                                            fontFamily: 'Cairo',
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       Text(
-                                        'دفعة عن ${p.contractInfo} (${p.method})',
-                                        style: const TextStyle(
+                                        '+ ${p.amount.toInt()} ${p.currency}',
+                                        style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 13,
+                                          color: isPaid
+                                              ? AppColors.success
+                                              : AppColors.error,
                                           fontFamily: 'Cairo',
                                         ),
                                       ),
                                       Text(
-                                        p.paymentDate,
+                                        'الحالة: ${p.status}',
                                         style: const TextStyle(
-                                          fontSize: 11,
-                                          color: AppColors.textLight,
+                                          fontSize: 10,
+                                          color: AppColors.textSecondary,
                                           fontFamily: 'Cairo',
                                         ),
                                       ),
                                     ],
                                   ),
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      '+ ${p.amount.toInt()} ${p.currency}',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 13,
-                                        color: isPaid
-                                            ? AppColors.success
-                                            : AppColors.error,
-                                        fontFamily: 'Cairo',
-                                      ),
-                                    ),
-                                    Text(
-                                      'الحالة: ${p.status}',
-                                      style: const TextStyle(
-                                        fontSize: 10,
-                                        color: AppColors.textSecondary,
-                                        fontFamily: 'Cairo',
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-              ),
-            ),
-            const SizedBox(height: 12),
-
-            // Export PDF Button
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                minimumSize: const Size.fromHeight(48),
-              ),
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('جاري تصدير كشف الحساب كملف PDF...'),
-                    behavior: SnackBarBehavior.floating,
-                  ),
-                );
-              },
-              icon: const Icon(Icons.picture_as_pdf_outlined),
-              label: const Text(
-                'تصدير كشف الحساب (PDF)',
-                style: TextStyle(
-                  fontFamily: 'Cairo',
-                  fontWeight: FontWeight.bold,
+                                ],
+                              ),
+                            );
+                          },
+                        ),
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 12),
+
+              // Export PDF Button
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  minimumSize: const Size.fromHeight(48),
+                ),
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('جاري تصدير كشف الحساب كملف PDF...'),
+                      behavior: SnackBarBehavior.floating,
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.picture_as_pdf_outlined),
+                label: const Text(
+                  'تصدير كشف الحساب (PDF)',
+                  style: TextStyle(
+                    fontFamily: 'Cairo',
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
+import '../../utils/responsive.dart';
 import '../../mockData/mock_data_service.dart';
 import '../../widgets/common/custom_app_bar.dart';
 
@@ -71,298 +72,302 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
         .map((c) => 'عقد #${c.id} (${c.unitName})')
         .toList();
     final currencyOptions = _dataService.currencies.map((c) => c.code).toList();
+    final horizontalPadding = Responsive.getHorizontalPadding(context);
 
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: const CustomAppBar(title: 'تسجيل دفعة جديدة'),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            const Text(
-              'بيانات الدفعة المالية',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primary,
-                fontFamily: 'Cairo',
+      body: ResponsiveContainer(
+        maxWidth: 800,
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 16),
+            children: [
+              const Text(
+                'بيانات الدفعة المالية',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primary,
+                  fontFamily: 'Cairo',
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-            // Tenant Dropdown
-            _buildDropdown(
-              label: 'المستأجر',
-              hint: 'اختر المستأجر',
-              value: _selectedTenant,
-              items: tenantOptions.isNotEmpty ? tenantOptions : ['مستأجر عام'],
-              onChanged: (v) => setState(() => _selectedTenant = v),
-              icon: Icons.person_outline,
-            ),
-            const SizedBox(height: 12),
+              // Tenant Dropdown
+              _buildDropdown(
+                label: 'المستأجر',
+                hint: 'اختر المستأجر',
+                value: _selectedTenant,
+                items: tenantOptions.isNotEmpty ? tenantOptions : ['مستأجر عام'],
+                onChanged: (v) => setState(() => _selectedTenant = v),
+                icon: Icons.person_outline,
+              ),
+              const SizedBox(height: 12),
 
-            // Contract Dropdown
-            _buildDropdown(
-              label: 'العقد المرتبط',
-              hint: 'اختر العقد',
-              value: _selectedContract,
-              items: contractOptions.isNotEmpty ? contractOptions : ['عقد عام'],
-              onChanged: (v) => setState(() => _selectedContract = v),
-              icon: Icons.assignment_outlined,
-            ),
-            const SizedBox(height: 12),
+              // Contract Dropdown
+              _buildDropdown(
+                label: 'العقد المرتبط',
+                hint: 'اختر العقد',
+                value: _selectedContract,
+                items: contractOptions.isNotEmpty ? contractOptions : ['عقد عام'],
+                onChanged: (v) => setState(() => _selectedContract = v),
+                icon: Icons.assignment_outlined,
+              ),
+              const SizedBox(height: 12),
 
-            // Amount & Currency
-            Row(
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'المبلغ المدفوع',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: AppColors.textSecondary,
-                          fontFamily: 'Cairo',
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      TextFormField(
-                        controller: _amountController,
-                        keyboardType: TextInputType.number,
-                        validator: (v) =>
-                            v == null || v.isEmpty ? 'أدخل المبلغ' : null,
-                        style: const TextStyle(
-                          fontFamily: 'Cairo',
-                          fontSize: 14,
-                        ),
-                        decoration: InputDecoration(
-                          hintText: '0.00',
-                          hintStyle: const TextStyle(
-                            fontSize: 13,
-                            color: AppColors.textLight,
-                            fontFamily: 'Cairo',
-                          ),
-                          prefixIcon: const Icon(
-                            Icons.attach_money,
-                            color: AppColors.textSecondary,
-                            size: 20,
-                          ),
-                          filled: true,
-                          fillColor: AppColors.surface,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(
-                              color: AppColors.border,
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(
-                              color: AppColors.border,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(
-                              color: AppColors.primary,
-                              width: 1.5,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  flex: 2,
-                  child: _buildDropdown(
-                    label: 'العملة',
-                    hint: 'العملة',
-                    value: _selectedCurrency,
-                    items: currencyOptions.isNotEmpty
-                        ? currencyOptions
-                        : ['USD', 'SAR', 'YER'],
-                    onChanged: (v) => setState(() => _selectedCurrency = v!),
-                    icon: Icons.currency_exchange,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-
-            // Date Selection
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'تاريخ الدفع',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: AppColors.textSecondary,
-                    fontFamily: 'Cairo',
-                  ),
-                ),
-                const SizedBox(height: 6),
-                GestureDetector(
-                  onTap: () => _pickDate(context),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 14,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.surface,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppColors.border),
-                    ),
-                    child: Row(
+              // Amount & Currency
+              Row(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Icon(
-                          Icons.calendar_month_outlined,
-                          color: AppColors.textSecondary,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          '${_paymentDate.year}/${_paymentDate.month.toString().padLeft(2, '0')}/${_paymentDate.day.toString().padLeft(2, '0')}',
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: AppColors.textPrimary,
+                        const Text(
+                          'المبلغ المدفوع',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: AppColors.textSecondary,
                             fontFamily: 'Cairo',
-                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        TextFormField(
+                          controller: _amountController,
+                          keyboardType: TextInputType.number,
+                          validator: (v) =>
+                              v == null || v.isEmpty ? 'أدخل المبلغ' : null,
+                          style: const TextStyle(
+                            fontFamily: 'Cairo',
+                            fontSize: 14,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: '0.00',
+                            hintStyle: const TextStyle(
+                              fontSize: 13,
+                              color: AppColors.textLight,
+                              fontFamily: 'Cairo',
+                            ),
+                            prefixIcon: const Icon(
+                              Icons.attach_money,
+                              color: AppColors.textSecondary,
+                              size: 20,
+                            ),
+                            filled: true,
+                            fillColor: AppColors.surface,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: AppColors.border,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: AppColors.border,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: AppColors.primary,
+                                width: 1.5,
+                              ),
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-
-            // Payment Method Selector
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'طريقة الدفع',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: AppColors.textSecondary,
-                    fontFamily: 'Cairo',
+                  const SizedBox(width: 12),
+                  Expanded(
+                    flex: 2,
+                    child: _buildDropdown(
+                      label: 'العملة',
+                      hint: 'العملة',
+                      value: _selectedCurrency,
+                      items: currencyOptions.isNotEmpty
+                          ? currencyOptions
+                          : ['USD', 'SAR', 'YER'],
+                      onChanged: (v) => setState(() => _selectedCurrency = v!),
+                      icon: Icons.currency_exchange,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 6),
-                Row(
-                  children: [
-                    _buildMethodChip('نقداً (Cash)'),
-                    const SizedBox(width: 8),
-                    _buildMethodChip('تحويل بنكي'),
-                    const SizedBox(width: 8),
-                    _buildMethodChip('شيك'),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
+                ],
+              ),
+              const SizedBox(height: 12),
 
-            // Notes
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'ملاحظات',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: AppColors.textSecondary,
-                    fontFamily: 'Cairo',
-                  ),
-                ),
-                const SizedBox(height: 6),
-                TextFormField(
-                  controller: _notesController,
-                  maxLines: 2,
-                  style: const TextStyle(fontFamily: 'Cairo', fontSize: 14),
-                  decoration: InputDecoration(
-                    hintText: 'ملاحظات اختيارية...',
-                    hintStyle: const TextStyle(
-                      fontSize: 13,
-                      color: AppColors.textLight,
+              // Date Selection
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'تاريخ الدفع',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
                       fontFamily: 'Cairo',
                     ),
-                    prefixIcon: const Icon(
-                      Icons.notes,
-                      color: AppColors.textSecondary,
-                      size: 20,
-                    ),
-                    filled: true,
-                    fillColor: AppColors.surface,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: AppColors.border),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: AppColors.border),
+                  ),
+                  const SizedBox(height: 6),
+                  GestureDetector(
+                    onTap: () => _pickDate(context),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 14,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.surface,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: AppColors.border),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.calendar_month_outlined,
+                            color: AppColors.textSecondary,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            '${_paymentDate.year}/${_paymentDate.month.toString().padLeft(2, '0')}/${_paymentDate.day.toString().padLeft(2, '0')}',
+                            style: const TextStyle(
+                              fontSize: 13,
+                              color: AppColors.textPrimary,
+                              fontFamily: 'Cairo',
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-
-            // Save Button
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                ],
               ),
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  final amount =
-                      double.tryParse(_amountController.text.trim()) ?? 0.0;
-                  final dateFormatted =
-                      '${_paymentDate.year}/${_paymentDate.month.toString().padLeft(2, '0')}/${_paymentDate.day.toString().padLeft(2, '0')}';
+              const SizedBox(height: 12),
 
-                  _dataService.addPayment(
-                    tenantName: _selectedTenant ?? 'مستأجر عام',
-                    contractInfo: _selectedContract ?? 'عقد عام',
-                    amount: amount,
-                    currency: _selectedCurrency == 'USD'
-                        ? '\$'
-                        : _selectedCurrency,
-                    paymentDate: dateFormatted,
-                    status: 'مدفوع',
-                    method: _paymentMethod,
-                    notes: _notesController.text.trim(),
-                  );
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('تم تسجيل الدفعة وحفظها بنجاح!'),
-                      backgroundColor: AppColors.success,
-                      behavior: SnackBarBehavior.floating,
+              // Payment Method Selector
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'طريقة الدفع',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
+                      fontFamily: 'Cairo',
                     ),
-                  );
-                  Navigator.pop(context);
-                }
-              },
-              icon: const Icon(Icons.print_outlined),
-              label: const Text(
-                'حفظ وإصدار سند قبض',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Cairo',
+                  ),
+                  const SizedBox(height: 6),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      _buildMethodChip('نقداً (Cash)'),
+                      _buildMethodChip('تحويل بنكي'),
+                      _buildMethodChip('شيك'),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+
+              // Notes
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'ملاحظات',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
+                      fontFamily: 'Cairo',
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  TextFormField(
+                    controller: _notesController,
+                    maxLines: 2,
+                    style: const TextStyle(fontFamily: 'Cairo', fontSize: 14),
+                    decoration: InputDecoration(
+                      hintText: 'ملاحظات اختيارية...',
+                      hintStyle: const TextStyle(
+                        fontSize: 13,
+                        color: AppColors.textLight,
+                        fontFamily: 'Cairo',
+                      ),
+                      prefixIcon: const Icon(
+                        Icons.notes,
+                        color: AppColors.textSecondary,
+                        size: 20,
+                      ),
+                      filled: true,
+                      fillColor: AppColors.surface,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: AppColors.border),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: AppColors.border),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+
+              // Save Button
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    final amount =
+                        double.tryParse(_amountController.text.trim()) ?? 0.0;
+                    final dateFormatted =
+                        '${_paymentDate.year}/${_paymentDate.month.toString().padLeft(2, '0')}/${_paymentDate.day.toString().padLeft(2, '0')}';
+
+                    _dataService.addPayment(
+                      tenantName: _selectedTenant ?? 'مستأجر عام',
+                      contractInfo: _selectedContract ?? 'عقد عام',
+                      amount: amount,
+                      currency: _selectedCurrency == 'USD'
+                          ? '\$'
+                          : _selectedCurrency,
+                      paymentDate: dateFormatted,
+                      status: 'مدفوع',
+                      method: _paymentMethod,
+                      notes: _notesController.text.trim(),
+                    );
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('تم تسجيل الدفعة وحفظها بنجاح!'),
+                        backgroundColor: AppColors.success,
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                    Navigator.pop(context);
+                  }
+                },
+                icon: const Icon(Icons.print_outlined),
+                label: const Text(
+                  'حفظ وإصدار سند قبض',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Cairo',
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

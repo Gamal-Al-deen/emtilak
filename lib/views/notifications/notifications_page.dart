@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
+import '../../utils/responsive.dart';
 import '../../widgets/common/custom_app_bar.dart';
 
 class NotificationsPage extends StatelessWidget {
@@ -31,54 +32,77 @@ class NotificationsPage extends StatelessWidget {
       },
     ];
 
+    final horizontalPadding = Responsive.getHorizontalPadding(context);
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: const CustomAppBar(title: 'الإشعارات والتنبيهات'),
-      body: notifications.isEmpty
-          ? const Center(
-              child: Text('لا توجد إشعارات حالياً', style: TextStyle(fontFamily: 'Cairo', color: AppColors.textSecondary)),
-            )
-          : ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: notifications.length,
-              itemBuilder: (context, index) {
-                final n = notifications[index];
-                return Container(
-                  margin: const EdgeInsets.only(bottom: 12),
-                  decoration: BoxDecoration(
-                    color: AppColors.surface,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppColors.border),
+      body: ResponsiveContainer(
+        maxWidth: 900,
+        child: notifications.isEmpty
+            ? const Center(
+                child: Text(
+                  'لا توجد إشعارات حالياً',
+                  style: TextStyle(
+                    fontFamily: 'Cairo',
+                    color: AppColors.textSecondary,
                   ),
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.all(14),
-                    leading: CircleAvatar(
-                      backgroundColor: (n['color'] as Color).withValues(alpha: 0.15),
-                      child: Icon(n['icon'] as IconData, color: n['color'] as Color),
+                ),
+              )
+            : ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 16),
+                itemCount: notifications.length,
+                itemBuilder: (context, index) {
+                  final n = notifications[index];
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    decoration: BoxDecoration(
+                      color: AppColors.surface,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: AppColors.border),
                     ),
-                    title: Text(
-                      n['title'] as String,
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Cairo', fontSize: 14),
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 4),
-                        Text(
-                          n['body'] as String,
-                          style: const TextStyle(fontSize: 12, color: AppColors.textSecondary, fontFamily: 'Cairo'),
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(14),
+                      leading: CircleAvatar(
+                        backgroundColor: (n['color'] as Color).withValues(alpha: 0.15),
+                        child: Icon(n['icon'] as IconData, color: n['color'] as Color),
+                      ),
+                      title: Text(
+                        n['title'] as String,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Cairo',
+                          fontSize: 14,
                         ),
-                        const SizedBox(height: 6),
-                        Text(
-                          n['time'] as String,
-                          style: const TextStyle(fontSize: 10, color: AppColors.textLight, fontFamily: 'Cairo'),
-                        ),
-                      ],
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 4),
+                          Text(
+                            n['body'] as String,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: AppColors.textSecondary,
+                              fontFamily: 'Cairo',
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            n['time'] as String,
+                            style: const TextStyle(
+                              fontSize: 10,
+                              color: AppColors.textLight,
+                              fontFamily: 'Cairo',
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
+                  );
+                },
+              ),
+      ),
     );
   }
 }

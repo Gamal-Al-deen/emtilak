@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
+import '../../utils/responsive.dart';
 import '../../widgets/common/custom_app_bar.dart';
 
 class FinancialReportPage extends StatefulWidget {
@@ -41,129 +42,174 @@ class _FinancialReportPageState extends State<FinancialReportPage> {
 
   @override
   Widget build(BuildContext context) {
-    final startStr = '${_selectedRange.start.day.toString().padLeft(2, '0')}/${_selectedRange.start.month.toString().padLeft(2, '0')}/${_selectedRange.start.year}';
-    final endStr = '${_selectedRange.end.day.toString().padLeft(2, '0')}/${_selectedRange.end.month.toString().padLeft(2, '0')}/${_selectedRange.end.year}';
+    final startStr =
+        '${_selectedRange.start.day.toString().padLeft(2, '0')}/${_selectedRange.start.month.toString().padLeft(2, '0')}/${_selectedRange.start.year}';
+    final endStr =
+        '${_selectedRange.end.day.toString().padLeft(2, '0')}/${_selectedRange.end.month.toString().padLeft(2, '0')}/${_selectedRange.end.year}';
+
+    final isWide = Responsive.isWide(context);
+    final horizontalPadding = Responsive.getHorizontalPadding(context);
 
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: const CustomAppBar(title: 'التقارير المالية'),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            // Interactive Date Filter Box
-            GestureDetector(
-              onTap: () => _selectDateRange(context),
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                decoration: BoxDecoration(
-                  color: AppColors.surface,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppColors.primary),
-                  boxShadow: const [
-                    BoxShadow(color: AppColors.cardShadow, blurRadius: 4),
+        padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 16),
+        child: ResponsiveContainer(
+          maxWidth: 1200,
+          child: Column(
+            children: [
+              // Interactive Date Filter Box
+              GestureDetector(
+                onTap: () => _selectDateRange(context),
+                child: Container(
+                  constraints: const BoxConstraints(maxWidth: 400),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppColors.primary),
+                    boxShadow: const [
+                      BoxShadow(color: AppColors.cardShadow, blurRadius: 4),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.calendar_month, size: 18, color: AppColors.primary),
+                      const SizedBox(width: 8),
+                      Text(
+                        '$startStr - $endStr',
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primary,
+                          fontFamily: 'Cairo',
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      const Icon(Icons.arrow_drop_down, color: AppColors.primary),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Stat Cards (1 row of 4 on wide screen, 2 rows of 2 on mobile)
+              if (isWide)
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildReportCard(
+                        title: 'إجمالي المحصل',
+                        value: '23,600 \$',
+                        valueColor: AppColors.rented,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _buildReportCard(
+                        title: 'إجمالي المستحقات',
+                        value: '28,500 \$',
+                        valueColor: AppColors.primary,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _buildReportCard(
+                        title: 'نسبة التحصيل',
+                        value: '82%',
+                        valueColor: AppColors.gold,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _buildReportCard(
+                        title: 'المتأخرات',
+                        value: '4,900 \$',
+                        valueColor: AppColors.error,
+                      ),
+                    ),
+                  ],
+                )
+              else ...[
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildReportCard(
+                        title: 'إجمالي المحصل',
+                        value: '23,600 \$',
+                        valueColor: AppColors.rented,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _buildReportCard(
+                        title: 'إجمالي المستحقات',
+                        value: '28,500 \$',
+                        valueColor: AppColors.primary,
+                      ),
+                    ),
                   ],
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                const SizedBox(height: 12),
+                Row(
                   children: [
-                    const Icon(Icons.calendar_month, size: 18, color: AppColors.primary),
-                    const SizedBox(width: 8),
-                    Text(
-                      '$startStr - $endStr',
-                      style: const TextStyle(
-                        fontSize: 13,
+                    Expanded(
+                      child: _buildReportCard(
+                        title: 'نسبة التحصيل',
+                        value: '82%',
+                        valueColor: AppColors.gold,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _buildReportCard(
+                        title: 'المتأخرات',
+                        value: '4,900 \$',
+                        valueColor: AppColors.error,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+              const SizedBox(height: 20),
+
+              // Revenue chart card
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: AppColors.border),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'الإيرادات خلال الفترة المحددة',
+                      style: TextStyle(
+                        fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.primary,
+                        color: AppColors.textPrimary,
                         fontFamily: 'Cairo',
                       ),
                     ),
-                    const SizedBox(width: 6),
-                    const Icon(Icons.arrow_drop_down, color: AppColors.primary),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      height: isWide ? 220 : 150,
+                      child: Center(
+                        child: CustomPaint(
+                          size: Size(double.infinity, isWide ? 200 : 120),
+                          painter: MockChartPainter(),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
-            ),
-            const SizedBox(height: 16),
-
-            // Top Stat Cards
-            Row(
-              children: [
-                Expanded(
-                  child: _buildReportCard(
-                    title: 'إجمالي المحصل',
-                    value: '23,600 \$',
-                    valueColor: AppColors.rented,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildReportCard(
-                    title: 'إجمالي المستحقات',
-                    value: '28,500 \$',
-                    valueColor: AppColors.primary,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-
-            // Middle Stat Cards
-            Row(
-              children: [
-                Expanded(
-                  child: _buildReportCard(
-                    title: 'نسبة التحصيل',
-                    value: '82%',
-                    valueColor: AppColors.gold,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildReportCard(
-                    title: 'المتأخرات',
-                    value: '4,900 \$',
-                    valueColor: AppColors.error,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-
-            // Revenue chart card
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.border),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'الإيرادات خلال الفترة المحددة',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
-                      fontFamily: 'Cairo',
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    height: 150,
-                    child: Center(
-                      child: CustomPaint(
-                        size: const Size(double.infinity, 120),
-                        painter: MockChartPainter(),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -180,22 +226,29 @@ class _FinancialReportPageState extends State<FinancialReportPage> {
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.border),
+        boxShadow: const [
+          BoxShadow(
+            color: AppColors.cardShadow,
+            blurRadius: 6,
+            offset: Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         children: [
           Text(
             title,
             style: const TextStyle(
-              fontSize: 11,
+              fontSize: 12,
               color: AppColors.textSecondary,
               fontFamily: 'Cairo',
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 6),
           Text(
             value,
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               color: valueColor,
               fontFamily: 'Cairo',
@@ -212,7 +265,7 @@ class MockChartPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
       ..color = AppColors.gold
-      ..strokeWidth = 3
+      ..strokeWidth = 3.5
       ..style = PaintingStyle.stroke;
 
     final path = Path()

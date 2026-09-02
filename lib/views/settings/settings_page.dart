@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
+import '../../utils/responsive.dart';
 import '../../routes/routes.dart';
 import '../../widgets/auth/auth_text_field.dart';
 import '../../widgets/common/custom_app_bar.dart';
@@ -28,9 +29,12 @@ class _SettingsPageState extends State<SettingsPage> {
               fontSize: 16,
             ),
           ),
-          content: const Text(
-            'سيتم نسخ قاعدة بيانات العقارات والمستأجرين كاملة إلى حساب Google Drive الخاص بك.',
-            style: TextStyle(fontFamily: 'Cairo', fontSize: 13),
+          content: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 400),
+            child: const Text(
+              'سيتم نسخ قاعدة بيانات العقارات والمستأجرين كاملة إلى حساب Google Drive الخاص بك.',
+              style: TextStyle(fontFamily: 'Cairo', fontSize: 13),
+            ),
           ),
           actions: [
             TextButton(
@@ -82,28 +86,31 @@ class _SettingsPageState extends State<SettingsPage> {
               fontSize: 16,
             ),
           ),
-          content: SingleChildScrollView(
-            child: Form(
-              key: formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  AuthFormField(
-                    controller: oldPass,
-                    hintText: 'كلمة المرور الحالية',
-                    fieldType: AuthFieldType.password,
-                    obscureText: true,
-                    prefixIcon: Icons.lock_outline,
-                  ),
-                  const SizedBox(height: 12),
-                  AuthFormField(
-                    controller: newPass,
-                    hintText: 'كلمة المرور الجديدة',
-                    fieldType: AuthFieldType.password,
-                    obscureText: true,
-                    prefixIcon: Icons.lock_reset_outlined,
-                  ),
-                ],
+          content: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 420),
+            child: SingleChildScrollView(
+              child: Form(
+                key: formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AuthFormField(
+                      controller: oldPass,
+                      hintText: 'كلمة المرور الحالية',
+                      fieldType: AuthFieldType.password,
+                      obscureText: true,
+                      prefixIcon: Icons.lock_outline,
+                    ),
+                    const SizedBox(height: 12),
+                    AuthFormField(
+                      controller: newPass,
+                      hintText: 'كلمة المرور الجديدة',
+                      fieldType: AuthFieldType.password,
+                      obscureText: true,
+                      prefixIcon: Icons.lock_reset_outlined,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -140,111 +147,116 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final horizontalPadding = Responsive.getHorizontalPadding(context);
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: const CustomAppBar(title: 'الإعدادات'),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          _buildSettingsItem(
-            icon: Icons.cloud_upload_outlined,
-            title: 'النسخ الاحتياطي',
-            subtitle: 'Google Drive',
-            onTap: _showBackupDialog,
-          ),
-          _buildSettingsItem(
-            icon: Icons.currency_exchange,
-            title: 'العملة الافتراضية وإدارتها',
-            subtitle: 'دولار أمريكي - USD',
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.currencies);
-            },
-          ),
-          _buildSettingsItem(
-            icon: Icons.language_outlined,
-            title: 'اللغة الحالية',
-            subtitle: 'العربية (RTL)',
-            onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('التطبيق يدعم اللغة العربية بالكامل حالياً'),
-                  behavior: SnackBarBehavior.floating,
-                ),
-              );
-            },
-          ),
-          Container(
-            margin: const EdgeInsets.only(bottom: 12),
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.border),
+      body: ResponsiveContainer(
+        maxWidth: 850,
+        child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 16),
+          children: [
+            _buildSettingsItem(
+              icon: Icons.cloud_upload_outlined,
+              title: 'النسخ الاحتياطي',
+              subtitle: 'Google Drive',
+              onTap: _showBackupDialog,
             ),
-            child: SwitchListTile(
-              secondary: const Icon(
-                Icons.notifications_none_outlined,
-                color: AppColors.primary,
-              ),
-              title: const Text(
-                'التنبيهات والإشعارات',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Cairo',
-                  color: AppColors.textPrimary,
-                ),
-              ),
-              subtitle: const Text(
-                'تنبيهات الإيجارات المتأخرة والعقود',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontFamily: 'Cairo',
-                  color: AppColors.textSecondary,
-                ),
-              ),
-              value: _notificationsEnabled,
-              activeThumbColor: AppColors.gold,
-              onChanged: (val) => setState(() => _notificationsEnabled = val),
+            _buildSettingsItem(
+              icon: Icons.currency_exchange,
+              title: 'العملة الافتراضية وإدارتها',
+              subtitle: 'دولار أمريكي - USD',
+              onTap: () {
+                Navigator.pushNamed(context, AppRoutes.currencies);
+              },
             ),
-          ),
-          _buildSettingsItem(
-            icon: Icons.lock_outline,
-            title: 'تغيير كلمة المرور',
-            onTap: _showChangePasswordDialog,
-          ),
-          _buildSettingsItem(
-            icon: Icons.info_outline,
-            title: 'حول التطبيق',
-            subtitle: 'v1.0.0',
-            onTap: () {
-              showAboutDialog(
-                context: context,
-                applicationName: 'إمتلاك',
-                applicationVersion: '1.0.0',
-                applicationIcon: const Icon(
-                  Icons.home_work,
-                  color: AppColors.primary,
-                  size: 40,
-                ),
-                children: const [
-                  Text(
-                    'نظام احترافي لإدارة العقارات السكنية وتتبع الإيجارات.',
-                    style: TextStyle(fontFamily: 'Cairo'),
+            _buildSettingsItem(
+              icon: Icons.language_outlined,
+              title: 'اللغة الحالية',
+              subtitle: 'العربية (RTL)',
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('التطبيق يدعم اللغة العربية بالكامل حالياً'),
+                    behavior: SnackBarBehavior.floating,
                   ),
-                ],
-              );
-            },
-          ),
-          const SizedBox(height: 12),
-          _buildSettingsItem(
-            icon: Icons.logout,
-            title: 'تسجيل الخروج',
-            titleColor: AppColors.error,
-            onTap: () {
-              Navigator.pushReplacementNamed(context, AppRoutes.login);
-            },
-          ),
-        ],
+                );
+              },
+            ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 12),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.border),
+              ),
+              child: SwitchListTile(
+                secondary: const Icon(
+                  Icons.notifications_none_outlined,
+                  color: AppColors.primary,
+                ),
+                title: const Text(
+                  'التنبيهات والإشعارات',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Cairo',
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+                subtitle: const Text(
+                  'تنبيهات الإيجارات المتأخرة والعقود',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontFamily: 'Cairo',
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                value: _notificationsEnabled,
+                activeThumbColor: AppColors.gold,
+                onChanged: (val) => setState(() => _notificationsEnabled = val),
+              ),
+            ),
+            _buildSettingsItem(
+              icon: Icons.lock_outline,
+              title: 'تغيير كلمة المرور',
+              onTap: _showChangePasswordDialog,
+            ),
+            _buildSettingsItem(
+              icon: Icons.info_outline,
+              title: 'حول التطبيق',
+              subtitle: 'v1.0.0',
+              onTap: () {
+                showAboutDialog(
+                  context: context,
+                  applicationName: 'إمتلاك',
+                  applicationVersion: '1.0.0',
+                  applicationIcon: const Icon(
+                    Icons.home_work,
+                    color: AppColors.primary,
+                    size: 40,
+                  ),
+                  children: const [
+                    Text(
+                      'نظام احترافي لإدارة العقارات السكنية وتتبع الإيجارات.',
+                      style: TextStyle(fontFamily: 'Cairo'),
+                    ),
+                  ],
+                );
+              },
+            ),
+            const SizedBox(height: 12),
+            _buildSettingsItem(
+              icon: Icons.logout,
+              title: 'تسجيل الخروج',
+              titleColor: AppColors.error,
+              onTap: () {
+                Navigator.pushReplacementNamed(context, AppRoutes.login);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

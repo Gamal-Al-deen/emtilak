@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
+import '../../utils/responsive.dart';
 import '../../mockData/mock_data_service.dart';
 import '../../models/app_models.dart';
 import '../../routes/routes.dart';
@@ -52,73 +53,79 @@ class _PaymentsPageState extends State<PaymentsPage> {
   void _showPaymentDetailsModal(Payment p) {
     showModalBottomSheet(
       context: context,
+      backgroundColor: AppColors.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        return ResponsiveContainer(
+          maxWidth: 550,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'تفاصيل الدفعة',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primary,
-                      fontFamily: 'Cairo',
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'تفاصيل الدفعة',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primary,
+                          fontFamily: 'Cairo',
+                        ),
+                      ),
+                      StatusBadge(
+                        label: p.status,
+                        color: _getStatusColor(p.status),
+                      ),
+                    ],
                   ),
-                  StatusBadge(
-                    label: p.status,
-                    color: _getStatusColor(p.status),
+                  const Divider(height: 14, color: AppColors.divider),
+                  _buildRow('المستأجر', p.tenantName),
+                  _buildRow('العقد المرتبط', p.contractInfo),
+                  _buildRow(
+                    'المبلغ',
+                    '${p.amount.toInt()} ${p.currency}',
+                    color: AppColors.gold,
+                  ),
+                  _buildRow('تاريخ الدفع', p.paymentDate),
+                  _buildRow('طريقة الدفع', p.method),
+                  if (p.notes != null && p.notes!.isNotEmpty) ...[
+                    _buildRow('ملاحظات', p.notes!),
+                  ],
+                  const SizedBox(height: 14),
+                  ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      minimumSize: const Size.fromHeight(44),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('جاري تحميل وتصدير سند القبض PDF...'),
+                          behavior: SnackBarBehavior.floating,
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.print_outlined, size: 18),
+                    label: const Text(
+                      'طباعة / مشاركة سند القبض (PDF)',
+                      style: TextStyle(
+                        fontFamily: 'Cairo',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                      ),
+                    ),
                   ),
                 ],
               ),
-              const Divider(height: 20, color: AppColors.divider),
-              _buildRow('المستأجر', p.tenantName),
-              _buildRow('العقد المرتبط', p.contractInfo),
-              _buildRow(
-                'المبلغ',
-                '${p.amount.toInt()} ${p.currency}',
-                color: AppColors.gold,
-              ),
-              _buildRow('تاريخ الدفع', p.paymentDate),
-              _buildRow('طريقة الدفع', p.method),
-              if (p.notes != null && p.notes!.isNotEmpty) ...[
-                const SizedBox(height: 4),
-                _buildRow('ملاحظات', p.notes!),
-              ],
-              const SizedBox(height: 16),
-              ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  minimumSize: const Size.fromHeight(48),
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('جاري تحميل وتصدير سند القبض PDF...'),
-                      behavior: SnackBarBehavior.floating,
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.print_outlined),
-                label: const Text(
-                  'طباعة / مشاركة سند القبض (PDF)',
-                  style: TextStyle(
-                    fontFamily: 'Cairo',
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         );
       },
@@ -142,142 +149,206 @@ class _PaymentsPageState extends State<PaymentsPage> {
           .toList();
     }
 
+    final isWide = Responsive.isWide(context);
+    final horizontalPadding = Responsive.getHorizontalPadding(context);
+
+    // Responsive aspect ratio
+    final double gridAspectRatio;
+    if (Responsive.isLargeDesktop(context)) {
+      gridAspectRatio = 2.4;
+    } else if (Responsive.isDesktop(context)) {
+      gridAspectRatio = 2.2;
+    } else {
+      gridAspectRatio = 2.0; // Tablet
+    }
+
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: CustomSearchField(
-                    hintText: 'بحث عن دفعة...',
-                    onChanged: (val) {
-                      setState(() {
-                        _searchQuery = val.trim();
-                      });
-                    },
-                  ),
-                ),
-                const SizedBox(width: 10),
-                FloatingActionButton.small(
-                  backgroundColor: AppColors.gold,
-                  elevation: 2,
-                  onPressed: () {
-                    Navigator.pushNamed(context, AppRoutes.addPayment);
-                  },
-                  child: const Icon(Icons.add, color: AppColors.white),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-
-            // Tabs filter
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
+      body: ResponsiveContainer(
+        maxWidth: 1400,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 16),
+          child: Column(
+            children: [
+              // Search & Add Bar
+              Row(
                 children: [
-                  _buildFilterChip('الكل'),
-                  _buildFilterChip('مدفوع'),
-                  _buildFilterChip('متأخر'),
-                  _buildFilterChip('جزئي'),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            Expanded(
-              child: filteredPayments.isEmpty
-                  ? const Center(
-                      child: Text(
-                        'لا توجد دفعات مطابقة للفلتر',
-                        style: TextStyle(
-                          fontFamily: 'Cairo',
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                    )
-                  : ListView.builder(
-                      itemCount: filteredPayments.length,
-                      itemBuilder: (context, index) {
-                        final p = filteredPayments[index];
-                        return Container(
-                          margin: const EdgeInsets.only(bottom: 12),
-                          decoration: BoxDecoration(
-                            color: AppColors.surface,
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: AppColors.border),
-                          ),
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(16),
-                            onTap: () => _showPaymentDetailsModal(p),
-                            child: Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          p.tenantName,
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: AppColors.textPrimary,
-                                            fontFamily: 'Cairo',
-                                          ),
-                                        ),
-                                        Text(
-                                          p.contractInfo,
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            color: AppColors.textSecondary,
-                                            fontFamily: 'Cairo',
-                                          ),
-                                        ),
-                                        const SizedBox(height: 4),
-                                        Text(
-                                          p.paymentDate,
-                                          style: const TextStyle(
-                                            fontSize: 11,
-                                            color: AppColors.textLight,
-                                            fontFamily: 'Cairo',
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        '${p.amount.toInt()} ${p.currency}',
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: AppColors.primary,
-                                          fontFamily: 'Cairo',
-                                        ),
-                                      ),
-                                      const SizedBox(height: 6),
-                                      StatusBadge(
-                                        label: p.status,
-                                        color: _getStatusColor(p.status),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
+                  Expanded(
+                    child: CustomSearchField(
+                      hintText: 'بحث عن دفعة...',
+                      onChanged: (val) {
+                        setState(() {
+                          _searchQuery = val.trim();
+                        });
                       },
                     ),
-            ),
-          ],
+                  ),
+                  const SizedBox(width: 12),
+                  FloatingActionButton.small(
+                    backgroundColor: AppColors.gold,
+                    elevation: 2,
+                    onPressed: () {
+                      Navigator.pushNamed(context, AppRoutes.addPayment);
+                    },
+                    child: const Icon(Icons.add, color: AppColors.white),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+
+              // Filter Chips
+              Align(
+                alignment: Alignment.centerRight,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      _buildFilterChip('الكل'),
+                      _buildFilterChip('مدفوع'),
+                      _buildFilterChip('متأخر'),
+                      _buildFilterChip('جزئي'),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // List on Mobile, Responsive Grid on Wide Screens
+              Expanded(
+                child: filteredPayments.isEmpty
+                    ? const Center(
+                        child: Text(
+                          'لا توجد دفعات مطابقة للفلتر',
+                          style: TextStyle(
+                            fontFamily: 'Cairo',
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                      )
+                    : isWide
+                        ? GridView.builder(
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: Responsive.isDesktop(context) ||
+                                      Responsive.isLargeDesktop(context)
+                                  ? 3
+                                  : 2,
+                              crossAxisSpacing: 16,
+                              mainAxisSpacing: 16,
+                              childAspectRatio: gridAspectRatio,
+                            ),
+                            itemCount: filteredPayments.length,
+                            itemBuilder: (context, index) {
+                              return _buildPaymentCard(
+                                context,
+                                filteredPayments[index],
+                              );
+                            },
+                          )
+                        : ListView.builder(
+                            itemCount: filteredPayments.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 12),
+                                child: _buildPaymentCard(
+                                  context,
+                                  filteredPayments[index],
+                                ),
+                              );
+                            },
+                          ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPaymentCard(BuildContext context, Payment p) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.border),
+        boxShadow: const [
+          BoxShadow(
+            color: AppColors.cardShadow,
+            blurRadius: 6,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: () => _showPaymentDetailsModal(p),
+        child: Padding(
+          padding: const EdgeInsets.all(14),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      p.tenantName,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textPrimary,
+                        fontFamily: 'Cairo',
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      p.contractInfo,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppColors.textSecondary,
+                        fontFamily: 'Cairo',
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      p.paymentDate,
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: AppColors.textLight,
+                        fontFamily: 'Cairo',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      '${p.amount.toInt()} ${p.currency}',
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primary,
+                        fontFamily: 'Cairo',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  StatusBadge(
+                    label: p.status,
+                    color: _getStatusColor(p.status),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
