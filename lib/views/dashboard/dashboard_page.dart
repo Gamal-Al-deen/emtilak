@@ -1,14 +1,46 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
+import '../../mockData/mock_data_service.dart';
 import '../../routes/routes.dart';
 import '../../widgets/dashboard/stat_card.dart';
 import '../../widgets/dashboard/collection_chart.dart';
 
-class DashboardPage extends StatelessWidget {
+class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
 
   @override
+  State<DashboardPage> createState() => _DashboardPageState();
+}
+
+class _DashboardPageState extends State<DashboardPage> {
+  final MockDataService _dataService = MockDataService.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _dataService.addListener(_onDataChanged);
+  }
+
+  @override
+  void dispose() {
+    _dataService.removeListener(_onDataChanged);
+    super.dispose();
+  }
+
+  void _onDataChanged() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final buildingsCount = _dataService.totalBuildingsCount;
+    final unitsCount = _dataService.totalUnitsCount;
+    final rentedCount = _dataService.rentedUnitsCount;
+    final vacantCount = _dataService.vacantUnitsCount;
+    final totalIncome = _dataService.totalIncomeCollected;
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -62,7 +94,11 @@ class DashboardPage extends StatelessWidget {
                     const CircleAvatar(
                       radius: 24,
                       backgroundColor: AppColors.white24,
-                      child: Icon(Icons.person, color: AppColors.white, size: 28),
+                      child: Icon(
+                        Icons.person,
+                        color: AppColors.white,
+                        size: 28,
+                      ),
                     ),
                   ],
                 ),
@@ -75,48 +111,48 @@ class DashboardPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(14),
                   ),
                   child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          'إجمالي التدفق',
-                          style: TextStyle(
-                            color: AppColors.white70,
-                            fontSize: 11,
-                            fontFamily: 'Cairo',
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'إجمالي التدفق المحصل',
+                            style: TextStyle(
+                              color: AppColors.white70,
+                              fontSize: 11,
+                              fontFamily: 'Cairo',
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 2),
-                        Text(
-                          '125,000 \$',
-                          style: TextStyle(
-                            color: AppColors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Cairo',
+                          const SizedBox(height: 2),
+                          Text(
+                            '${totalIncome.toInt()} \$',
+                            style: const TextStyle(
+                              color: AppColors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Cairo',
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 2),
-                        Text(
-                          '12.5%+ عن الشهر الماضي',
-                          style: TextStyle(
-                            color: AppColors.gold,
-                            fontSize: 10,
-                            fontFamily: 'Cairo',
+                          const SizedBox(height: 2),
+                          const Text(
+                            '12.5%+ عن الشهر الماضي',
+                            style: TextStyle(
+                              color: AppColors.gold,
+                              fontSize: 10,
+                              fontFamily: 'Cairo',
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const Icon(
-                      Icons.show_chart,
-                      color: AppColors.gold,
-                      size: 48,
-                    ),
-                  ],
+                        ],
+                      ),
+                      const Icon(
+                        Icons.show_chart,
+                        color: AppColors.gold,
+                        size: 48,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
               ],
             ),
           ),
@@ -130,28 +166,28 @@ class DashboardPage extends StatelessWidget {
             crossAxisSpacing: 12,
             mainAxisSpacing: 12,
             childAspectRatio: 1.5,
-            children: const [
+            children: [
               StatCard(
                 title: 'المباني',
-                value: '5',
+                value: '$buildingsCount',
                 icon: Icons.apartment,
                 iconColor: AppColors.gold,
               ),
               StatCard(
                 title: 'الوحدات',
-                value: '120',
+                value: '$unitsCount',
                 icon: Icons.grid_view_rounded,
                 iconColor: AppColors.primary,
               ),
               StatCard(
                 title: 'المؤجرة',
-                value: '95',
+                value: '$rentedCount',
                 icon: Icons.key,
                 iconColor: AppColors.rented,
               ),
               StatCard(
                 title: 'الفارغة',
-                value: '25',
+                value: '$vacantCount',
                 icon: Icons.home_outlined,
                 iconColor: AppColors.vacant,
               ),

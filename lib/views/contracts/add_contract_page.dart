@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/colors.dart';
+import '../../mockData/mock_data_service.dart';
 import '../../widgets/auth/auth_text_field.dart';
 import '../../widgets/common/custom_app_bar.dart';
 
@@ -12,28 +13,27 @@ class AddContractPage extends StatefulWidget {
 }
 
 class _AddContractPageState extends State<AddContractPage> {
+  final MockDataService _dataService = MockDataService.instance;
   final _formKey = GlobalKey<FormState>();
   final _rentController = TextEditingController();
   final _notesController = TextEditingController();
   DateTime? _startDate;
   DateTime? _endDate;
-  String? _selectedTenant = 'محمد أحمد';
-  String? _selectedUnit = 'A101 - عمارة القدس';
+  String? _selectedTenant;
+  String? _selectedUnit;
   String? _selectedCurrency = 'USD';
 
-  final List<String> _tenants = [
-    'محمد أحمد',
-    'أحمد علي',
-    'عبدالله حسين',
-    'يوسف محمد',
-  ];
-  final List<String> _units = [
-    'A101 - عمارة القدس',
-    'A102 - عمارة القدس',
-    'B101 - عمارة النور',
-    'B103 - عمارة الريان',
-  ];
-  final List<String> _currencies = ['USD', 'SAR', 'YER'];
+  @override
+  void initState() {
+    super.initState();
+    if (_dataService.tenants.isNotEmpty) {
+      _selectedTenant = _dataService.tenants.first.name;
+    }
+    if (_dataService.units.isNotEmpty) {
+      _selectedUnit =
+          '${_dataService.units.first.number} - ${_dataService.units.first.buildingName}';
+    }
+  }
 
   @override
   void dispose() {
@@ -73,6 +73,12 @@ class _AddContractPageState extends State<AddContractPage> {
 
   @override
   Widget build(BuildContext context) {
+    final tenantOptions = _dataService.tenants.map((t) => t.name).toList();
+    final unitOptions = _dataService.units
+        .map((u) => '${u.number} - ${u.buildingName}')
+        .toList();
+    final currencyOptions = _dataService.currencies.map((c) => c.code).toList();
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: const CustomAppBar(title: 'إنشاء عقد جديد'),
@@ -89,7 +95,9 @@ class _AddContractPageState extends State<AddContractPage> {
               label: 'المستأجر',
               hint: 'اختر المستأجر',
               value: _selectedTenant,
-              items: _tenants,
+              items: tenantOptions.isNotEmpty
+                  ? tenantOptions
+                  : ['مستأجر افتراضي'],
               onChanged: (v) => setState(() => _selectedTenant = v),
               icon: Icons.person_outline,
             ),
@@ -100,7 +108,7 @@ class _AddContractPageState extends State<AddContractPage> {
               label: 'الوحدة',
               hint: 'اختر الوحدة',
               value: _selectedUnit,
-              items: _units,
+              items: unitOptions.isNotEmpty ? unitOptions : ['وحدة افتراضية'],
               onChanged: (v) => setState(() => _selectedUnit = v),
               icon: Icons.home_outlined,
             ),
@@ -118,6 +126,8 @@ class _AddContractPageState extends State<AddContractPage> {
                     keyboardType: TextInputType.number,
                     fieldType: AuthFieldType.number,
                     icon: Icons.attach_money,
+                    validator: (v) =>
+                        v == null || v.isEmpty ? 'أدخل قيمة الإيجار' : null,
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -127,7 +137,9 @@ class _AddContractPageState extends State<AddContractPage> {
                     label: 'العملة',
                     hint: 'العملة',
                     value: _selectedCurrency,
-                    items: _currencies,
+                    items: currencyOptions.isNotEmpty
+                        ? currencyOptions
+                        : ['USD', 'SAR', 'YER'],
                     onChanged: (v) => setState(() => _selectedCurrency = v),
                     icon: Icons.currency_exchange,
                   ),
@@ -176,9 +188,34 @@ class _AddContractPageState extends State<AddContractPage> {
               ),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
+                  final rent =
+                      double.tryParse(_rentController.text.trim()) ?? 0.0;
+                  final startFormatted = _startDate != null
+                      ? '${_startDate!.year}/${_startDate!.month.toString().padLeft(2, '0')}/${_startDate!.day.toString().padLeft(2, '0')}'
+                      : '2024/05/01';
+                  final endFormatted = _endDate != null
+                      ? '${_endDate!.year}/${_endDate!.month.toString().padLeft(2, '0')}/${_endDate!.day.toString().padLeft(2, '0')}'
+                      : '2025/05/01';
+
+                  final selectedUnitStr = _selectedUnit ?? 'A101';
+                  final bName = selectedUnitStr.contains('-')
+                      ? selectedUnitStr.split('-').last.trim()
+                      : 'عمارة عامة';
+
+                  _dataService.addContract(
+                    tenantName: _selectedTenant ?? 'مستأجر عام',
+                    unitName: selectedUnitStr,
+                    buildingName: bName,
+                    monthlyRent: rent,
+                    currency: _selectedCurrency ?? 'USD',
+                    startDate: startFormatted,
+                    endDate: endFormatted,
+                    notes: _notesController.text.trim(),
+                  );
+
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('تم إنشاء العقد بنجاح!'),
+                      content: Text('تم إنشاء وحفظ العقد بنجاح!'),
                       backgroundColor: AppColors.success,
                       behavior: SnackBarBehavior.floating,
                     ),
@@ -218,6 +255,10 @@ class _AddContractPageState extends State<AddContractPage> {
     required ValueChanged<String?> onChanged,
     required IconData icon,
   }) {
+    final validValue = items.contains(value)
+        ? value
+        : (items.isNotEmpty ? items.first : null);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -237,7 +278,7 @@ class _AddContractPageState extends State<AddContractPage> {
             border: Border.all(color: AppColors.border),
           ),
           child: DropdownButtonFormField<String>(
-            initialValue: value,
+            initialValue: validValue,
             hint: Text(
               hint,
               style: const TextStyle(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
+import '../../mockData/mock_data_service.dart';
+import '../../models/app_models.dart';
 import '../../routes/routes.dart';
 import '../../widgets/common/custom_search_field.dart';
 import '../../widgets/common/status_badge.dart';
@@ -12,51 +14,47 @@ class PaymentsPage extends StatefulWidget {
 }
 
 class _PaymentsPageState extends State<PaymentsPage> {
+  final MockDataService _dataService = MockDataService.instance;
   String _selectedFilter = 'الكل';
+  String _searchQuery = '';
 
-  final List<Map<String, dynamic>> allPayments = [
-    {
-      'tenant': 'محمد أحمد',
-      'contract': '#105 - A102',
-      'amount': '500 \$',
-      'date': '2024/05/01',
-      'status': 'مدفوع',
-      'statusColor': AppColors.success,
-      'method': 'نقداً (Cash)',
-    },
-    {
-      'tenant': 'أحمد علي',
-      'contract': '#104 - B101',
-      'amount': '250 \$',
-      'date': '2024/05/01',
-      'status': 'جزئي',
-      'statusColor': AppColors.warning,
-      'method': 'تحويل بنكي',
-    },
-    {
-      'tenant': 'عبدالله حسين',
-      'contract': '#103 - A101',
-      'amount': '500 \$',
-      'date': '2024/04/30',
-      'status': 'متأخر',
-      'statusColor': AppColors.error,
-      'method': 'غير مدفوع بعد',
-    },
-    {
-      'tenant': 'يوسف محمد',
-      'contract': '#102 - B103',
-      'amount': '450 \$',
-      'date': '2024/05/01',
-      'status': 'مدفوع',
-      'statusColor': AppColors.success,
-      'method': 'نقداً (Cash)',
-    },
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _dataService.addListener(_onDataChanged);
+  }
 
-  void _showPaymentDetailsModal(Map<String, dynamic> p) {
+  @override
+  void dispose() {
+    _dataService.removeListener(_onDataChanged);
+    super.dispose();
+  }
+
+  void _onDataChanged() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  Color _getStatusColor(String status) {
+    switch (status) {
+      case 'مدفوع':
+        return AppColors.success;
+      case 'جزئي':
+        return AppColors.warning;
+      case 'متأخر':
+        return AppColors.error;
+      default:
+        return AppColors.textSecondary;
+    }
+  }
+
+  void _showPaymentDetailsModal(Payment p) {
     showModalBottomSheet(
       context: context,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       builder: (context) {
         return Padding(
           padding: const EdgeInsets.all(20),
@@ -67,27 +65,58 @@ class _PaymentsPageState extends State<PaymentsPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('تفاصيل الدفعة', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.primary, fontFamily: 'Cairo')),
-                  StatusBadge(label: p['status'] as String, color: p['statusColor'] as Color),
+                  const Text(
+                    'تفاصيل الدفعة',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primary,
+                      fontFamily: 'Cairo',
+                    ),
+                  ),
+                  StatusBadge(
+                    label: p.status,
+                    color: _getStatusColor(p.status),
+                  ),
                 ],
               ),
               const Divider(height: 20, color: AppColors.divider),
-              _buildRow('المستأجر', p['tenant'] as String),
-              _buildRow('العقد المرتبط', p['contract'] as String),
-              _buildRow('المبلغ', p['amount'] as String, color: AppColors.gold),
-              _buildRow('تاريخ الدفع', p['date'] as String),
-              _buildRow('طريقة الدفع', p['method'] as String),
+              _buildRow('المستأجر', p.tenantName),
+              _buildRow('العقد المرتبط', p.contractInfo),
+              _buildRow(
+                'المبلغ',
+                '${p.amount.toInt()} ${p.currency}',
+                color: AppColors.gold,
+              ),
+              _buildRow('تاريخ الدفع', p.paymentDate),
+              _buildRow('طريقة الدفع', p.method),
+              if (p.notes != null && p.notes!.isNotEmpty) ...[
+                const SizedBox(height: 4),
+                _buildRow('ملاحظات', p.notes!),
+              ],
               const SizedBox(height: 16),
               ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary, minimumSize: const Size.fromHeight(48)),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  minimumSize: const Size.fromHeight(48),
+                ),
                 onPressed: () {
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('جاري تحميل وتصدير سند القبض PDF...'), behavior: SnackBarBehavior.floating),
+                    const SnackBar(
+                      content: Text('جاري تحميل وتصدير سند القبض PDF...'),
+                      behavior: SnackBarBehavior.floating,
+                    ),
                   );
                 },
                 icon: const Icon(Icons.print_outlined),
-                label: const Text('طباعة / مشاركة سند القبض (PDF)', style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold)),
+                label: const Text(
+                  'طباعة / مشاركة سند القبض (PDF)',
+                  style: TextStyle(
+                    fontFamily: 'Cairo',
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ],
           ),
@@ -98,9 +127,20 @@ class _PaymentsPageState extends State<PaymentsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final filteredPayments = _selectedFilter == 'الكل'
+    final allPayments = _dataService.payments;
+    var filteredPayments = _selectedFilter == 'الكل'
         ? allPayments
-        : allPayments.where((p) => p['status'] == _selectedFilter).toList();
+        : allPayments.where((p) => p.status == _selectedFilter).toList();
+
+    if (_searchQuery.isNotEmpty) {
+      filteredPayments = filteredPayments
+          .where(
+            (p) =>
+                p.tenantName.contains(_searchQuery) ||
+                p.contractInfo.contains(_searchQuery),
+          )
+          .toList();
+    }
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -110,8 +150,15 @@ class _PaymentsPageState extends State<PaymentsPage> {
           children: [
             Row(
               children: [
-                const Expanded(
-                  child: CustomSearchField(hintText: 'بحث عن دفعة...'),
+                Expanded(
+                  child: CustomSearchField(
+                    hintText: 'بحث عن دفعة...',
+                    onChanged: (val) {
+                      setState(() {
+                        _searchQuery = val.trim();
+                      });
+                    },
+                  ),
                 ),
                 const SizedBox(width: 10),
                 FloatingActionButton.small(
@@ -143,7 +190,13 @@ class _PaymentsPageState extends State<PaymentsPage> {
             Expanded(
               child: filteredPayments.isEmpty
                   ? const Center(
-                      child: Text('لا توجد دفعات مطابقة للفلتر', style: TextStyle(fontFamily: 'Cairo', color: AppColors.textSecondary)),
+                      child: Text(
+                        'لا توجد دفعات مطابقة للفلتر',
+                        style: TextStyle(
+                          fontFamily: 'Cairo',
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
                     )
                   : ListView.builder(
                       itemCount: filteredPayments.length,
@@ -165,10 +218,11 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                 children: [
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          p['tenant'] as String,
+                                          p.tenantName,
                                           style: const TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold,
@@ -177,7 +231,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                           ),
                                         ),
                                         Text(
-                                          p['contract'] as String,
+                                          p.contractInfo,
                                           style: const TextStyle(
                                             fontSize: 12,
                                             color: AppColors.textSecondary,
@@ -186,7 +240,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                         ),
                                         const SizedBox(height: 4),
                                         Text(
-                                          p['date'] as String,
+                                          p.paymentDate,
                                           style: const TextStyle(
                                             fontSize: 11,
                                             color: AppColors.textLight,
@@ -200,7 +254,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       Text(
-                                        p['amount'] as String,
+                                        '${p.amount.toInt()} ${p.currency}',
                                         style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
@@ -210,8 +264,8 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                       ),
                                       const SizedBox(height: 6),
                                       StatusBadge(
-                                        label: p['status'] as String,
-                                        color: p['statusColor'] as Color,
+                                        label: p.status,
+                                        color: _getStatusColor(p.status),
                                       ),
                                     ],
                                   ),
@@ -239,7 +293,9 @@ class _PaymentsPageState extends State<PaymentsPage> {
         decoration: BoxDecoration(
           color: isSelected ? AppColors.primary : AppColors.surface,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: isSelected ? AppColors.primary : AppColors.border),
+          border: Border.all(
+            color: isSelected ? AppColors.primary : AppColors.border,
+          ),
         ),
         child: Text(
           label,
@@ -260,8 +316,23 @@ class _PaymentsPageState extends State<PaymentsPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: const TextStyle(color: AppColors.textSecondary, fontSize: 13, fontFamily: 'Cairo')),
-          Text(value, style: TextStyle(color: color ?? AppColors.textPrimary, fontWeight: FontWeight.bold, fontSize: 13, fontFamily: 'Cairo')),
+          Text(
+            label,
+            style: const TextStyle(
+              color: AppColors.textSecondary,
+              fontSize: 13,
+              fontFamily: 'Cairo',
+            ),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              color: color ?? AppColors.textPrimary,
+              fontWeight: FontWeight.bold,
+              fontSize: 13,
+              fontFamily: 'Cairo',
+            ),
+          ),
         ],
       ),
     );

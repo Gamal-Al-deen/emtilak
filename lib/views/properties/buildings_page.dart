@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
+import '../../mockData/mock_data_service.dart';
 import '../../routes/routes.dart';
 import '../../widgets/auth/auth_text_field.dart';
 import '../../widgets/common/custom_search_field.dart';
@@ -12,29 +13,26 @@ class BuildingsPage extends StatefulWidget {
 }
 
 class _BuildingsPageState extends State<BuildingsPage> {
-  final List<Map<String, String>> buildings = [
-    {
-      'name': 'عمارة القدس',
-      'location': 'صنعاء - حدة',
-      'total': '15',
-      'rented': '12',
-      'vacant': '3',
-    },
-    {
-      'name': 'عمارة النور',
-      'location': 'صنعاء - الجامعة',
-      'total': '10',
-      'rented': '8',
-      'vacant': '2',
-    },
-    {
-      'name': 'عمارة الريان',
-      'location': 'صنعاء - بيت بوس',
-      'total': '8',
-      'rented': '6',
-      'vacant': '2',
-    },
-  ];
+  final MockDataService _dataService = MockDataService.instance;
+  String _searchQuery = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _dataService.addListener(_onDataChanged);
+  }
+
+  @override
+  void dispose() {
+    _dataService.removeListener(_onDataChanged);
+    super.dispose();
+  }
+
+  void _onDataChanged() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
 
   void _showAddBuildingDialog() {
     final formKey = GlobalKey<FormState>();
@@ -47,7 +45,14 @@ class _BuildingsPageState extends State<BuildingsPage> {
       builder: (context) {
         return AlertDialog(
           backgroundColor: AppColors.surface,
-          title: const Text('إضافة مبنى جديد', style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold, fontSize: 16)),
+          title: const Text(
+            'إضافة مبنى جديد',
+            style: TextStyle(
+              fontFamily: 'Cairo',
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
           content: SingleChildScrollView(
             child: Form(
               key: formKey,
@@ -81,22 +86,31 @@ class _BuildingsPageState extends State<BuildingsPage> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('إلغاء', style: TextStyle(fontFamily: 'Cairo', color: AppColors.textSecondary)),
+              child: const Text(
+                'إلغاء',
+                style: TextStyle(
+                  fontFamily: 'Cairo',
+                  color: AppColors.textSecondary,
+                ),
+              ),
             ),
             ElevatedButton(
               onPressed: () {
                 if (formKey.currentState!.validate()) {
-                  final totalStr = totalCtrl.text.trim();
-                  setState(() {
-                    buildings.add({
-                      'name': nameCtrl.text.trim(),
-                      'location': locCtrl.text.trim(),
-                      'total': totalStr,
-                      'rented': '0',
-                      'vacant': totalStr,
-                    });
-                  });
+                  final totalInt = int.tryParse(totalCtrl.text.trim()) ?? 1;
+                  _dataService.addBuilding(
+                    name: nameCtrl.text.trim(),
+                    location: locCtrl.text.trim(),
+                    totalUnits: totalInt,
+                  );
                   Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('تم إضافة المبنى بنجاح!'),
+                      backgroundColor: AppColors.success,
+                      behavior: SnackBarBehavior.floating,
+                    ),
+                  );
                 }
               },
               child: const Text('إضافة'),
@@ -109,6 +123,17 @@ class _BuildingsPageState extends State<BuildingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final allBuildings = _dataService.buildings;
+    final filteredBuildings = _searchQuery.isEmpty
+        ? allBuildings
+        : allBuildings
+              .where(
+                (b) =>
+                    b.name.contains(_searchQuery) ||
+                    b.location.contains(_searchQuery),
+              )
+              .toList();
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Padding(
@@ -117,8 +142,15 @@ class _BuildingsPageState extends State<BuildingsPage> {
           children: [
             Row(
               children: [
-                const Expanded(
-                  child: CustomSearchField(hintText: 'بحث عن مبنى...'),
+                Expanded(
+                  child: CustomSearchField(
+                    hintText: 'بحث عن مبنى...',
+                    onChanged: (val) {
+                      setState(() {
+                        _searchQuery = val.trim();
+                      });
+                    },
+                  ),
                 ),
                 const SizedBox(width: 10),
                 FloatingActionButton.small(
@@ -131,88 +163,129 @@ class _BuildingsPageState extends State<BuildingsPage> {
             ),
             const SizedBox(height: 16),
             Expanded(
-              child: ListView.builder(
-                itemCount: buildings.length,
-                itemBuilder: (context, index) {
-                  final b = buildings[index];
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 16),
-                    decoration: BoxDecoration(
-                      color: AppColors.surface,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: AppColors.border),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: AppColors.cardShadow,
-                          blurRadius: 8,
-                          offset: Offset(0, 2),
+              child: filteredBuildings.isEmpty
+                  ? const Center(
+                      child: Text(
+                        'لا توجد مباني مطابقة للبحث',
+                        style: TextStyle(
+                          fontFamily: 'Cairo',
+                          color: AppColors.textSecondary,
                         ),
-                      ],
-                    ),
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(16),
-                      onTap: () {
-                        // Pass building name in arguments so the units grid reflects the selected building correctly!
-                        Navigator.pushNamed(context, AppRoutes.unitsGrid, arguments: b['name']);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 70,
-                              height: 70,
-                              decoration: BoxDecoration(
-                                color: AppColors.primary.withValues(alpha: 0.08),
-                                borderRadius: BorderRadius.circular(12),
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: filteredBuildings.length,
+                      itemBuilder: (context, index) {
+                        final b = filteredBuildings[index];
+                        final buildingUnits = _dataService.getUnitsForBuilding(
+                          b.name,
+                        );
+                        final total = buildingUnits.isNotEmpty
+                            ? buildingUnits.length
+                            : b.totalUnits;
+                        final rented = buildingUnits
+                            .where((u) => u.status == 'مؤجرة')
+                            .length;
+                        final vacant = buildingUnits
+                            .where((u) => u.status == 'فارغة')
+                            .length;
+
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 16),
+                          decoration: BoxDecoration(
+                            color: AppColors.surface,
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: AppColors.border),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: AppColors.cardShadow,
+                                blurRadius: 8,
+                                offset: Offset(0, 2),
                               ),
-                              child: const Icon(
-                                Icons.apartment_rounded,
-                                color: AppColors.primary,
-                                size: 40,
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                            ],
+                          ),
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(16),
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                AppRoutes.unitsGrid,
+                                arguments: b.name,
+                              );
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Row(
                                 children: [
-                                  Text(
-                                    b['name']!,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: AppColors.textPrimary,
-                                      fontFamily: 'Cairo',
+                                  Container(
+                                    width: 70,
+                                    height: 70,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.primary.withValues(
+                                        alpha: 0.08,
+                                      ),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: const Icon(
+                                      Icons.apartment_rounded,
+                                      color: AppColors.primary,
+                                      size: 40,
                                     ),
                                   ),
-                                  Text(
-                                    b['location']!,
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      color: AppColors.textSecondary,
-                                      fontFamily: 'Cairo',
+                                  const SizedBox(width: 16),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          b.name,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: AppColors.textPrimary,
+                                            fontFamily: 'Cairo',
+                                          ),
+                                        ),
+                                        Text(
+                                          b.location,
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            color: AppColors.textSecondary,
+                                            fontFamily: 'Cairo',
+                                          ),
+                                        ),
+                                        const SizedBox(height: 12),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            _buildInfoItem(
+                                              '$total',
+                                              'إجمالي الوحدات',
+                                            ),
+                                            _buildInfoItem(
+                                              '$rented',
+                                              'مؤجرة',
+                                              color: AppColors.rented,
+                                            ),
+                                            _buildInfoItem(
+                                              '$vacant',
+                                              'فارغة',
+                                              color: AppColors.vacant,
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                  const SizedBox(height: 12),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      _buildInfoItem(b['total']!, 'إجمالي الوحدات'),
-                                      _buildInfoItem(b['rented']!, 'مؤجرة', color: AppColors.rented),
-                                      _buildInfoItem(b['vacant']!, 'فارغة', color: AppColors.vacant),
-                                    ],
                                   ),
                                 ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
             ),
           ],
         ),
