@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
+import '../../mockData/mock_data_service.dart';
 import '../../widgets/common/custom_app_bar.dart';
 
 class AddPaymentPage extends StatefulWidget {
@@ -10,26 +11,28 @@ class AddPaymentPage extends StatefulWidget {
 }
 
 class _AddPaymentPageState extends State<AddPaymentPage> {
+  final MockDataService _dataService = MockDataService.instance;
   final _formKey = GlobalKey<FormState>();
   final _amountController = TextEditingController();
   final _notesController = TextEditingController();
   DateTime _paymentDate = DateTime.now();
-  String? _selectedTenant = 'محمد أحمد';
-  String? _selectedContract = 'عقد #105 (A102)';
+  String? _selectedTenant;
+  String? _selectedContract;
   String _selectedCurrency = 'USD';
-  String _paymentMethod = 'cash';
+  String _paymentMethod = 'نقداً (Cash)';
 
-  final List<String> _tenants = [
-    'محمد أحمد',
-    'أحمد علي',
-    'عبدالله حسين',
-    'يوسف محمد',
-  ];
-  final List<String> _contracts = [
-    'عقد #105 (A102)',
-    'عقد #104 (B101)',
-    'عقد #103 (A101)',
-  ];
+  @override
+  void initState() {
+    super.initState();
+    if (_dataService.tenants.isNotEmpty) {
+      _selectedTenant = _dataService.tenants.first.name;
+    }
+    if (_dataService.contracts.isNotEmpty) {
+      final c = _dataService.contracts.first;
+      _selectedContract = 'عقد #${c.id} (${c.unitName})';
+      _amountController.text = c.monthlyRent.toInt().toString();
+    }
+  }
 
   @override
   void dispose() {
@@ -63,6 +66,12 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
 
   @override
   Widget build(BuildContext context) {
+    final tenantOptions = _dataService.tenants.map((t) => t.name).toList();
+    final contractOptions = _dataService.contracts
+        .map((c) => 'عقد #${c.id} (${c.unitName})')
+        .toList();
+    final currencyOptions = _dataService.currencies.map((c) => c.code).toList();
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: const CustomAppBar(title: 'تسجيل دفعة جديدة'),
@@ -87,7 +96,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
               label: 'المستأجر',
               hint: 'اختر المستأجر',
               value: _selectedTenant,
-              items: _tenants,
+              items: tenantOptions.isNotEmpty ? tenantOptions : ['مستأجر عام'],
               onChanged: (v) => setState(() => _selectedTenant = v),
               icon: Icons.person_outline,
             ),
@@ -98,7 +107,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
               label: 'العقد المرتبط',
               hint: 'اختر العقد',
               value: _selectedContract,
-              items: _contracts,
+              items: contractOptions.isNotEmpty ? contractOptions : ['عقد عام'],
               onChanged: (v) => setState(() => _selectedContract = v),
               icon: Icons.assignment_outlined,
             ),
@@ -175,7 +184,9 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                     label: 'العملة',
                     hint: 'العملة',
                     value: _selectedCurrency,
-                    items: const ['USD', 'SAR', 'YER'],
+                    items: currencyOptions.isNotEmpty
+                        ? currencyOptions
+                        : ['USD', 'SAR', 'YER'],
                     onChanged: (v) => setState(() => _selectedCurrency = v!),
                     icon: Icons.currency_exchange,
                   ),
@@ -249,11 +260,11 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
                 const SizedBox(height: 6),
                 Row(
                   children: [
-                    _buildMethodChip('نقداً (Cash)', 'cash'),
+                    _buildMethodChip('نقداً (Cash)'),
                     const SizedBox(width: 8),
-                    _buildMethodChip('تحويل بنكي', 'bank'),
+                    _buildMethodChip('تحويل بنكي'),
                     const SizedBox(width: 8),
-                    _buildMethodChip('شيك', 'cheque'),
+                    _buildMethodChip('شيك'),
                   ],
                 ),
               ],
@@ -313,9 +324,27 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
               ),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
+                  final amount =
+                      double.tryParse(_amountController.text.trim()) ?? 0.0;
+                  final dateFormatted =
+                      '${_paymentDate.year}/${_paymentDate.month.toString().padLeft(2, '0')}/${_paymentDate.day.toString().padLeft(2, '0')}';
+
+                  _dataService.addPayment(
+                    tenantName: _selectedTenant ?? 'مستأجر عام',
+                    contractInfo: _selectedContract ?? 'عقد عام',
+                    amount: amount,
+                    currency: _selectedCurrency == 'USD'
+                        ? '\$'
+                        : _selectedCurrency,
+                    paymentDate: dateFormatted,
+                    status: 'مدفوع',
+                    method: _paymentMethod,
+                    notes: _notesController.text.trim(),
+                  );
+
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('تم تسجيل الدفعة وإصدار سند القبض بنجاح!'),
+                      content: Text('تم تسجيل الدفعة وحفظها بنجاح!'),
                       backgroundColor: AppColors.success,
                       behavior: SnackBarBehavior.floating,
                     ),
@@ -347,6 +376,10 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
     required ValueChanged<String?> onChanged,
     required IconData icon,
   }) {
+    final validValue = items.contains(value)
+        ? value
+        : (items.isNotEmpty ? items.first : null);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -366,7 +399,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
             border: Border.all(color: AppColors.border),
           ),
           child: DropdownButtonFormField<String>(
-            initialValue: value,
+            initialValue: validValue,
             hint: Text(
               hint,
               style: const TextStyle(
@@ -400,8 +433,8 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
     );
   }
 
-  Widget _buildMethodChip(String label, String value) {
-    final isSelected = _paymentMethod == value;
+  Widget _buildMethodChip(String label) {
+    final isSelected = _paymentMethod == label;
     return ChoiceChip(
       label: Text(
         label,
@@ -414,7 +447,7 @@ class _AddPaymentPageState extends State<AddPaymentPage> {
       selected: isSelected,
       selectedColor: AppColors.primary,
       backgroundColor: AppColors.surface,
-      onSelected: (_) => setState(() => _paymentMethod = value),
+      onSelected: (_) => setState(() => _paymentMethod = label),
     );
   }
 }

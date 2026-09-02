@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
+import '../../mockData/mock_data_service.dart';
+import '../../models/app_models.dart';
 import '../../widgets/auth/auth_text_field.dart';
 import '../../widgets/common/custom_app_bar.dart';
 
@@ -11,29 +13,25 @@ class CurrenciesPage extends StatefulWidget {
 }
 
 class _CurrenciesPageState extends State<CurrenciesPage> {
-  final List<Map<String, dynamic>> _currencies = [
-    {
-      'code': 'USD',
-      'name': 'دولار أمريكي',
-      'symbol': '\$',
-      'isBase': true,
-      'rate': '1.0',
-    },
-    {
-      'code': 'SAR',
-      'name': 'ريال سعودي',
-      'symbol': '﷼',
-      'isBase': false,
-      'rate': '3.75',
-    },
-    {
-      'code': 'YER',
-      'name': 'ريال يمني',
-      'symbol': '﷼',
-      'isBase': false,
-      'rate': '530.0',
-    },
-  ];
+  final MockDataService _dataService = MockDataService.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _dataService.addListener(_onDataChanged);
+  }
+
+  @override
+  void dispose() {
+    _dataService.removeListener(_onDataChanged);
+    super.dispose();
+  }
+
+  void _onDataChanged() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
 
   void _showAddCurrencyDialog() {
     final formKey = GlobalKey<FormState>();
@@ -106,16 +104,22 @@ class _CurrenciesPageState extends State<CurrenciesPage> {
             ElevatedButton(
               onPressed: () {
                 if (formKey.currentState!.validate()) {
-                  setState(() {
-                    _currencies.add({
-                      'code': codeController.text,
-                      'name': nameController.text,
-                      'symbol': symbolController.text,
-                      'isBase': false,
-                      'rate': rateController.text,
-                    });
-                  });
+                  final rate =
+                      double.tryParse(rateController.text.trim()) ?? 1.0;
+                  _dataService.addCurrency(
+                    code: codeController.text.trim().toUpperCase(),
+                    name: nameController.text.trim(),
+                    symbol: symbolController.text.trim(),
+                    rate: rate,
+                  );
                   Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('تم إضافة العملة بنجاح!'),
+                      backgroundColor: AppColors.success,
+                      behavior: SnackBarBehavior.floating,
+                    ),
+                  );
                 }
               },
               child: const Text('إضافة'),
@@ -126,8 +130,64 @@ class _CurrenciesPageState extends State<CurrenciesPage> {
     );
   }
 
+  void _showEditRateDialog(CurrencyModel c) {
+    final formKey = GlobalKey<FormState>();
+    final rateController = TextEditingController(text: c.rate.toString());
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: AppColors.surface,
+          title: Text(
+            'تعديل سعر صرف ${c.name}',
+            style: const TextStyle(
+              fontFamily: 'Cairo',
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
+          content: Form(
+            key: formKey,
+            child: AuthFormField(
+              controller: rateController,
+              hintText: 'سعر الصرف الجديد',
+              fieldType: AuthFieldType.number,
+              prefixIcon: Icons.currency_exchange,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text(
+                'إلغاء',
+                style: TextStyle(
+                  fontFamily: 'Cairo',
+                  color: AppColors.textSecondary,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (formKey.currentState!.validate()) {
+                  final newRate =
+                      double.tryParse(rateController.text.trim()) ?? c.rate;
+                  _dataService.updateCurrencyRate(c.code, newRate);
+                  Navigator.pop(context);
+                }
+              },
+              child: const Text('حفظ'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final currencies = _dataService.currencies;
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: const CustomAppBar(title: 'إدارة العملات وأسعار الصرف'),
@@ -164,10 +224,10 @@ class _CurrenciesPageState extends State<CurrenciesPage> {
             const SizedBox(height: 16),
             Expanded(
               child: ListView.builder(
-                itemCount: _currencies.length,
+                itemCount: currencies.length,
                 itemBuilder: (context, index) {
-                  final c = _currencies[index];
-                  final isBase = c['isBase'] as bool;
+                  final c = currencies[index];
+                  final isBase = c.isBase;
 
                   return Container(
                     margin: const EdgeInsets.only(bottom: 12),
@@ -186,7 +246,7 @@ class _CurrenciesPageState extends State<CurrenciesPage> {
                             ? AppColors.gold
                             : AppColors.primary.withValues(alpha: 0.1),
                         child: Text(
-                          c['symbol'] as String,
+                          c.symbol,
                           style: TextStyle(
                             color: isBase ? AppColors.white : AppColors.primary,
                             fontWeight: FontWeight.bold,
@@ -197,7 +257,7 @@ class _CurrenciesPageState extends State<CurrenciesPage> {
                       title: Row(
                         children: [
                           Text(
-                            c['name'] as String,
+                            c.name,
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontFamily: 'Cairo',
@@ -227,7 +287,7 @@ class _CurrenciesPageState extends State<CurrenciesPage> {
                         ],
                       ),
                       subtitle: Text(
-                        'الرمز: ${c['code']} | سعر الصرف: ${c['rate']}',
+                        'الرمز: ${c.code} | سعر الصرف: ${c.rate}',
                         style: const TextStyle(
                           fontSize: 12,
                           color: AppColors.textSecondary,
@@ -237,12 +297,9 @@ class _CurrenciesPageState extends State<CurrenciesPage> {
                       trailing: PopupMenuButton<String>(
                         onSelected: (val) {
                           if (val == 'setBase') {
-                            setState(() {
-                              for (var item in _currencies) {
-                                item['isBase'] = false;
-                              }
-                              c['isBase'] = true;
-                            });
+                            _dataService.setBaseCurrency(c.code);
+                          } else if (val == 'edit') {
+                            _showEditRateDialog(c);
                           }
                         },
                         itemBuilder: (context) => [
