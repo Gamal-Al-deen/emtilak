@@ -48,7 +48,7 @@ class OnboardingView extends StatelessWidget {
                 globalBackgroundColor: AppColors.surface,
                 pages: [
                   PageViewModel(
-                    title: 'تقارير دقيقة وواضحة',
+                    title: 'تقارير دقيقة و واضحة',
                     body:
                         'احصل على تقارير مالية شاملة واستعرض أداء عقاراتك في مكان واحد.',
                     image: Image.asset(
@@ -82,7 +82,7 @@ class OnboardingView extends StatelessWidget {
                 onSkip: () => _onIntroEnd(context),
                 showSkipButton: true,
                 skip: const Text(
-                  'تخطي',
+                  'ابدأ الآن',
                   style: TextStyle(
                     fontFamily: 'Cairo',
                     color: AppColors.textSecondary,

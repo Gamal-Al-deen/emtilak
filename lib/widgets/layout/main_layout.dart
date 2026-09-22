@@ -71,7 +71,7 @@ class _MainLayoutState extends State<MainLayout> {
       ),
       drawer: const MainDrawer(),
       body: IndexedStack(index: _currentIndex, children: _pages),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: AppColors.surface,
