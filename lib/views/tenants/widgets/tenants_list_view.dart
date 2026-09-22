@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../core/colors.dart';
 import '../../../../utils/responsive.dart';
 import '../../../../models/app_models.dart';
-import '../../../../routes/routes.dart';
 import 'tenant_card.dart';
 import 'tenants_empty_state.dart';
 
