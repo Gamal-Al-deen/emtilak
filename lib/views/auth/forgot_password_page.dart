@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../core/colors.dart';
 import '../../routes/routes.dart';
-import '../../widgets/auth/auth_text_field.dart';
-import '../../widgets/common/app_brand_logo.dart';
+import 'widgets/forgot_password_brand_section.dart';
+import 'widgets/forgot_password_form_card.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -45,6 +45,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         child: LayoutBuilder(
           builder: (context, constraints) {
             final isWide = constraints.maxWidth >= 900;
+            final logoSize = constraints.maxWidth < 360 ? 84.0 : 110.0;
 
             return Center(
               child: Padding(
@@ -63,121 +64,18 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                 flex: 2,
                                 child: Padding(
                                   padding: const EdgeInsets.only(left: 24),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      AppBrandLogo(size: 110),
-                                      const SizedBox(height: 16),
-                                      const FractionallySizedBox(
-                                        widthFactor: 0.8,
-                                        child: Text(
-                                          'استعادة الوصول إلى حسابك بسهولة وأمان',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: AppColors.textSecondary,
-                                            fontSize: 13,
-                                            fontFamily: 'Cairo',
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                  child: ForgotPasswordBrandSection(
+                                    logoSize: logoSize,
                                   ),
                                 ),
                               ),
                               const SizedBox(width: 24),
                               Expanded(
                                 flex: 3,
-                                child: Container(
-                                  constraints: const BoxConstraints(
-                                    maxWidth: 520,
-                                  ),
-                                  padding: const EdgeInsets.all(24),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.surface,
-                                    borderRadius: BorderRadius.circular(24),
-                                    border: Border.all(color: AppColors.border),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: AppColors.cardShadow,
-                                        blurRadius: 18,
-                                        offset: Offset(0, 10),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Form(
-                                    key: _formKey,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      children: [
-                                        const Text(
-                                          'استعادة كلمة المرور',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.bold,
-                                            color: AppColors.primary,
-                                            fontFamily: 'Cairo',
-                                          ),
-                                        ),
-                                        const SizedBox(height: 6),
-                                        const Text(
-                                          'أدخل بريدك الإلكتروني لاستلام رابط إعادة التعيين.',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 13,
-                                            color: AppColors.textSecondary,
-                                            fontFamily: 'Cairo',
-                                          ),
-                                        ),
-                                        const SizedBox(height: 24),
-                                        AuthFormField(
-                                          controller: _emailController,
-                                          hintText: 'البريد الإلكتروني',
-                                          prefixIcon: Icons.email_outlined,
-                                          fieldType: AuthFieldType.email,
-                                        ),
-                                        const SizedBox(height: 24),
-                                        ElevatedButton(
-                                          onPressed: _submit,
-                                          style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(14),
-                                            ),
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 16,
-                                            ),
-                                            backgroundColor: AppColors.primary,
-                                          ),
-                                          child: const Text(
-                                            'إرسال الرابط',
-                                            style: TextStyle(
-                                              fontFamily: 'Cairo',
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15,
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 20),
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pushReplacementNamed(
-                                                context,
-                                                AppRoutes.login,
-                                              ),
-                                          child: const Text(
-                                            'العودة إلى تسجيل الدخول',
-                                            style: TextStyle(
-                                              fontFamily: 'Cairo',
-                                              color: AppColors.gold,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                child: ForgotPasswordFormCard(
+                                  formKey: _formKey,
+                                  emailController: _emailController,
+                                  onSubmit: _submit,
                                 ),
                               ),
                             ],
@@ -185,110 +83,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         : Column(
                             children: [
                               const SizedBox(height: 12),
-                              AppBrandLogo(size: 90),
-                              const SizedBox(height: 16),
-                              const Text(
-                                'استعادة الوصول إلى حسابك بسهولة وأمان',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: AppColors.textSecondary,
-                                  fontSize: 13,
-                                  fontFamily: 'Cairo',
-                                ),
-                              ),
+                              ForgotPasswordBrandSection(logoSize: logoSize),
                               const SizedBox(height: 24),
-                              Container(
-                                constraints: const BoxConstraints(
-                                  maxWidth: 520,
-                                ),
-                                padding: const EdgeInsets.all(24),
-                                decoration: BoxDecoration(
-                                  color: AppColors.surface,
-                                  borderRadius: BorderRadius.circular(24),
-                                  border: Border.all(color: AppColors.border),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: AppColors.cardShadow,
-                                      blurRadius: 18,
-                                      offset: Offset(0, 10),
-                                    ),
-                                  ],
-                                ),
-                                child: Form(
-                                  key: _formKey,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      const Text(
-                                        'استعادة كلمة المرور',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.bold,
-                                          color: AppColors.primary,
-                                          fontFamily: 'Cairo',
-                                        ),
-                                      ),
-                                      const SizedBox(height: 6),
-                                      const Text(
-                                        'أدخل بريدك الإلكتروني لاستلام رابط إعادة التعيين.',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          color: AppColors.textSecondary,
-                                          fontFamily: 'Cairo',
-                                        ),
-                                      ),
-                                      const SizedBox(height: 24),
-                                      AuthFormField(
-                                        controller: _emailController,
-                                        hintText: 'البريد الإلكتروني',
-                                        prefixIcon: Icons.email_outlined,
-                                        fieldType: AuthFieldType.email,
-                                      ),
-                                      const SizedBox(height: 24),
-                                      ElevatedButton(
-                                        onPressed: _submit,
-                                        style: ElevatedButton.styleFrom(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              14,
-                                            ),
-                                          ),
-                                          padding: const EdgeInsets.symmetric(
-                                            vertical: 16,
-                                          ),
-                                          backgroundColor: AppColors.primary,
-                                        ),
-                                        child: const Text(
-                                          'إرسال الرابط',
-                                          style: TextStyle(
-                                            fontFamily: 'Cairo',
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 20),
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pushReplacementNamed(
-                                              context,
-                                              AppRoutes.login,
-                                            ),
-                                        child: const Text(
-                                          'العودة إلى تسجيل الدخول',
-                                          style: TextStyle(
-                                            fontFamily: 'Cairo',
-                                            color: AppColors.gold,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                              ForgotPasswordFormCard(
+                                formKey: _formKey,
+                                emailController: _emailController,
+                                onSubmit: _submit,
                               ),
                               const SizedBox(height: 18),
                             ],
