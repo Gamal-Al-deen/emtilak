@@ -16,13 +16,18 @@ class LoginBrandSection extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // حاوية الشعار مربّعة الشكل (1.5 × الحجم) بينما صورة الشعار عريضة،
-        // فتبقى أسفلها مساحة شفافة كبيرة تُحدث فجوة كبيرة بين الشعار والنص.
-        // نقصّر ارتفاع الحاوية إلى حجم الصورة نفسه لإزالة تلك المساحة،
-        // مع بقاء الشعار بالحجم نفسه ودون أي تغيير في التصميم.
-        SizedBox(
-          height: logoSize,
-          child: AppBrandLogo(size: logoSize),
+        // حاوية الشعار مربّعة الشكل (1.5 × الحجم) مع حشو 0.12، وصورة الشعار
+        // العريضة (648×429) تتمركز فيها بـ BoxFit.contain — فينتهي أسفلها
+        // المرسوم عند (0.75 + 0.63 × 429/648) ÷ 1.5 من ارتفاع الحاوية.
+        // نقصّ الحاوية عند هذا الموضع بالضبط عبر ClipRect + heightFactor:
+        // تُرفع المساحة الشفافة أسفل الشعار فقط، ويظل الشعار بحجمه نفسه،
+        // مع بقاء التخطيط في حدوده المفتوحة (بلا ضغط أعمدة يسبّب فيضًا).
+        ClipRect(
+          child: Align(
+            alignment: Alignment.topCenter,
+            heightFactor: (0.75 + 0.63 * (429 / 648)) / 1.5,
+            child: AppBrandLogo(size: logoSize),
+          ),
         ),
         const SizedBox(height: 8),
         const FractionallySizedBox(
