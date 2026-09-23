@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "299154081204",
+    "project_id": "emtilak-app-2026",
+    "storage_bucket": "emtilak-app-2026.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:299154081204:android:ef5716df6b585980cf5ee1",
+        "android_client_info": {
+          "package_name": "com.example.emtilak"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "299154081204-cor7jccp4phebq28b5k4hm3chgf39umj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.emtilak",
+            "certificate_hash": "6d57f839e43827c277f6ad5d6cb1209a13530925"
+          }
+        },
+        {
+          "client_id": "299154081204-84vp3u1hmrq54jl3j8r4tqm57qm0m1hq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZvKluD49tAKvq-ln4T1UWLsfDB7-Apac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "299154081204-84vp3u1hmrq54jl3j8r4tqm57qm0m1hq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "299154081204-6gg9np1ouh33d6t711o4v3mvr01t98df.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.emtilak"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

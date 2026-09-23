@@ -13,6 +13,9 @@ dependencies:
   introduction_screen: ^4.0.0
   shared_preferences: ^2.3.0
   flutter_native_splash: ^2.4.8
+  firebase_core: ^4.15.0
+  firebase_auth: ^6.7.0
+  google_sign_in: ^7.2.0
 
 dev_dependencies:
   flutter_test:
