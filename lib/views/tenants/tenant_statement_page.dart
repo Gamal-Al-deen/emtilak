@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
 import '../../utils/responsive.dart';
-import '../../mockData/mock_data_service.dart';
+import '../../controllers/app_controllers.dart';
 import '../../widgets/common/custom_app_bar.dart';
 import 'widgets/tenant_statement_header.dart';
 import 'widgets/tenant_statement_list.dart';
@@ -12,21 +12,48 @@ class TenantStatementPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tenantName =
-        (ModalRoute.of(context)?.settings.arguments as String?) ?? 'محمد أحمد';
-    final dataService = MockDataService.instance;
+    final args = ModalRoute.of(context)?.settings.arguments;
+    String tenantName = 'محمد أحمد';
+    String? contractId;
+    if (args is Map) {
+      tenantName = args['tenantName']?.toString() ?? 'محمد أحمد';
+      contractId = args['contractId']?.toString();
+    } else if (args is String) {
+      tenantName = args;
+    }
 
-    final tenant = dataService.tenants.firstWhere(
-      (t) => t.name == tenantName,
-      orElse: () => dataService.tenants.isNotEmpty
-          ? dataService.tenants.first
-          : null as dynamic,
-    );
+    final dataService = AppControllers.instance;
 
-    final tenantUnit = tenant.unitName;
-    final tenantPayments = dataService.payments
-        .where((p) => p.tenantName == tenantName)
-        .toList();
+    final tenantContracts = dataService.getContractsForTenant(tenantName);
+    final contract = contractId != null
+        ? dataService.contracts.where((c) => c.id == contractId).firstOrNull
+        : (tenantContracts.isNotEmpty ? tenantContracts.first : null);
+
+    final tenantUnit = contract != null
+        ? contract.unitName
+        : (tenantContracts.isNotEmpty
+            ? tenantContracts.map((c) => c.unitName).join(' ، ')
+            : 'بدون وحدة سكنية حالياً');
+
+    final tenantPayments = contractId != null
+        ? dataService.payments
+            .where((p) =>
+                p.contractId == contractId ||
+                (p.tenantName == tenantName &&
+                    p.contractInfo.contains('#$contractId')))
+            .toList()
+        : dataService.payments
+            .where((p) => p.tenantName == tenantName)
+            .toList();
+
+    final totalPaid = tenantPayments
+        .where((p) => p.status == 'مدفوع' || p.status == 'جزئي')
+        .fold(0.0, (sum, p) => sum + p.amount);
+
+    final balanceText = '${totalPaid.toInt()} \$ (مدفوع)';
+    final contractInfo = contract != null
+        ? 'عقد #${contract.id} • إيجار شهري: ${contract.monthlyRent.toInt()} \$'
+        : null;
 
     final horizontalPadding = Responsive.getHorizontalPadding(context);
 
@@ -42,6 +69,8 @@ class TenantStatementPage extends StatelessWidget {
               TenantStatementHeader(
                 tenantName: tenantName,
                 tenantUnit: tenantUnit,
+                balanceText: balanceText,
+                contractInfo: contractInfo,
               ),
               const SizedBox(height: 16),
               TenantStatementList(payments: tenantPayments),

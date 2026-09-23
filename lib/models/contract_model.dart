@@ -48,4 +48,35 @@ class Contract {
       notes: notes ?? this.notes,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'tenant_name': tenantName,
+      'unit_name': unitName,
+      'building_name': buildingName,
+      'monthly_rent': monthlyRent,
+      'currency': currency,
+      'start_date': startDate,
+      'end_date': endDate,
+      'is_active': status == 'نشط' ? 1 : 0,
+      'status': status,
+      'notes': notes,
+    };
+  }
+
+  factory Contract.fromMap(Map<String, dynamic> map) {
+    return Contract(
+      id: map['id']?.toString() ?? '',
+      tenantName: map['tenant_name'] ?? '',
+      unitName: map['unit_name'] ?? '',
+      buildingName: map['building_name'] ?? '',
+      monthlyRent: (map['monthly_rent'] as num?)?.toDouble() ?? 0.0,
+      currency: map['currency'] ?? 'USD',
+      startDate: map['start_date'] ?? '',
+      endDate: map['end_date'] ?? '',
+      status: map['status'] ?? (map['is_active'] == 1 ? 'نشط' : 'منتهي'),
+      notes: map['notes'],
+    );
+  }
 }

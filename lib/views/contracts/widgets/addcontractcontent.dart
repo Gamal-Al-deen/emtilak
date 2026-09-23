@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/colors.dart';
 import '../../../utils/responsive.dart';
-import '../../../mockData/mock_data_service.dart';
+import '../../../controllers/app_controllers.dart';
 import '../../../widgets/common/custom_app_bar.dart';
 import 'add_contract_header.dart';
 import 'add_contract_form.dart';
@@ -16,7 +16,7 @@ class AddContractContent extends StatefulWidget {
 }
 
 class _AddContractContentState extends State<AddContractContent> {
-  final MockDataService _dataService = MockDataService.instance;
+  final AppControllers _dataService = AppControllers.instance;
   final _formKey = GlobalKey<FormState>();
   final _rentController = TextEditingController();
   final _notesController = TextEditingController();
@@ -32,9 +32,10 @@ class _AddContractContentState extends State<AddContractContent> {
     if (_dataService.tenants.isNotEmpty) {
       _selectedTenant = _dataService.tenants.first.name;
     }
-    if (_dataService.units.isNotEmpty) {
+    final vacantUnits = _dataService.units.where((u) => u.status == 'فارغة').toList();
+    if (vacantUnits.isNotEmpty) {
       _selectedUnit =
-          '${_dataService.units.first.number} - ${_dataService.units.first.buildingName}';
+          '${vacantUnits.first.number} - ${vacantUnits.first.buildingName}';
     }
   }
 
@@ -74,7 +75,7 @@ class _AddContractContentState extends State<AddContractContent> {
     }
   }
 
-  void _handleSubmit() {
+  Future<void> _handleSubmit() async {
     if (_formKey.currentState!.validate()) {
       final rent =
           double.tryParse(_rentController.text.trim()) ?? 0.0;
@@ -85,12 +86,16 @@ class _AddContractContentState extends State<AddContractContent> {
           ? '${_endDate!.year}/${_endDate!.month.toString().padLeft(2, '0')}/${_endDate!.day.toString().padLeft(2, '0')}'
           : '2025/05/01';
 
-      final selectedUnitStr = _selectedUnit ?? 'A101';
-      final bName = selectedUnitStr.contains('-')
-          ? selectedUnitStr.split('-').last.trim()
-          : 'عمارة عامة';
+      final vacantUnits = _dataService.units.where((u) => u.status == 'فارغة').toList();
+      final matchedUnit = _dataService.units.cast<dynamic>().firstWhere(
+        (u) => '${u.number} - ${u.buildingName}' == _selectedUnit,
+        orElse: () => vacantUnits.isNotEmpty ? vacantUnits.first : null,
+      );
 
-      _dataService.addContract(
+      final selectedUnitStr = _selectedUnit ?? (matchedUnit != null ? '${matchedUnit.number} - ${matchedUnit.buildingName}' : '');
+      final bName = matchedUnit?.buildingName ?? (selectedUnitStr.contains('-') ? selectedUnitStr.split('-').last.trim() : '');
+
+      final error = await _dataService.addContract(
         tenantName: _selectedTenant ?? 'مستأجر عام',
         unitName: selectedUnitStr,
         buildingName: bName,
@@ -99,23 +104,36 @@ class _AddContractContentState extends State<AddContractContent> {
         startDate: startFormatted,
         endDate: endFormatted,
         notes: _notesController.text.trim(),
+        unitId: matchedUnit?.id,
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('تم إنشاء وحفظ العقد بنجاح!'),
-          backgroundColor: AppColors.success,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-      Navigator.pop(context);
+      if (!mounted) return;
+      if (error != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(error),
+            backgroundColor: AppColors.error,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('تم إنشاء وحفظ العقد بنجاح!'),
+            backgroundColor: AppColors.success,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+        Navigator.pop(context);
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final tenantOptions = _dataService.tenants.map((t) => t.name).toList();
-    final unitOptions = _dataService.units
+    final vacantUnits = _dataService.units.where((u) => u.status == 'فارغة').toList();
+    final unitOptions = vacantUnits
         .map((u) => '${u.number} - ${u.buildingName}')
         .toList();
     final currencyOptions = _dataService.currencies.map((c) => c.code).toList();

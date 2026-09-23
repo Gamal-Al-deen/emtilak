@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import '../../../core/colors.dart';
 import '../../../utils/responsive.dart';
-import '../../../mockData/mock_data_service.dart';
+import '../../../controllers/app_controllers.dart';
 import '../../../models/app_models.dart';
 import '../../../widgets/auth/auth_text_field.dart';
 import '../../../widgets/common/custom_app_bar.dart';
-import 'currency_tile.dart';
 import 'add_currency_dialog.dart';
 import 'currencies_empty_state.dart';
+import 'currency_tile.dart';
 
 class CurrenciesContent extends StatefulWidget {
   const CurrenciesContent({super.key});
@@ -17,7 +17,7 @@ class CurrenciesContent extends StatefulWidget {
 }
 
 class _CurrenciesContentState extends State<CurrenciesContent> {
-  final MockDataService _dataService = MockDataService.instance;
+  final AppControllers _dataService = AppControllers.instance;
 
   @override
   void initState() {

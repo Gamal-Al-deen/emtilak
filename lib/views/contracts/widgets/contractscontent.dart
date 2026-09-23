@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/colors.dart';
 import '../../../utils/responsive.dart';
-import '../../../mockData/mock_data_service.dart';
+import '../../../controllers/app_controllers.dart';
 import '../../../models/app_models.dart';
 import '../../../routes/routes.dart';
 import 'contract_details_modal.dart';
@@ -17,7 +17,7 @@ class ContractsContent extends StatefulWidget {
 }
 
 class _ContractsContentState extends State<ContractsContent> {
-  final MockDataService _dataService = MockDataService.instance;
+  final AppControllers _dataService = AppControllers.instance;
   String _searchQuery = '';
 
   @override

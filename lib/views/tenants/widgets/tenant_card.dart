@@ -4,6 +4,7 @@ import '../../../../models/app_models.dart';
 
 class TenantCard extends StatelessWidget {
   final Tenant tenant;
+  final String? unitDisplay;
   final VoidCallback onTap;
   final VoidCallback onCall;
   final VoidCallback onViewStatement;
@@ -11,6 +12,7 @@ class TenantCard extends StatelessWidget {
   const TenantCard({
     super.key,
     required this.tenant,
+    this.unitDisplay,
     required this.onTap,
     required this.onCall,
     required this.onViewStatement,
@@ -57,7 +59,7 @@ class TenantCard extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
         subtitle: Text(
-          t.unitName,
+          unitDisplay ?? 'بدون وحدة سكنية حالياً',
           style: const TextStyle(
             fontSize: 12,
             color: AppColors.textSecondary,

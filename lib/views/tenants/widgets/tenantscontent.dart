@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/colors.dart';
 import '../../../utils/responsive.dart';
-import '../../../mockData/mock_data_service.dart';
+import '../../../controllers/app_controllers.dart';
 import '../../../models/app_models.dart';
 import '../../../routes/routes.dart';
 import 'add_tenant_dialog.dart';
@@ -18,7 +18,7 @@ class TenantsContent extends StatefulWidget {
 }
 
 class _TenantsContentState extends State<TenantsContent> {
-  final MockDataService _dataService = MockDataService.instance;
+  final AppControllers _dataService = AppControllers.instance;
   String _searchQuery = '';
 
   @override
@@ -44,19 +44,30 @@ class _TenantsContentState extends State<TenantsContent> {
       context: context,
       builder: (context) {
         return AddTenantDialog(
-          onSubmit: (name, phone, nationalId) {
-            _dataService.addTenant(
+          onSubmit: (name, phone, nationalId) async {
+            final error = await _dataService.addTenant(
               name: name,
               phone: phone,
               nationalId: nationalId,
             );
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('تم إضافة المستأجر بنجاح!'),
-                backgroundColor: AppColors.success,
-                behavior: SnackBarBehavior.floating,
-              ),
-            );
+            if (!context.mounted) return;
+            if (error != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(error),
+                  backgroundColor: AppColors.error,
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('تم إضافة المستأجر بنجاح!'),
+                  backgroundColor: AppColors.success,
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+            }
           },
         );
       },
@@ -146,8 +157,13 @@ class _TenantsContentState extends State<TenantsContent> {
                             itemCount: filteredTenants.length,
                             itemBuilder: (context, index) {
                               final t = filteredTenants[index];
+                              final contracts = _dataService.getContractsForTenant(t.name);
+                              final unitDisplay = contracts.isNotEmpty
+                                  ? contracts.map((c) => c.unitName).join(' ، ')
+                                  : 'بدون وحدة سكنية حالياً';
                               return TenantCard(
                                 tenant: t,
+                                unitDisplay: unitDisplay,
                                 onTap: () => _showTenantDetailsModal(t),
                                 onCall: () {
                                   ScaffoldMessenger.of(context).showSnackBar(
@@ -163,7 +179,11 @@ class _TenantsContentState extends State<TenantsContent> {
                                   Navigator.pushNamed(
                                     context,
                                     AppRoutes.tenantStatement,
-                                    arguments: t.name,
+                                    arguments: {
+                                      'tenantName': t.name,
+                                      if (contracts.isNotEmpty)
+                                        'contractId': contracts.first.id,
+                                    },
                                   );
                                 },
                               );
@@ -173,10 +193,15 @@ class _TenantsContentState extends State<TenantsContent> {
                             itemCount: filteredTenants.length,
                             itemBuilder: (context, index) {
                               final t = filteredTenants[index];
+                              final contracts = _dataService.getContractsForTenant(t.name);
+                              final unitDisplay = contracts.isNotEmpty
+                                  ? contracts.map((c) => c.unitName).join(' ، ')
+                                  : 'بدون وحدة سكنية حالياً';
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 12),
                                 child: TenantCard(
                                   tenant: t,
+                                  unitDisplay: unitDisplay,
                                   onTap: () => _showTenantDetailsModal(t),
                                   onCall: () {
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -192,7 +217,11 @@ class _TenantsContentState extends State<TenantsContent> {
                                     Navigator.pushNamed(
                                       context,
                                       AppRoutes.tenantStatement,
-                                      arguments: t.name,
+                                      arguments: {
+                                        'tenantName': t.name,
+                                        if (contracts.isNotEmpty)
+                                          'contractId': contracts.first.id,
+                                      },
                                     );
                                   },
                                 ),
