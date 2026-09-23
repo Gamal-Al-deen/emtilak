@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../utils/responsive.dart';
-import '../../../mockData/mock_data_service.dart';
+import '../../../controllers/app_controllers.dart';
 import '../../../widgets/dashboard/collection_chart.dart';
 import 'dashboard_welcome_card.dart';
 import 'dashboard_stats_grid.dart';
@@ -14,7 +14,7 @@ class DashboardContent extends StatefulWidget {
 }
 
 class _DashboardContentState extends State<DashboardContent> {
-  final MockDataService _dataService = MockDataService.instance;
+  final AppControllers _dataService = AppControllers.instance;
 
   @override
   void initState() {
@@ -67,12 +67,12 @@ class _DashboardContentState extends State<DashboardContent> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Expanded(
+                  Expanded(
                     flex: 3,
                     child: CollectionChart(
-                      collectedRatio: 0.83,
-                      delayedRatio: 0.12,
-                      pendingRatio: 0.05,
+                      collectedRatio: _dataService.collectedRatio,
+                      delayedRatio: _dataService.delayedRatio,
+                      pendingRatio: _dataService.pendingRatio,
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -83,10 +83,10 @@ class _DashboardContentState extends State<DashboardContent> {
                 ],
               )
             else ...[
-              const CollectionChart(
-                collectedRatio: 0.83,
-                delayedRatio: 0.12,
-                pendingRatio: 0.05,
+              CollectionChart(
+                collectedRatio: _dataService.collectedRatio,
+                delayedRatio: _dataService.delayedRatio,
+                pendingRatio: _dataService.pendingRatio,
               ),
               const SizedBox(height: 20),
               const DashboardMobileQuickActions(),

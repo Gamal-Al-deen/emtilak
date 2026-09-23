@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../../../../core/colors.dart';
 import '../../../../utils/responsive.dart';
 import '../../../../models/app_models.dart';
+import '../../../../controllers/app_controllers.dart';
+import '../../../../routes/routes.dart';
 
 class TenantDetailsModal extends StatelessWidget {
   final Tenant tenant;
@@ -16,6 +18,11 @@ class TenantDetailsModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = tenant;
+    final contracts = AppControllers.instance.getContractsForTenant(t.name);
+    final unitSummary = contracts.isNotEmpty
+        ? contracts.map((c) => c.unitName).join(' ، ')
+        : 'بدون وحدة سكنية حالياً';
+
     return ResponsiveContainer(
       maxWidth: 550,
       child: Padding(
@@ -52,7 +59,7 @@ class TenantDetailsModal extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
-                          t.unitName,
+                          unitSummary,
                           style: const TextStyle(
                             fontSize: 12,
                             color: AppColors.textSecondary,
@@ -113,6 +120,98 @@ class TenantDetailsModal extends StatelessWidget {
                 ),
               ],
               const SizedBox(height: 14),
+              const Text(
+                'العقود والوحدات المرتبطة:',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Cairo',
+                  fontSize: 13,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              const SizedBox(height: 8),
+              if (contracts.isEmpty)
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: AppColors.border),
+                  ),
+                  child: const Text(
+                    'لا توجد عقود نشطة حالياً لهذا المستأجر.',
+                    style: TextStyle(
+                      fontFamily: 'Cairo',
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                )
+              else
+                ...contracts.map((c) => Container(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: AppColors.surface,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: AppColors.border),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  c.unitName,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                    fontFamily: 'Cairo',
+                                  ),
+                                ),
+                                Text(
+                                  'عقد #${c.id} • الإيجار: ${c.monthlyRent.toInt()} \$',
+                                  style: const TextStyle(
+                                    fontSize: 11,
+                                    color: AppColors.textSecondary,
+                                    fontFamily: 'Cairo',
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          TextButton.icon(
+                            style: TextButton.styleFrom(
+                              foregroundColor: AppColors.primary,
+                              visualDensity: VisualDensity.compact,
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                              Navigator.pushNamed(
+                                context,
+                                AppRoutes.tenantStatement,
+                                arguments: {
+                                  'tenantName': t.name,
+                                  'contractId': c.id,
+                                },
+                              );
+                            },
+                            icon: const Icon(Icons.receipt_long, size: 16),
+                            label: const Text(
+                              'كشف حساب',
+                              style: TextStyle(
+                                fontFamily: 'Cairo',
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )),
+              const SizedBox(height: 10),
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
@@ -121,7 +220,7 @@ class TenantDetailsModal extends StatelessWidget {
                 onPressed: onViewStatement,
                 icon: const Icon(Icons.receipt_long, size: 18),
                 label: const Text(
-                  'عرض كشف الحساب التفصيلي',
+                  'عرض كشف الحساب الشامل',
                   style: TextStyle(
                     fontFamily: 'Cairo',
                     fontWeight: FontWeight.bold,

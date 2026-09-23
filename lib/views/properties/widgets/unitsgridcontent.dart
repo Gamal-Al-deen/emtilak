@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/colors.dart';
 import '../../../utils/responsive.dart';
-import '../../../mockData/mock_data_service.dart';
+import '../../../controllers/app_controllers.dart';
 import '../../../models/app_models.dart';
 import '../../../widgets/common/custom_app_bar.dart';
 import '../../../widgets/unit/unit_card.dart';
@@ -18,7 +18,7 @@ class UnitsGridContent extends StatefulWidget {
 }
 
 class _UnitsGridContentState extends State<UnitsGridContent> {
-  final MockDataService _dataService = MockDataService.instance;
+  final AppControllers _dataService = AppControllers.instance;
 
   @override
   void initState() {
@@ -65,20 +65,31 @@ class _UnitsGridContentState extends State<UnitsGridContent> {
             required String number,
             required String status,
             required double monthlyRent,
-          }) {
-            _dataService.addUnit(
+          }) async {
+            final error = await _dataService.addUnit(
               buildingName: buildingName,
               number: number,
               status: status,
               monthlyRent: monthlyRent,
             );
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('تم إضافة الوحدة السكنية بنجاح!'),
-                backgroundColor: AppColors.success,
-                behavior: SnackBarBehavior.floating,
-              ),
-            );
+            if (!context.mounted) return;
+            if (error != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(error),
+                  backgroundColor: AppColors.error,
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('تم إضافة الوحدة السكنية بنجاح!'),
+                  backgroundColor: AppColors.success,
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+            }
           },
         );
       },

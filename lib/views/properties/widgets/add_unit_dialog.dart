@@ -68,7 +68,7 @@ class _AddUnitDialogState extends State<AddUnitDialog> {
                 ),
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
-                  value: selectedStatus,
+                  initialValue: selectedStatus,
                   items: const [
                     DropdownMenuItem(
                       value: 'فارغة',
