@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../../core/colors.dart';
-import '../../../utils/responsive.dart';
 import '../../../routes/routes.dart';
+import '../../../services/auth_service.dart';
+import '../../../utils/responsive.dart';
 import '../../../widgets/auth/auth_text_field.dart';
+import '../../../widgets/common/auth_message.dart';
 import '../../../widgets/common/custom_app_bar.dart';
 import 'settings_tile.dart';
 import 'settings_section.dart';
@@ -18,6 +20,31 @@ class SettingsContent extends StatefulWidget {
 
 class _SettingsContentState extends State<SettingsContent> {
   bool _notificationsEnabled = true;
+  bool _biometricLoginEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadBiometricPreference();
+  }
+
+  Future<void> _loadBiometricPreference() async {
+    final bool enabled = await AuthService.instance.isBiometricLoginEnabled();
+    if (mounted && enabled != _biometricLoginEnabled) {
+      setState(() => _biometricLoginEnabled = enabled);
+    }
+  }
+
+  /// ينهي جلسة المستخدم ثم يعيدها إلى شاشة تسجيل الدخول.
+  Future<void> _signOut(BuildContext context) async {
+    final bool signedOut = await AuthService.instance.signOut();
+    if (!context.mounted) return;
+    if (!signedOut) {
+      showAuthMessage(context, 'تعذّر تسجيل الخروج، حاول مرة أخرى.');
+      return;
+    }
+    Navigator.pushReplacementNamed(context, AppRoutes.login);
+  }
 
   void _showBackupDialog() {
     showDialog(
@@ -227,6 +254,43 @@ class _SettingsContentState extends State<SettingsContent> {
                     onChanged: (val) => setState(() => _notificationsEnabled = val),
                   ),
                 ),
+                Container(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: AppColors.border),
+                  ),
+                  child: SwitchListTile(
+                    secondary: const Icon(
+                      Icons.fingerprint,
+                      color: AppColors.primary,
+                    ),
+                    title: const Text(
+                      'تسجيل الدخول بالبصمة',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Cairo',
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    subtitle: const Text(
+                      'إظهار زر البصمة في شاشة تسجيل الدخول',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontFamily: 'Cairo',
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                    value: _biometricLoginEnabled,
+                    activeThumbColor: AppColors.gold,
+                    onChanged: (val) async {
+                      setState(() => _biometricLoginEnabled = val);
+                      await AuthService.instance.setBiometricLoginEnabled(val);
+                    },
+                  ),
+                ),
                 SettingsTile(
                   icon: Icons.lock_outline,
                   title: 'تغيير كلمة المرور',
@@ -262,9 +326,7 @@ class _SettingsContentState extends State<SettingsContent> {
               icon: Icons.logout,
               title: 'تسجيل الخروج',
               titleColor: AppColors.error,
-              onTap: () {
-                Navigator.pushReplacementNamed(context, AppRoutes.login);
-              },
+              onTap: () => _signOut(context),
             ),
           ],
         ),

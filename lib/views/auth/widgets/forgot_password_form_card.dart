@@ -10,11 +10,15 @@ class ForgotPasswordFormCard extends StatelessWidget {
     required this.formKey,
     required this.emailController,
     required this.onSubmit,
+    this.isLoading = false,
   });
 
   final GlobalKey<FormState> formKey;
   final TextEditingController emailController;
   final VoidCallback onSubmit;
+
+  /// يمنع أي محاولة إرسال متزامنة أثناء تنفيذ محاولة سابقة.
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +71,7 @@ class ForgotPasswordFormCard extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             ElevatedButton(
-              onPressed: onSubmit,
+              onPressed: isLoading ? null : onSubmit,
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
@@ -75,14 +79,23 @@ class ForgotPasswordFormCard extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 backgroundColor: AppColors.primary,
               ),
-              child: const Text(
-                'إرسال الرابط',
-                style: TextStyle(
-                  fontFamily: 'Cairo',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                ),
-              ),
+              child: isLoading
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.4,
+                        color: AppColors.white,
+                      ),
+                    )
+                  : const Text(
+                      'إرسال الرابط',
+                      style: TextStyle(
+                        fontFamily: 'Cairo',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
             ),
             const SizedBox(height: 20),
             TextButton(

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../core/colors.dart';
 import '../../routes/routes.dart';
+import '../../services/auth_service.dart';
+import '../../widgets/common/auth_message.dart';
 import 'widgets/forgot_password_brand_section.dart';
 import 'widgets/forgot_password_form_card.dart';
 
@@ -15,6 +17,7 @@ class ForgotPasswordPage extends StatefulWidget {
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
+  Future<void>? _pendingReset;
 
   @override
   void dispose() {
@@ -22,23 +25,42 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     super.dispose();
   }
 
-  void _submit() {
-    if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'تم إرسال رابط استعادة كلمة المرور إلى بريدك الإلكتروني.',
-          ),
-          backgroundColor: AppColors.success,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-      Navigator.pushReplacementNamed(context, AppRoutes.login);
+  void _showMessage(String message, {bool isError = true}) {
+    if (!mounted) return;
+    showAuthMessage(context, message, isError: isError);
+  }
+
+  Future<void> _submit() async {
+    if (!(_formKey.currentState?.validate() ?? false)) return;
+    if (_pendingReset != null) return; // منع المحاولات المتزامنة
+
+    final Future<void> future = _sendResetEmail();
+    setState(() => _pendingReset = future);
+    try {
+      await future;
+    } on AuthFailure catch (e) {
+      _showMessage(e.message);
+    } catch (_) {
+      _showMessage('حدث خطأ غير متوقع، حاول مرة أخرى.');
+    } finally {
+      if (mounted) setState(() => _pendingReset = null);
     }
+  }
+
+  Future<void> _sendResetEmail() async {
+    await AuthService.instance.sendPasswordReset(email: _emailController.text);
+    _showMessage(
+      'تم إرسال رابط استعادة كلمة المرور إلى بريدك الإلكتروني.',
+      isError: false,
+    );
+    if (!mounted) return;
+    Navigator.pushReplacementNamed(context, AppRoutes.login);
   }
 
   @override
   Widget build(BuildContext context) {
+    final bool isLoading = _pendingReset != null;
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -76,6 +98,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                   formKey: _formKey,
                                   emailController: _emailController,
                                   onSubmit: _submit,
+                                  isLoading: isLoading,
                                 ),
                               ),
                             ],
@@ -89,6 +112,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                 formKey: _formKey,
                                 emailController: _emailController,
                                 onSubmit: _submit,
+                                isLoading: isLoading,
                               ),
                               const SizedBox(height: 18),
                             ],

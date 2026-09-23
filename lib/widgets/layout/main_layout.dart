@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
+import '../../services/auth_service.dart';
 import '../../utils/responsive.dart';
 import '../../routes/routes.dart';
 import '../../views/contracts/contracts_page.dart';
@@ -7,6 +8,7 @@ import '../../views/dashboard/dashboard_page.dart';
 import '../../views/properties/buildings_page.dart';
 import '../../views/tenants/tenants_page.dart';
 import '../../views/transactions/payments_page.dart';
+import '../common/auth_message.dart';
 import '../common/custom_app_bar.dart';
 import '../common/main_drawer.dart';
 
@@ -43,6 +45,17 @@ class _MainLayoutState extends State<MainLayout> {
     Icons.receipt_outlined,
     Icons.group_outlined,
   ];
+
+  /// ينهي جلسة المستخدم ثم يعيدها إلى شاشة تسجيل الدخول.
+  Future<void> _signOut(BuildContext context) async {
+    final bool signedOut = await AuthService.instance.signOut();
+    if (!context.mounted) return;
+    if (!signedOut) {
+      showAuthMessage(context, 'تعذّر تسجيل الخروج، حاول مرة أخرى.');
+      return;
+    }
+    Navigator.pushReplacementNamed(context, AppRoutes.login);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -320,9 +333,7 @@ class _MainLayoutState extends State<MainLayout> {
               icon: Icons.logout,
               title: 'تسجيل الخروج',
               color: AppColors.error,
-              onTap: () {
-                Navigator.pushReplacementNamed(context, AppRoutes.login);
-              },
+              onTap: () => _signOut(context),
             ),
           ),
         ],

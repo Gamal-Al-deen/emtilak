@@ -1,5 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import '../core/colors.dart';
+import '../services/auth_service.dart';
 import '../widgets/layout/main_layout.dart';
 import '../views/onboarding/onboarding_view.dart';
 import '../views/auth/login_page.dart';
@@ -30,6 +34,50 @@ class EmtilakApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // عند عدم تهيئة Firebase (كاختبارات الوحدات) نتّبع المنطق القديم دون قيود.
+    if (Firebase.apps.isEmpty) {
+      return _buildApp(
+        hasSeenOnboarding ? AppRoutes.login : AppRoutes.onboarding,
+        guardAuthenticatedRoutes: false,
+      );
+    }
+
+    // ننتظر أول إشعار بحالة المصادقة حتى لا تظهر الشاشة الخاطئة أثناء
+    // تحميل جلسة Firebase المستعادة من الجهاز.
+    return StreamBuilder<User?>(
+      stream: AuthService.instance.authStateChanges(),
+      initialData: AuthService.instance.currentUser,
+      builder: (context, snapshot) {
+        final bool resolved = snapshot.connectionState ==
+                ConnectionState.active ||
+            snapshot.connectionState == ConnectionState.done;
+        final bool signedIn = snapshot.hasData;
+
+        if (!signedIn && !resolved) {
+          return const _AuthLoadingView();
+        }
+
+        final String initialRoute;
+        if (!hasSeenOnboarding) {
+          initialRoute = AppRoutes.onboarding;
+        } else {
+          initialRoute =
+              signedIn ? AppRoutes.mainLayout : AppRoutes.login;
+        }
+
+        return _buildApp(initialRoute, guardAuthenticatedRoutes: true);
+      },
+    );
+  }
+
+  Widget _buildApp(
+    String initialRoute, {
+    required bool guardAuthenticatedRoutes,
+  }) {
+    // يمنع دخول منشأة محمية دون تسجيل دخول.
+    Widget guard(Widget child) =>
+        guardAuthenticatedRoutes ? AuthGuard(child: child) : child;
+
     return MaterialApp(
       title: 'إمتلاك',
       debugShowCheckedModeBanner: false,
@@ -41,30 +89,93 @@ class EmtilakApp extends StatelessWidget {
           child: child ?? const SizedBox.shrink(),
         );
       },
-      initialRoute: hasSeenOnboarding ? AppRoutes.login : AppRoutes.onboarding,
+      initialRoute: initialRoute,
       routes: {
         AppRoutes.onboarding: (_) => const OnboardingView(),
         AppRoutes.login: (_) => const LoginPage(),
         AppRoutes.signUp: (_) => const SignUpPage(),
         AppRoutes.forgotPassword: (_) => const ForgotPasswordPage(),
-        AppRoutes.mainLayout: (_) => const MainLayout(),
-        AppRoutes.dashboard: (_) => const DashboardPage(),
-        AppRoutes.buildings: (_) => const BuildingsPage(),
-        AppRoutes.unitsGrid: (_) => const UnitsGridPage(),
-        AppRoutes.unitDetails: (_) => const UnitDetailsPage(),
-        AppRoutes.contracts: (_) => const ContractsPage(),
-        AppRoutes.addContract: (_) => const AddContractPage(),
-        AppRoutes.tenants: (_) => const TenantsPage(),
-        AppRoutes.tenantStatement: (_) => const TenantStatementPage(),
-        AppRoutes.payments: (_) => const PaymentsPage(),
-        AppRoutes.addPayment: (_) => const AddPaymentPage(),
-        AppRoutes.maintenance: (_) => const AddMaintenancePage(),
-        AppRoutes.addMaintenance: (_) => const AddMaintenancePage(),
-        AppRoutes.financialReport: (_) => const FinancialReportPage(),
-        AppRoutes.currencies: (_) => const CurrenciesPage(),
-        AppRoutes.notifications: (_) => const NotificationsPage(),
-        AppRoutes.settings: (_) => const SettingsPage(),
+        AppRoutes.mainLayout: (_) => guard(const MainLayout()),
+        AppRoutes.dashboard: (_) => guard(const DashboardPage()),
+        AppRoutes.buildings: (_) => guard(const BuildingsPage()),
+        AppRoutes.unitsGrid: (_) => guard(const UnitsGridPage()),
+        AppRoutes.unitDetails: (_) => guard(const UnitDetailsPage()),
+        AppRoutes.contracts: (_) => guard(const ContractsPage()),
+        AppRoutes.addContract: (_) => guard(const AddContractPage()),
+        AppRoutes.tenants: (_) => guard(const TenantsPage()),
+        AppRoutes.tenantStatement: (_) =>
+            guard(const TenantStatementPage()),
+        AppRoutes.payments: (_) => guard(const PaymentsPage()),
+        AppRoutes.addPayment: (_) => guard(const AddPaymentPage()),
+        AppRoutes.maintenance: (_) => guard(const AddMaintenancePage()),
+        AppRoutes.addMaintenance: (_) => guard(const AddMaintenancePage()),
+        AppRoutes.financialReport: (_) =>
+            guard(const FinancialReportPage()),
+        AppRoutes.currencies: (_) => guard(const CurrenciesPage()),
+        AppRoutes.notifications: (_) => guard(const NotificationsPage()),
+        AppRoutes.settings: (_) => guard(const SettingsPage()),
       },
+    );
+  }
+}
+
+/// يمنع الوصول إلى الشاشات المخصّصة لمستخدم مسجّل الدخول دون مصادقة.
+class AuthGuard extends StatefulWidget {
+  const AuthGuard({super.key, required this.child});
+
+  final Widget child;
+
+  @override
+  State<AuthGuard> createState() => _AuthGuardState();
+}
+
+class _AuthGuardState extends State<AuthGuard> {
+  bool _redirecting = false;
+
+  @override
+  Widget build(BuildContext context) {
+    // Firebase مهيّأ بالفعل عند بناء المسارات (انظر `Firebase.apps.isEmpty`).
+    if (AuthService.instance.currentUser != null) {
+      return widget.child;
+    }
+
+    if (!_redirecting) {
+      _redirecting = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          AppRoutes.login,
+          (route) => false,
+        );
+      });
+    }
+
+    // لا نعرض محتوى محميًا ولو لحظة واحدة.
+    return const _AuthLoadingView();
+  }
+}
+
+/// شاشة تحميل بسيطة تُستخدم أثناء التحقق من حالة المصادقة.
+class _AuthLoadingView extends StatelessWidget {
+  const _AuthLoadingView();
+
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: ColoredBox(
+        color: AppColors.background,
+        child: Center(
+          child: SizedBox(
+            width: 36,
+            height: 36,
+            child: CircularProgressIndicator(
+              color: AppColors.primary,
+              strokeWidth: 3,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

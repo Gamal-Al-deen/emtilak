@@ -16,8 +16,15 @@ class LoginBrandSection extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        AppBrandLogo(size: logoSize),
-        const SizedBox(height: 16),
+        // حاوية الشعار مربّعة الشكل (1.5 × الحجم) بينما صورة الشعار عريضة،
+        // فتبقى أسفلها مساحة شفافة كبيرة تُحدث فجوة كبيرة بين الشعار والنص.
+        // نقصّر ارتفاع الحاوية إلى حجم الصورة نفسه لإزالة تلك المساحة،
+        // مع بقاء الشعار بالحجم نفسه ودون أي تغيير في التصميم.
+        SizedBox(
+          height: logoSize,
+          child: AppBrandLogo(size: logoSize),
+        ),
+        const SizedBox(height: 8),
         const FractionallySizedBox(
           widthFactor: 0.8,
           child: Text(

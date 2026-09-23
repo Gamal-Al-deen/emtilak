@@ -1,9 +1,22 @@
 import 'package:flutter/material.dart';
 import '../../core/colors.dart';
 import '../../routes/routes.dart';
+import '../../services/auth_service.dart';
+import 'auth_message.dart';
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer({super.key});
+
+  /// ينهي جلسة المستخدم ثم يعيدها إلى شاشة تسجيل الدخول.
+  Future<void> _signOut(BuildContext context) async {
+    final bool signedOut = await AuthService.instance.signOut();
+    if (!context.mounted) return;
+    if (!signedOut) {
+      showAuthMessage(context, 'تعذّر تسجيل الخروج، حاول مرة أخرى.');
+      return;
+    }
+    Navigator.pushReplacementNamed(context, AppRoutes.login);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,9 +134,7 @@ class MainDrawer extends StatelessWidget {
               'تسجيل الخروج',
               style: TextStyle(fontFamily: 'Cairo', color: AppColors.error),
             ),
-            onTap: () {
-              Navigator.pushReplacementNamed(context, AppRoutes.login);
-            },
+            onTap: () => _signOut(context),
           ),
           const SizedBox(height: 16),
         ],

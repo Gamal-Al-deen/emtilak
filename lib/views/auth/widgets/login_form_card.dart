@@ -12,7 +12,15 @@ class LoginFormCard extends StatelessWidget {
     required this.passwordController,
     required this.obscurePassword,
     required this.onSubmit,
+    required this.onGoogleSignIn,
+    required this.onFacebookSignIn,
+    required this.onBiometricSignIn,
     required this.onPasswordToggle,
+    this.isLoading = false,
+    this.isGoogleLoading = false,
+    this.isFacebookLoading = false,
+    this.isBiometricLoading = false,
+    this.showBiometricButton = false,
   });
 
   final GlobalKey<FormState> formKey;
@@ -20,7 +28,25 @@ class LoginFormCard extends StatelessWidget {
   final TextEditingController passwordController;
   final bool obscurePassword;
   final VoidCallback onSubmit;
+  final VoidCallback onGoogleSignIn;
+  final VoidCallback onFacebookSignIn;
+  final VoidCallback onBiometricSignIn;
   final VoidCallback onPasswordToggle;
+
+  /// يمنع أي محاولة دخول جديدة أثناء تنفيذ محاولة سابقة.
+  final bool isLoading;
+
+  /// يحدّد الزر الذي يعرض مؤشر التحميل حاليًا.
+  final bool isGoogleLoading;
+  final bool isFacebookLoading;
+  final bool isBiometricLoading;
+
+  /// يظهر زر البصمة فقط عند تفعيله من الإعدادات.
+  final bool showBiometricButton;
+
+  /// مؤشر التحميل الخاص بأي زر غير زر تسجيل الدخول الأساسي.
+  bool get _socialActionLoading =>
+      isGoogleLoading || isFacebookLoading || isBiometricLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +90,7 @@ class LoginFormCard extends StatelessWidget {
                 fontFamily: 'Cairo',
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 16),
             AuthFormField(
               controller: emailPhoneController,
               hintText: 'البريد الإلكتروني أو رقم الهاتف',
@@ -109,7 +135,7 @@ class LoginFormCard extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             ElevatedButton(
-              onPressed: onSubmit,
+              onPressed: isLoading ? null : onSubmit,
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
@@ -117,16 +143,25 @@ class LoginFormCard extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 backgroundColor: AppColors.primary,
               ),
-              child: const Text(
-                'تسجيل الدخول',
-                style: TextStyle(
-                  fontFamily: 'Cairo',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                ),
-              ),
+              child: isLoading && !_socialActionLoading
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.4,
+                        color: AppColors.white,
+                      ),
+                    )
+                  : const Text(
+                      'تسجيل الدخول',
+                      style: TextStyle(
+                        fontFamily: 'Cairo',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
             const Row(
               children: [
                 Expanded(child: Divider(color: AppColors.border)),
@@ -144,7 +179,7 @@ class LoginFormCard extends StatelessWidget {
                 Expanded(child: Divider(color: AppColors.border)),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
             OutlinedButton.icon(
               style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 12),
@@ -153,15 +188,24 @@ class LoginFormCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              onPressed: onSubmit,
-              icon: const Icon(
-                Icons.g_mobiledata,
-                size: 28,
-                color: AppColors.error,
-              ),
-              label: const Text(
-                'تسجيل الدخول باستخدام Google',
-                style: TextStyle(
+              onPressed: isLoading ? null : onGoogleSignIn,
+              icon: isGoogleLoading
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.4,
+                        color: AppColors.primary,
+                      ),
+                    )
+                  : const Icon(
+                      Icons.g_mobiledata,
+                      size: 28,
+                      color: AppColors.error,
+                    ),
+              label: Text(
+                isGoogleLoading ? 'جارٍ التحقق...' : 'تسجيل الدخول باستخدام Google',
+                style: const TextStyle(
                   color: AppColors.textPrimary,
                   fontSize: 13,
                   fontWeight: FontWeight.bold,
@@ -169,7 +213,79 @@ class LoginFormCard extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 14),
+            OutlinedButton.icon(
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                side: const BorderSide(color: AppColors.border),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              onPressed: isLoading ? null : onFacebookSignIn,
+              icon: isFacebookLoading
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.4,
+                        color: AppColors.primary,
+                      ),
+                    )
+                  : const Icon(
+                      Icons.facebook,
+                      size: 24,
+                      color: AppColors.info,
+                    ),
+              label: Text(
+                isFacebookLoading
+                    ? 'جارٍ التحقق...'
+                    : 'تسجيل الدخول باستخدام Facebook',
+                style: const TextStyle(
+                  color: AppColors.textPrimary,
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Cairo',
+                ),
+              ),
+            ),
+            if (showBiometricButton) ...[
+              const SizedBox(height: 12),
+              OutlinedButton.icon(
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  side: const BorderSide(color: AppColors.border),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                onPressed: isLoading ? null : onBiometricSignIn,
+                icon: isBiometricLoading
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2.4,
+                          color: AppColors.primary,
+                        ),
+                      )
+                    : const Icon(
+                        Icons.fingerprint,
+                        size: 24,
+                        color: AppColors.primary,
+                      ),
+                label: Text(
+                  isBiometricLoading ? 'جارٍ التحقق...' : 'تسجيل الدخول بالبصمة',
+                  style: const TextStyle(
+                    color: AppColors.textPrimary,
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Cairo',
+                  ),
+                ),
+              ),
+            ],
+            const SizedBox(height: 14),
             Wrap(
               alignment: WrapAlignment.center,
               crossAxisAlignment: WrapCrossAlignment.center,

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../core/colors.dart';
 import '../../routes/routes.dart';
+import '../../services/auth_service.dart';
+import '../../widgets/common/auth_message.dart';
 import 'widgets/sign_up_brand_section.dart';
 import 'widgets/sign_up_form_card.dart';
 
@@ -21,6 +23,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final _confirmPasswordController = TextEditingController();
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
+  Future<void>? _pendingSignUp;
 
   @override
   void dispose() {
@@ -32,14 +35,43 @@ class _SignUpPageState extends State<SignUpPage> {
     super.dispose();
   }
 
-  void _submit() {
-    if (_formKey.currentState!.validate()) {
-      Navigator.pushReplacementNamed(context, AppRoutes.login);
+  void _showMessage(String message, {bool isError = true}) {
+    if (!mounted) return;
+    showAuthMessage(context, message, isError: isError);
+  }
+
+  Future<void> _submit() async {
+    if (!(_formKey.currentState?.validate() ?? false)) return;
+    if (_pendingSignUp != null) return; // منع المحاولات المتزامنة
+
+    final Future<void> future = _createAccount();
+    setState(() => _pendingSignUp = future);
+    try {
+      await future;
+    } on AuthFailure catch (e) {
+      _showMessage(e.message);
+    } catch (_) {
+      _showMessage('حدث خطأ غير متوقع، حاول مرة أخرى.');
+    } finally {
+      if (mounted) setState(() => _pendingSignUp = null);
     }
+  }
+
+  Future<void> _createAccount() async {
+    await AuthService.instance.signUpWithEmail(
+      email: _emailController.text,
+      password: _passwordController.text,
+      displayName: _fullNameController.text,
+    );
+    // إنشاء الحساب يسجّل دخول المستخدم تلقائيًا في Firebase.
+    if (!mounted) return;
+    Navigator.pushReplacementNamed(context, AppRoutes.mainLayout);
   }
 
   @override
   Widget build(BuildContext context) {
+    final bool isLoading = _pendingSignUp != null;
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -83,6 +115,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   obscureConfirmPassword:
                                       _obscureConfirmPassword,
                                   onSubmit: _submit,
+                                  isLoading: isLoading,
                                   onTogglePassword: () => setState(
                                     () => _obscurePassword = !_obscurePassword,
                                   ),
@@ -110,6 +143,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 obscurePassword: _obscurePassword,
                                 obscureConfirmPassword: _obscureConfirmPassword,
                                 onSubmit: _submit,
+                                isLoading: isLoading,
                                 onTogglePassword: () => setState(
                                   () => _obscurePassword = !_obscurePassword,
                                 ),

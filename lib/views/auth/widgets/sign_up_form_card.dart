@@ -18,6 +18,7 @@ class SignUpFormCard extends StatelessWidget {
     required this.onSubmit,
     required this.onTogglePassword,
     required this.onToggleConfirmPassword,
+    this.isLoading = false,
   });
 
   final GlobalKey<FormState> formKey;
@@ -31,6 +32,9 @@ class SignUpFormCard extends StatelessWidget {
   final VoidCallback onSubmit;
   final VoidCallback onTogglePassword;
   final VoidCallback onToggleConfirmPassword;
+
+  /// يمنع أي محاولة إنشاء حساب متزامنة أثناء تنفيذ محاولة سابقة.
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +136,7 @@ class SignUpFormCard extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             ElevatedButton(
-              onPressed: onSubmit,
+              onPressed: isLoading ? null : onSubmit,
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
@@ -140,14 +144,23 @@ class SignUpFormCard extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 backgroundColor: AppColors.primary,
               ),
-              child: const Text(
-                'إنشاء الحساب',
-                style: TextStyle(
-                  fontFamily: 'Cairo',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                ),
-              ),
+              child: isLoading
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.4,
+                        color: AppColors.white,
+                      ),
+                    )
+                  : const Text(
+                      'إنشاء الحساب',
+                      style: TextStyle(
+                        fontFamily: 'Cairo',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
             ),
             const SizedBox(height: 20),
             Wrap(
