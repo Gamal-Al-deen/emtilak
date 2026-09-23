@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/colors.dart';
 import '../../../utils/responsive.dart';
-import '../../../mockData/mock_data_service.dart';
+import '../../../controllers/app_controllers.dart';
 import '../../../widgets/common/custom_app_bar.dart';
 import 'add_payment_header.dart';
 import 'add_payment_form.dart';
@@ -15,7 +15,7 @@ class AddPaymentContent extends StatefulWidget {
 }
 
 class _AddPaymentContentState extends State<AddPaymentContent> {
-  final MockDataService _dataService = MockDataService.instance;
+  final AppControllers _dataService = AppControllers.instance;
   final _formKey = GlobalKey<FormState>();
   final _amountController = TextEditingController();
   final _notesController = TextEditingController();
@@ -30,8 +30,13 @@ class _AddPaymentContentState extends State<AddPaymentContent> {
     super.initState();
     if (_dataService.tenants.isNotEmpty) {
       _selectedTenant = _dataService.tenants.first.name;
-    }
-    if (_dataService.contracts.isNotEmpty) {
+      final tenantContracts = _dataService.getContractsForTenant(_selectedTenant!);
+      if (tenantContracts.isNotEmpty) {
+        final c = tenantContracts.first;
+        _selectedContract = 'عقد #${c.id} (${c.unitName})';
+        _amountController.text = c.monthlyRent.toInt().toString();
+      }
+    } else if (_dataService.contracts.isNotEmpty) {
       final c = _dataService.contracts.first;
       _selectedContract = 'عقد #${c.id} (${c.unitName})';
       _amountController.text = c.monthlyRent.toInt().toString();
@@ -68,16 +73,21 @@ class _AddPaymentContentState extends State<AddPaymentContent> {
     }
   }
 
-  void _handleSubmit() {
+  Future<void> _handleSubmit() async {
     if (_formKey.currentState!.validate()) {
       final amount =
           double.tryParse(_amountController.text.trim()) ?? 0.0;
       final dateFormatted =
           '${_paymentDate.year}/${_paymentDate.month.toString().padLeft(2, '0')}/${_paymentDate.day.toString().padLeft(2, '0')}';
 
-      _dataService.addPayment(
+      final tenantContracts = _dataService.getContractsForTenant(_selectedTenant ?? '');
+      final matchedContract = tenantContracts.where((c) => 'عقد #${c.id} (${c.unitName})' == _selectedContract).firstOrNull ??
+          (tenantContracts.isNotEmpty ? tenantContracts.first : null);
+
+      final error = await _dataService.addPayment(
+        contractId: matchedContract?.id,
         tenantName: _selectedTenant ?? 'مستأجر عام',
-        contractInfo: _selectedContract ?? 'عقد عام',
+        contractInfo: _selectedContract ?? (matchedContract != null ? 'عقد #${matchedContract.id} (${matchedContract.unitName})' : 'عقد عام'),
         amount: amount,
         currency: _selectedCurrency == 'USD' ? '\$' : _selectedCurrency,
         paymentDate: dateFormatted,
@@ -86,23 +96,35 @@ class _AddPaymentContentState extends State<AddPaymentContent> {
         notes: _notesController.text.trim(),
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('تم تسجيل الدفعة وحفظها بنجاح!'),
-          backgroundColor: AppColors.success,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-      Navigator.pop(context);
+      if (!mounted) return;
+      if (error != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(error),
+            backgroundColor: AppColors.error,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('تم تسجيل الدفعة وحفظها بنجاح!'),
+            backgroundColor: AppColors.success,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+        Navigator.pop(context);
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final tenantOptions = _dataService.tenants.map((t) => t.name).toList();
-    final contractOptions = _dataService.contracts
-        .map((c) => 'عقد #${c.id} (${c.unitName})')
-        .toList();
+    final tenantContracts = _dataService.getContractsForTenant(_selectedTenant ?? '');
+    final contractOptions = tenantContracts.isNotEmpty
+        ? tenantContracts.map((c) => 'عقد #${c.id} (${c.unitName})').toList()
+        : _dataService.contracts.map((c) => 'عقد #${c.id} (${c.unitName})').toList();
     final currencyOptions = _dataService.currencies.map((c) => c.code).toList();
     final horizontalPadding = Responsive.getHorizontalPadding(context);
 
@@ -127,8 +149,30 @@ class _AddPaymentContentState extends State<AddPaymentContent> {
               tenantOptions: tenantOptions,
               contractOptions: contractOptions,
               currencyOptions: currencyOptions,
-              onTenantChanged: (v) => setState(() => _selectedTenant = v),
-              onContractChanged: (v) => setState(() => _selectedContract = v),
+              onTenantChanged: (v) {
+                setState(() {
+                  _selectedTenant = v;
+                  final updatedContracts = _dataService.getContractsForTenant(v ?? '');
+                  if (updatedContracts.isNotEmpty) {
+                    final c = updatedContracts.first;
+                    _selectedContract = 'عقد #${c.id} (${c.unitName})';
+                    _amountController.text = c.monthlyRent.toInt().toString();
+                  } else {
+                    _selectedContract = null;
+                    _amountController.clear();
+                  }
+                });
+              },
+              onContractChanged: (v) {
+                setState(() {
+                  _selectedContract = v;
+                  final contracts = _dataService.getContractsForTenant(_selectedTenant ?? '');
+                  final matched = contracts.where((c) => 'عقد #${c.id} (${c.unitName})' == v).firstOrNull;
+                  if (matched != null) {
+                    _amountController.text = matched.monthlyRent.toInt().toString();
+                  }
+                });
+              },
               onCurrencyChanged: (v) => setState(() => _selectedCurrency = v),
               onDateTap: () => _pickDate(context),
               onMethodChanged: (label) => setState(() => _paymentMethod = label),

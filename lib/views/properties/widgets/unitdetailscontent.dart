@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/colors.dart';
 import '../../../utils/responsive.dart';
-import '../../../mockData/mock_data_service.dart';
+import '../../../controllers/app_controllers.dart';
 import '../../../models/app_models.dart';
 import '../../../widgets/common/custom_app_bar.dart';
 import 'unit_details_header.dart';
@@ -16,7 +16,7 @@ class UnitDetailsContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final unitNumber =
         (ModalRoute.of(context)?.settings.arguments as String?) ?? 'A101';
-    final dataService = MockDataService.instance;
+    final dataService = AppControllers.instance;
 
     final unit = dataService.units.firstWhere(
       (u) => u.number == unitNumber,

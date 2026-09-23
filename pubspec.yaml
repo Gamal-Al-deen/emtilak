@@ -13,6 +13,8 @@ dependencies:
   introduction_screen: ^4.0.0
   shared_preferences: ^2.3.0
   flutter_native_splash: ^2.4.8
+  sqflite: ^2.4.4
+  path: ^1.9.1
 
 dev_dependencies:
   flutter_test:

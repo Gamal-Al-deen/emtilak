@@ -36,4 +36,28 @@ class Unit {
       currentTenant: currentTenant ?? this.currentTenant,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'building_id': buildingId,
+      'unit_number': number,
+      'building_name': buildingName,
+      'status': status,
+      'monthly_rent': monthlyRent,
+      'current_tenant': currentTenant,
+    };
+  }
+
+  factory Unit.fromMap(Map<String, dynamic> map) {
+    return Unit(
+      id: map['id']?.toString() ?? '',
+      buildingId: map['building_id']?.toString() ?? '',
+      number: map['unit_number'] ?? map['number'] ?? '',
+      buildingName: map['building_name'] ?? '',
+      status: map['status'] ?? 'فارغة',
+      monthlyRent: (map['monthly_rent'] as num?)?.toDouble() ?? 0.0,
+      currentTenant: map['current_tenant'],
+    );
+  }
 }
