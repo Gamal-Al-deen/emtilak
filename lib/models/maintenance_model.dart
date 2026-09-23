@@ -16,4 +16,28 @@ class MaintenanceExpense {
     required this.date,
     this.notes,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'description': description,
+      'amount': amount,
+      'currency': currency,
+      'unit_name': unitName,
+      'expense_date': date,
+      'notes': notes,
+    };
+  }
+
+  factory MaintenanceExpense.fromMap(Map<String, dynamic> map) {
+    return MaintenanceExpense(
+      id: map['id']?.toString() ?? '',
+      description: map['description'] ?? '',
+      amount: (map['amount'] as num?)?.toDouble() ?? 0.0,
+      currency: map['currency'] ?? '\$',
+      unitName: map['unit_name'] ?? '',
+      date: map['expense_date'] ?? map['date'] ?? '',
+      notes: map['notes'],
+    );
+  }
 }
