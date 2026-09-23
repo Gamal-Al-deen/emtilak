@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/app.dart';
+import 'controllers/app_controllers.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -10,12 +11,12 @@ void main() async {
 
   // تهيئة Firebase مرة واحدة قبل تشغيل التطبيق، باستخدام الإعدادات المولّدة
   // من FlutterFire — دون تثبيت أي بيانات اعتماد داخل الكود.
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   final prefs = await SharedPreferences.getInstance();
   final hasSeenOnboarding = prefs.getBool('hasSeenOnboarding') ?? false;
+
+  await AppControllers.instance.initControllers();
 
   runApp(EmtilakApp(hasSeenOnboarding: hasSeenOnboarding));
 }

@@ -4,11 +4,15 @@ import '../../../../core/colors.dart';
 class TenantStatementHeader extends StatelessWidget {
   final String tenantName;
   final String tenantUnit;
+  final String balanceText;
+  final String? contractInfo;
 
   const TenantStatementHeader({
     super.key,
     required this.tenantName,
     required this.tenantUnit,
+    this.balanceText = '0 \$ (مستوفى)',
+    this.contractInfo,
   });
 
   @override
@@ -42,13 +46,24 @@ class TenantStatementHeader extends StatelessWidget {
                   fontFamily: 'Cairo',
                 ),
               ),
+              if (contractInfo != null) ...[
+                const SizedBox(height: 2),
+                Text(
+                  contractInfo!,
+                  style: const TextStyle(
+                    color: AppColors.white70,
+                    fontSize: 11,
+                    fontFamily: 'Cairo',
+                  ),
+                ),
+              ],
             ],
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
-            children: const [
-              Text(
-                'الرصيد الحالي',
+            children: [
+              const Text(
+                'الرصيد / المدفوع',
                 style: TextStyle(
                   color: AppColors.white70,
                   fontSize: 11,
@@ -56,8 +71,8 @@ class TenantStatementHeader extends StatelessWidget {
                 ),
               ),
               Text(
-                '0 \$ (مستوفى)',
-                style: TextStyle(
+                balanceText,
+                style: const TextStyle(
                   color: AppColors.gold,
                   fontWeight: FontWeight.bold,
                   fontSize: 16,

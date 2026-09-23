@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/colors.dart';
 import '../../../utils/responsive.dart';
-import '../../../mockData/mock_data_service.dart';
+import '../../../controllers/app_controllers.dart';
 import '../../../models/app_models.dart';
 import '../../../routes/routes.dart';
 import 'building_card.dart';
@@ -17,7 +17,7 @@ class BuildingsContent extends StatefulWidget {
 }
 
 class _BuildingsContentState extends State<BuildingsContent> {
-  final MockDataService _dataService = MockDataService.instance;
+  final AppControllers _dataService = AppControllers.instance;
   String _searchQuery = '';
 
   @override
@@ -47,19 +47,30 @@ class _BuildingsContentState extends State<BuildingsContent> {
             required String name,
             required String location,
             required int totalUnits,
-          }) {
-            _dataService.addBuilding(
+          }) async {
+            final error = await _dataService.addBuilding(
               name: name,
               location: location,
               totalUnits: totalUnits,
             );
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('تم إضافة المبنى بنجاح!'),
-                backgroundColor: AppColors.success,
-                behavior: SnackBarBehavior.floating,
-              ),
-            );
+            if (!context.mounted) return;
+            if (error != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(error),
+                  backgroundColor: AppColors.error,
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('تم إضافة المبنى بنجاح!'),
+                  backgroundColor: AppColors.success,
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+            }
           },
         );
       },
