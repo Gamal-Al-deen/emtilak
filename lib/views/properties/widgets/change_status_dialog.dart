@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../core/colors.dart';
 import '../../../models/app_models.dart';
 
 class ChangeStatusDialog extends StatefulWidget {
@@ -28,7 +27,7 @@ class _ChangeStatusDialogState extends State<ChangeStatusDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: AppColors.surface,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       title: Text(
         'تغيير حالة الوحدة ${widget.unit.number}',
         style: const TextStyle(
@@ -61,8 +60,8 @@ class _ChangeStatusDialogState extends State<ChangeStatusDialog> {
                     ? Icons.radio_button_checked
                     : Icons.radio_button_off,
                 color: selectedStatus == st
-                    ? AppColors.primary
-                    : AppColors.textSecondary,
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.onSurfaceVariant,
               ),
               onTap: () {
                 setState(() => selectedStatus = st);
@@ -74,11 +73,11 @@ class _ChangeStatusDialogState extends State<ChangeStatusDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text(
+          child: Text(
             'إلغاء',
             style: TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textSecondary,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
           ),
         ),

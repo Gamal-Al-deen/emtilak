@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../../core/colors.dart';
 import '../../../../utils/responsive.dart';
 import '../../../../models/app_models.dart';
 import '../../../../controllers/app_controllers.dart';
@@ -34,12 +33,12 @@ class TenantDetailsModal extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const CircleAvatar(
-                    backgroundColor: AppColors.divider,
+                  CircleAvatar(
+                    backgroundColor: Theme.of(context).colorScheme.outlineVariant,
                     radius: 22,
                     child: Icon(
                       Icons.person,
-                      color: AppColors.primary,
+                      color: Theme.of(context).colorScheme.primary,
                       size: 24,
                     ),
                   ),
@@ -60,9 +59,9 @@ class TenantDetailsModal extends StatelessWidget {
                         ),
                         Text(
                           unitSummary,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12,
-                            color: AppColors.textSecondary,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                             fontFamily: 'Cairo',
                           ),
                           maxLines: 1,
@@ -73,14 +72,14 @@ class TenantDetailsModal extends StatelessWidget {
                   ),
                 ],
               ),
-              const Divider(height: 18, color: AppColors.divider),
+              Divider(height: 18, color: Theme.of(context).colorScheme.outlineVariant),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     'رقم الهاتف:',
                     style: TextStyle(
-                      color: AppColors.textSecondary,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontFamily: 'Cairo',
                       fontSize: 13,
                     ),
@@ -100,10 +99,10 @@ class TenantDetailsModal extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       'رقم الهوية:',
                       style: TextStyle(
-                        color: AppColors.textSecondary,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontFamily: 'Cairo',
                         fontSize: 13,
                       ),
@@ -120,13 +119,13 @@ class TenantDetailsModal extends StatelessWidget {
                 ),
               ],
               const SizedBox(height: 14),
-              const Text(
+              Text(
                 'العقود والوحدات المرتبطة:',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Cairo',
                   fontSize: 13,
-                  color: AppColors.textPrimary,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 8),
@@ -135,16 +134,16 @@ class TenantDetailsModal extends StatelessWidget {
                   width: double.infinity,
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: AppColors.surface,
+                    color: Theme.of(context).colorScheme.surfaceContainerLow,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: AppColors.border),
+                    border: Border.all(color: Theme.of(context).colorScheme.outline),
                   ),
-                  child: const Text(
+                  child: Text(
                     'لا توجد عقود نشطة حالياً لهذا المستأجر.',
                     style: TextStyle(
                       fontFamily: 'Cairo',
                       fontSize: 12,
-                      color: AppColors.textSecondary,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                   ),
                 )
@@ -153,9 +152,9 @@ class TenantDetailsModal extends StatelessWidget {
                       margin: const EdgeInsets.only(bottom: 8),
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: AppColors.surface,
+                        color: Theme.of(context).colorScheme.surfaceContainerLow,
                         borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: AppColors.border),
+                        border: Border.all(color: Theme.of(context).colorScheme.outline),
                       ),
                       child: Row(
                         children: [
@@ -173,9 +172,9 @@ class TenantDetailsModal extends StatelessWidget {
                                 ),
                                 Text(
                                   'عقد #${c.id} • الإيجار: ${c.monthlyRent.toInt()} \$',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 11,
-                                    color: AppColors.textSecondary,
+                                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                                     fontFamily: 'Cairo',
                                   ),
                                 ),
@@ -184,7 +183,7 @@ class TenantDetailsModal extends StatelessWidget {
                           ),
                           TextButton.icon(
                             style: TextButton.styleFrom(
-                              foregroundColor: AppColors.primary,
+                              foregroundColor: Theme.of(context).colorScheme.primary,
                               visualDensity: VisualDensity.compact,
                             ),
                             onPressed: () {
@@ -214,7 +213,7 @@ class TenantDetailsModal extends StatelessWidget {
               const SizedBox(height: 10),
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
                   minimumSize: const Size.fromHeight(44),
                 ),
                 onPressed: onViewStatement,

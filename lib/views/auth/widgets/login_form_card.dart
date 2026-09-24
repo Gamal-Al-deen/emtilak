@@ -56,9 +56,9 @@ class LoginFormCard extends StatelessWidget {
       constraints: const BoxConstraints(maxWidth: 520),
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: Theme.of(context).colorScheme.outline),
         boxShadow: const [
           BoxShadow(
             color: AppColors.cardShadow,
@@ -75,10 +75,10 @@ class LoginFormCard extends StatelessWidget {
             Text(
               l10n.loginTitle,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
-                color: AppColors.primary,
+                color: Theme.of(context).colorScheme.primary,
                 fontFamily: 'Cairo',
               ),
             ),
@@ -86,9 +86,9 @@ class LoginFormCard extends StatelessWidget {
             Text(
               l10n.loginWelcome,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 13,
-                color: AppColors.textSecondary,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 fontFamily: 'Cairo',
               ),
             ),
@@ -111,7 +111,7 @@ class LoginFormCard extends StatelessWidget {
                   obscurePassword
                       ? Icons.visibility_off_outlined
                       : Icons.visibility_outlined,
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
                 onPressed: onPasswordToggle,
               ),
@@ -143,7 +143,7 @@ class LoginFormCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(14),
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: AppColors.primary,
+                backgroundColor: Theme.of(context).colorScheme.primary,
               ),
               child: isLoading && !_socialActionLoading
                   ? const SizedBox(
@@ -164,40 +164,40 @@ class LoginFormCard extends StatelessWidget {
                     ),
             ),
             const SizedBox(height: 16),
-            const Row(
+            Row(
               children: [
-                Expanded(child: Divider(color: AppColors.border)),
+                Expanded(child: Divider(color: Theme.of(context).colorScheme.outline)),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   child: Text(
                     'أو',
                     style: TextStyle(
-                      color: AppColors.textSecondary,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontFamily: 'Cairo',
                       fontSize: 12,
                     ),
                   ),
                 ),
-                Expanded(child: Divider(color: AppColors.border)),
+                Expanded(child: Divider(color: Theme.of(context).colorScheme.outline)),
               ],
             ),
             const SizedBox(height: 16),
             OutlinedButton.icon(
               style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 12),
-                side: const BorderSide(color: AppColors.border),
+                side: BorderSide(color: Theme.of(context).colorScheme.outline),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
               onPressed: isLoading ? null : onGoogleSignIn,
               icon: isGoogleLoading
-                  ? const SizedBox(
+                  ? SizedBox(
                       width: 20,
                       height: 20,
                       child: CircularProgressIndicator(
                         strokeWidth: 2.4,
-                        color: AppColors.primary,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                     )
                   : const Icon(
@@ -207,8 +207,8 @@ class LoginFormCard extends StatelessWidget {
                     ),
               label: Text(
                 isGoogleLoading ? l10n.loginVerifying : l10n.loginWithGoogle,
-                style: const TextStyle(
-                  color: AppColors.textPrimary,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 13,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Cairo',
@@ -219,19 +219,19 @@ class LoginFormCard extends StatelessWidget {
             OutlinedButton.icon(
               style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 12),
-                side: const BorderSide(color: AppColors.border),
+                side: BorderSide(color: Theme.of(context).colorScheme.outline),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
               onPressed: isLoading ? null : onFacebookSignIn,
               icon: isFacebookLoading
-                  ? const SizedBox(
+                  ? SizedBox(
                       width: 20,
                       height: 20,
                       child: CircularProgressIndicator(
                         strokeWidth: 2.4,
-                        color: AppColors.primary,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                     )
                   : const Icon(
@@ -243,8 +243,8 @@ class LoginFormCard extends StatelessWidget {
                 isFacebookLoading
                     ? l10n.loginVerifying
                     : l10n.loginWithFacebook,
-                style: const TextStyle(
-                  color: AppColors.textPrimary,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 13,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Cairo',
@@ -256,30 +256,30 @@ class LoginFormCard extends StatelessWidget {
               OutlinedButton.icon(
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12),
-                  side: const BorderSide(color: AppColors.border),
+                  side: BorderSide(color: Theme.of(context).colorScheme.outline),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
                 onPressed: isLoading ? null : onBiometricSignIn,
                 icon: isBiometricLoading
-                    ? const SizedBox(
+                    ? SizedBox(
                         width: 20,
                         height: 20,
                         child: CircularProgressIndicator(
                           strokeWidth: 2.4,
-                          color: AppColors.primary,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
                       )
-                    : const Icon(
+                    : Icon(
                         Icons.fingerprint,
                         size: 24,
-                        color: AppColors.primary,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                 label: Text(
                   isBiometricLoading ? l10n.loginVerifying : l10n.loginWithBiometric,
-                  style: const TextStyle(
-                    color: AppColors.textPrimary,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
                     fontFamily: 'Cairo',
@@ -295,8 +295,8 @@ class LoginFormCard extends StatelessWidget {
               children: [
                 Text(
                   l10n.loginNoAccount,
-                  style: const TextStyle(
-                    color: AppColors.textSecondary,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     fontSize: 13,
                     fontFamily: 'Cairo',
                   ),

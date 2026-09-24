@@ -20,7 +20,7 @@ class TenantStatementHeader extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.primary,
+        color: Theme.of(context).colorScheme.primary,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(

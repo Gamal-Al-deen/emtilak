@@ -21,10 +21,10 @@ class CurrencyTile extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: isBase ? AppColors.gold : AppColors.border,
+          color: isBase ? AppColors.gold : Theme.of(context).colorScheme.outline,
           width: isBase ? 1.5 : 1,
         ),
       ),
@@ -33,11 +33,11 @@ class CurrencyTile extends StatelessWidget {
         leading: CircleAvatar(
           backgroundColor: isBase
               ? AppColors.gold
-              : AppColors.primary.withValues(alpha: 0.1),
+              : Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
           child: Text(
             currency.symbol,
             style: TextStyle(
-              color: isBase ? AppColors.white : AppColors.primary,
+              color: isBase ? AppColors.white : Theme.of(context).colorScheme.primary,
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),
@@ -77,9 +77,9 @@ class CurrencyTile extends StatelessWidget {
         ),
         subtitle: Text(
           'الرمز: ${currency.code} | سعر الصرف: ${currency.rate}',
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 12,
-            color: AppColors.textSecondary,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontFamily: 'Cairo',
           ),
         ),

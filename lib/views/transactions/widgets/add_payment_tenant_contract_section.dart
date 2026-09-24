@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../core/colors.dart';
 
 class AddPaymentTenantContractSection extends StatelessWidget {
   final String? selectedTenant;
@@ -24,6 +23,7 @@ class AddPaymentTenantContractSection extends StatelessWidget {
     return Column(
       children: [
         _buildDropdown(
+          context,
           label: 'المستأجر',
           hint: 'اختر المستأجر',
           value: selectedTenant,
@@ -33,6 +33,7 @@ class AddPaymentTenantContractSection extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         _buildDropdown(
+          context,
           label: 'العقد المرتبط',
           hint: 'اختر العقد',
           value: selectedContract,
@@ -44,7 +45,8 @@ class AddPaymentTenantContractSection extends StatelessWidget {
     );
   }
 
-  Widget _buildDropdown({
+  Widget _buildDropdown(
+    BuildContext context, {
     required String label,
     required String hint,
     required String? value,
@@ -61,26 +63,26 @@ class AddPaymentTenantContractSection extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 12,
-            color: AppColors.textSecondary,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontFamily: 'Cairo',
           ),
         ),
         const SizedBox(height: 6),
         Container(
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: Theme.of(context).colorScheme.surfaceContainerLow,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: Theme.of(context).colorScheme.outline),
           ),
           child: DropdownButtonFormField<String>(
             initialValue: validValue,
             hint: Text(
               hint,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 13,
-                color: AppColors.textLight,
+                color: Theme.of(context).hintColor,
                 fontFamily: 'Cairo',
               ),
             ),
@@ -97,12 +99,12 @@ class AddPaymentTenantContractSection extends StatelessWidget {
                 .toList(),
             onChanged: onChanged,
             decoration: InputDecoration(
-              prefixIcon: Icon(icon, color: AppColors.textSecondary, size: 20),
+              prefixIcon: Icon(icon, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 20),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.symmetric(vertical: 14),
             ),
             isExpanded: true,
-            dropdownColor: AppColors.surface,
+            dropdownColor: Theme.of(context).colorScheme.surfaceContainerLow,
           ),
         ),
       ],

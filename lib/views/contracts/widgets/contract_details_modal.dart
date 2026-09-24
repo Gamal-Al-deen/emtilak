@@ -24,7 +24,7 @@ class ContractDetailsModal extends StatelessWidget {
   }) {
     return showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.surface,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -55,10 +55,10 @@ class ContractDetailsModal extends StatelessWidget {
                 children: [
                   Text(
                     'تفاصيل عقد #${c.id}',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.primary,
+                      color: Theme.of(context).colorScheme.primary,
                       fontFamily: 'Cairo',
                     ),
                   ),
@@ -70,7 +70,7 @@ class ContractDetailsModal extends StatelessWidget {
                   ),
                 ],
               ),
-              const Divider(height: 14, color: AppColors.divider),
+              Divider(height: 14, color: Theme.of(context).colorScheme.outlineVariant),
               ContractDetailsRow(
                 label: 'اسم المستأجر',
                 value: c.tenantName,
@@ -104,7 +104,7 @@ class ContractDetailsModal extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
                         padding: const EdgeInsets.symmetric(vertical: 10),
                       ),
                       onPressed: onViewStatement,
@@ -119,20 +119,20 @@ class ContractDetailsModal extends StatelessWidget {
                   Expanded(
                     child: OutlinedButton.icon(
                       style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: AppColors.primary),
+                        side: BorderSide(color: Theme.of(context).colorScheme.primary),
                         padding: const EdgeInsets.symmetric(vertical: 10),
                       ),
                       onPressed: onAddPayment,
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.add_card,
                         size: 16,
-                        color: AppColors.primary,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
-                      label: const Text(
+                      label: Text(
                         'تسجيل دفعة',
                         style: TextStyle(
                           fontFamily: 'Cairo',
-                          color: AppColors.primary,
+                          color: Theme.of(context).colorScheme.primary,
                           fontWeight: FontWeight.bold,
                           fontSize: 13,
                         ),
@@ -170,8 +170,8 @@ class ContractDetailsRow extends StatelessWidget {
         children: [
           Text(
             label,
-            style: const TextStyle(
-              color: AppColors.textSecondary,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontSize: 13,
               fontFamily: 'Cairo',
             ),
@@ -179,7 +179,7 @@ class ContractDetailsRow extends StatelessWidget {
           Text(
             value,
             style: TextStyle(
-              color: color ?? AppColors.textPrimary,
+              color: color ?? Theme.of(context).colorScheme.onSurface,
               fontWeight: FontWeight.bold,
               fontSize: 13,
               fontFamily: 'Cairo',

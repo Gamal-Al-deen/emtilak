@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../core/colors.dart';
 
 class AddMaintenanceForm extends StatelessWidget {
   final GlobalKey<FormState> formKey;
@@ -32,11 +31,11 @@ class AddMaintenanceForm extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'وصف المصروف',
                 style: TextStyle(
                   fontSize: 12,
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontFamily: 'Cairo',
                 ),
               ),
@@ -48,25 +47,25 @@ class AddMaintenanceForm extends StatelessWidget {
                 style: const TextStyle(fontFamily: 'Cairo', fontSize: 14),
                 decoration: InputDecoration(
                   hintText: 'مثال: إصلاح سباكة الشقة، دهان الممر...',
-                  hintStyle: const TextStyle(
+                  hintStyle: TextStyle(
                     fontSize: 13,
-                    color: AppColors.textLight,
+                    color: Theme.of(context).hintColor,
                     fontFamily: 'Cairo',
                   ),
-                  prefixIcon: const Icon(
+                  prefixIcon: Icon(
                     Icons.build_outlined,
-                    color: AppColors.textSecondary,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     size: 20,
                   ),
                   filled: true,
-                  fillColor: AppColors.surface,
+                  fillColor: Theme.of(context).colorScheme.surfaceContainerLow,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: AppColors.border),
+                    borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: AppColors.border),
+                    borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
                   ),
                 ),
               ),
@@ -76,11 +75,11 @@ class AddMaintenanceForm extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'المبلغ (بالعملة الأساسية)',
                 style: TextStyle(
                   fontSize: 12,
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontFamily: 'Cairo',
                 ),
               ),
@@ -93,25 +92,25 @@ class AddMaintenanceForm extends StatelessWidget {
                 style: const TextStyle(fontFamily: 'Cairo', fontSize: 14),
                 decoration: InputDecoration(
                   hintText: '0.00 \$',
-                  hintStyle: const TextStyle(
+                  hintStyle: TextStyle(
                     fontSize: 13,
-                    color: AppColors.textLight,
+                    color: Theme.of(context).hintColor,
                     fontFamily: 'Cairo',
                   ),
-                  prefixIcon: const Icon(
+                  prefixIcon: Icon(
                     Icons.attach_money,
-                    color: AppColors.textSecondary,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     size: 20,
                   ),
                   filled: true,
-                  fillColor: AppColors.surface,
+                  fillColor: Theme.of(context).colorScheme.surfaceContainerLow,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: AppColors.border),
+                    borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: AppColors.border),
+                    borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
                   ),
                 ),
               ),
@@ -121,30 +120,30 @@ class AddMaintenanceForm extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'الوحدة المرتبطة (اختياري)',
                 style: TextStyle(
                   fontSize: 12,
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontFamily: 'Cairo',
                 ),
               ),
               const SizedBox(height: 6),
               Container(
                 decoration: BoxDecoration(
-                  color: AppColors.surface,
+                  color: Theme.of(context).colorScheme.surfaceContainerLow,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppColors.border),
+                  border: Border.all(color: Theme.of(context).colorScheme.outline),
                 ),
                 child: DropdownButtonFormField<String>(
                   initialValue: unitOptions.contains(selectedUnit)
                       ? selectedUnit
                       : unitOptions.first,
-                  hint: const Text(
+                  hint: Text(
                     'اختر وحدة أو اتركه مصروف عام',
                     style: TextStyle(
                       fontSize: 13,
-                      color: AppColors.textLight,
+                      color: Theme.of(context).hintColor,
                       fontFamily: 'Cairo',
                     ),
                   ),
@@ -163,17 +162,17 @@ class AddMaintenanceForm extends StatelessWidget {
                       )
                       .toList(),
                   onChanged: onUnitChanged,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     prefixIcon: Icon(
                       Icons.home_work_outlined,
-                      color: AppColors.textSecondary,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       size: 20,
                     ),
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.symmetric(vertical: 14),
                   ),
                   isExpanded: true,
-                  dropdownColor: AppColors.surface,
+                  dropdownColor: Theme.of(context).colorScheme.surfaceContainerLow,
                 ),
               ),
             ],
@@ -182,11 +181,11 @@ class AddMaintenanceForm extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'ملاحظات إضافية',
                 style: TextStyle(
                   fontSize: 12,
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontFamily: 'Cairo',
                 ),
               ),
@@ -197,25 +196,25 @@ class AddMaintenanceForm extends StatelessWidget {
                 style: const TextStyle(fontFamily: 'Cairo', fontSize: 14),
                 decoration: InputDecoration(
                   hintText: 'ملاحظات إضافية...',
-                  hintStyle: const TextStyle(
+                  hintStyle: TextStyle(
                     fontSize: 13,
-                    color: AppColors.textLight,
+                    color: Theme.of(context).hintColor,
                     fontFamily: 'Cairo',
                   ),
-                  prefixIcon: const Icon(
+                  prefixIcon: Icon(
                     Icons.notes,
-                    color: AppColors.textSecondary,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     size: 20,
                   ),
                   filled: true,
-                  fillColor: AppColors.surface,
+                  fillColor: Theme.of(context).colorScheme.surfaceContainerLow,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: AppColors.border),
+                    borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: AppColors.border),
+                    borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
                   ),
                 ),
               ),
@@ -224,7 +223,7 @@ class AddMaintenanceForm extends StatelessWidget {
           const SizedBox(height: 24),
           ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
+              backgroundColor: Theme.of(context).colorScheme.primary,
               padding: const EdgeInsets.symmetric(vertical: 16),
             ),
             onPressed: onSubmit,

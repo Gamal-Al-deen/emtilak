@@ -47,7 +47,7 @@ class UnitCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: 0.18),
+                color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.18),
                 borderRadius: BorderRadius.circular(6),
               ),
               child: Text(

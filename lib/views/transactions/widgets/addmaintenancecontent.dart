@@ -65,7 +65,7 @@ class _AddMaintenanceContentState extends State<AddMaintenanceContent> {
     final horizontalPadding = Responsive.getHorizontalPadding(context);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: const CustomAppBar(title: 'تسجيل مصروف صيانة'),
       body: ResponsiveContainer(
         maxWidth: 800,

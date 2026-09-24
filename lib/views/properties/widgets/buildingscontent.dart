@@ -94,7 +94,7 @@ class _BuildingsContentState extends State<BuildingsContent> {
     final horizontalPadding = Responsive.getHorizontalPadding(context);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: ResponsiveContainer(
         maxWidth: 1400,
         child: Padding(

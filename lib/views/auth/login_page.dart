@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../core/colors.dart';
 import '../../routes/routes.dart';
 import '../../services/auth_service.dart';
 import '../../l10n/app_localizations.dart';
@@ -165,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final bool isLoading = _pendingSignIn != null;
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {

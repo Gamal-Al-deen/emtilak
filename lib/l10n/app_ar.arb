@@ -826,6 +826,21 @@
   "settingsLanguageEnglish": "English",
   "@settingsLanguageEnglish": { "description": "English language option" },
 
+  "settingsTheme": "المظهر",
+  "@settingsTheme": { "description": "Settings: theme item title" },
+
+  "settingsThemeDialogTitle": "اختر المظهر",
+  "@settingsThemeDialogTitle": { "description": "Theme selection dialog title" },
+
+  "settingsThemeLight": "فاتح",
+  "@settingsThemeLight": { "description": "Light theme option" },
+
+  "settingsThemeDark": "داكن",
+  "@settingsThemeDark": { "description": "Dark theme option" },
+
+  "settingsThemeSystem": "حسب النظام",
+  "@settingsThemeSystem": { "description": "Follow system theme option" },
+
   "settingsNotifications": "التنبيهات والإشعارات",
   "@settingsNotifications": { "description": "Settings: notifications toggle title" },
 

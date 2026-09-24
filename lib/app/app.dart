@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-import '../core/colors.dart';
 import '../services/auth_service.dart';
 import '../widgets/layout/main_layout.dart';
 import '../views/onboarding/onboarding_view.dart';
@@ -57,7 +56,14 @@ class EmtilakApp extends StatelessWidget {
         final bool signedIn = snapshot.hasData;
 
         if (!signedIn && !resolved) {
-          return const _AuthLoadingView();
+          // خارج `MaterialApp` لا يوجد `Theme.of(context)`، فنُعطي الشاشة
+          // المؤقتة الثيم الفعّال مباشرة كي تتبع الوضع المختار.
+          return Theme(
+            data: AppTheme.resolvedThemeFor(
+              AppControllers.instance.themeController.mode,
+            ),
+            child: const _AuthLoadingView(),
+          );
         }
 
         final String initialRoute;
@@ -86,11 +92,21 @@ class EmtilakApp extends StatelessWidget {
       builder: (context, _) {
         final currentLocale = AppControllers.instance.localeController.locale;
 
-        return MaterialApp(
-          title: 'إمتلاك',
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.lightTheme,
-          locale: currentLocale,
+        // استماع منفصل للمظهر: تبديل الفاتح/الداكن يعيد بناء `MaterialApp`
+        // وحده دون المساس باللغة (وكذلك العكس) — مفتاحان مستقلان.
+        return ListenableBuilder(
+          listenable: AppControllers.instance.themeController,
+          builder: (context, _) {
+            final ThemeMode themeMode =
+                AppControllers.instance.themeController.mode;
+
+            return MaterialApp(
+              title: 'إمتلاك',
+              debugShowCheckedModeBanner: false,
+              theme: AppTheme.lightTheme,
+              darkTheme: AppTheme.darkTheme,
+              themeMode: themeMode,
+              locale: currentLocale,
           localizationsDelegates: [
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
@@ -123,8 +139,10 @@ class EmtilakApp extends StatelessWidget {
         AppRoutes.currencies: (_) => guard(const CurrenciesPage()),
         AppRoutes.notifications: (_) => guard(const NotificationsPage()),
         AppRoutes.settings: (_) => guard(const SettingsPage()),
-      },
-    );
+          },
+        );
+          },
+        );
       },
     );
   }
@@ -161,8 +179,13 @@ class _AuthGuardState extends State<AuthGuard> {
       });
     }
 
-    // لا نعرض محتوى محميًا ولو لحظة واحدة.
-    return const _AuthLoadingView();
+    // لا نعرض محتوى محميًا ولو لحظة واحدة (الثيم مُمرَّر من نقطة البناء).
+    return Theme(
+      data: AppTheme.resolvedThemeFor(
+        AppControllers.instance.themeController.mode,
+      ),
+      child: const _AuthLoadingView(),
+    );
   }
 }
 
@@ -175,17 +198,20 @@ class _AuthLoadingView extends StatelessWidget {
     // اتجاه حسب لغة التطبيق: العربية RTL والإنجليزية LTR — لا يُفرض
     // اتجاه ثابت حتى أثناء شاشة التحميل قبل بناء التطبيق.
     final Locale locale = AppControllers.instance.localeController.locale;
+    // الثيم يأتي من `Theme` المحيط (ثيم فعّال محسوب في نقطة البناء)، لا من
+    // `Theme.of(context)` الافتراضي — كي تتبع الشاشة الوضع المختار.
+    final ThemeData theme = Theme.of(context);
     return Directionality(
       textDirection:
           locale.languageCode == 'ar' ? TextDirection.rtl : TextDirection.ltr,
       child: ColoredBox(
-        color: AppColors.background,
+        color: theme.scaffoldBackgroundColor,
         child: Center(
           child: SizedBox(
             width: 36,
             height: 36,
             child: CircularProgressIndicator(
-              color: AppColors.primary,
+              color: theme.colorScheme.primary,
               strokeWidth: 3,
             ),
           ),

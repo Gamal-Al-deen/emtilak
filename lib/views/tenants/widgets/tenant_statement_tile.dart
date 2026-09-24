@@ -36,9 +36,9 @@ class TenantStatementTile extends StatelessWidget {
                 ),
                 Text(
                   p.paymentDate,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 11,
-                    color: AppColors.textLight,
+                    color: Theme.of(context).hintColor,
                     fontFamily: 'Cairo',
                   ),
                 ),
@@ -59,9 +59,9 @@ class TenantStatementTile extends StatelessWidget {
               ),
               Text(
                 'الحالة: ${p.status}',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 10,
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontFamily: 'Cairo',
                 ),
               ),

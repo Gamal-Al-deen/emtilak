@@ -14,23 +14,30 @@ class UserAvatar extends StatelessWidget {
     required this.radius,
     this.profile,
     this.fallbackName,
-    this.backgroundColor = AppColors.primary,
+    this.backgroundColor,
     this.iconColor = AppColors.white,
   });
 
   final double radius;
   final UserProfile? profile;
   final String? fallbackName;
-  final Color backgroundColor;
+
+  /// خلفية الصورة — تُترك `null` لتتبع لون العلامة من الثيم الحالي
+  /// (`colorScheme.primary`)، ويمكن تمرير لون ثابت (الذهبي مثل درج التنقّل).
+  final Color? backgroundColor;
   final Color iconColor;
 
   @override
   Widget build(BuildContext context) {
+    // الكحلي الافتراضي يأتي من الثيم: كحلي كامل في الفاتح وأفتح قليلًا في
+    // الداكن، كي يبقى الحرف/الأيقونة مقروءين فوق الخلفية في الوضعين.
+    final Color bg = backgroundColor ?? Theme.of(context).colorScheme.primary;
+
     final String url = profile?.avatarUrl ?? '';
     if (url.isNotEmpty) {
       return CircleAvatar(
         radius: radius,
-        backgroundColor: backgroundColor,
+        backgroundColor: bg,
         backgroundImage: NetworkImage(url),
         // فشل تحميل الصورة من الشبكة لا يُسقط التطبيق — يبقى لون الخلفية.
         onBackgroundImageError: (_, __) {},
@@ -42,7 +49,7 @@ class UserAvatar extends StatelessWidget {
     if (photoUrl.isNotEmpty) {
       return CircleAvatar(
         radius: radius,
-        backgroundColor: backgroundColor,
+        backgroundColor: bg,
         backgroundImage: NetworkImage(photoUrl),
         onBackgroundImageError: (_, __) {},
       );
@@ -55,13 +62,13 @@ class UserAvatar extends StatelessWidget {
     if (name.isEmpty) {
       return CircleAvatar(
         radius: radius,
-        backgroundColor: backgroundColor,
+        backgroundColor: bg,
         child: Icon(Icons.person, color: iconColor, size: radius),
       );
     }
     return CircleAvatar(
       radius: radius,
-      backgroundColor: backgroundColor,
+      backgroundColor: bg,
       child: Text(
         String.fromCharCode(name.runes.first),
         style: TextStyle(

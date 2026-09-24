@@ -8,6 +8,7 @@ import 'maintenance_controller.dart';
 import 'currency_controller.dart';
 import 'profile_controller.dart';
 import 'locale_controller.dart';
+import 'theme_controller.dart';
 import '../models/app_models.dart';
 
 export 'building_controller.dart';
@@ -19,6 +20,7 @@ export 'maintenance_controller.dart';
 export 'currency_controller.dart';
 export 'profile_controller.dart';
 export 'locale_controller.dart';
+export 'theme_controller.dart';
 
 class AppControllers extends ChangeNotifier {
   static final AppControllers _instance = AppControllers._internal();
@@ -35,6 +37,9 @@ class AppControllers extends ChangeNotifier {
   final ProfileController profileController = ProfileController();
   final LocaleController localeController = LocaleController();
 
+  /// مظهر التطبيق (فاتح/داكن/حسب النظام) — مستقل تمامًا عن اللغة.
+  final ThemeController themeController = ThemeController();
+
   bool _isInitialized = false;
 
   AppControllers._internal() {
@@ -48,6 +53,7 @@ class AppControllers extends ChangeNotifier {
     currencyController.addListener(notifyListeners);
     profileController.addListener(notifyListeners);
     localeController.addListener(notifyListeners);
+    themeController.addListener(notifyListeners);
 
     initControllers();
   }
@@ -55,7 +61,10 @@ class AppControllers extends ChangeNotifier {
   Future<void> initControllers() async {
     if (_isInitialized) return;
     try {
+      // اللغة والمظهر يُحمَّلان معًا وقبل بقية البيانات: الشاشة الأولى يجب
+      // أن تظهر باللغة والوضع الصحيحين من أول إطار.
       await localeController.loadLocale();
+      await themeController.loadMode();
       await buildingController.loadBuildings();
       await unitController.loadUnits();
       await tenantController.loadTenants();

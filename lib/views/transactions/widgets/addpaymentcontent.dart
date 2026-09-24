@@ -56,17 +56,7 @@ class _AddPaymentContentState extends State<AddPaymentContent> {
       initialDate: _paymentDate,
       firstDate: DateTime(2020),
       lastDate: DateTime(2030),
-      builder: (context, child) => Theme(
-        data: Theme.of(context).copyWith(
-          colorScheme: const ColorScheme.light(
-            primary: AppColors.primary,
-            onPrimary: AppColors.white,
-            surface: AppColors.white,
-            onSurface: AppColors.textPrimary,
-          ),
-        ),
-        child: child!,
-      ),
+      // التقويم يتبع ثيم التطبيق تلقائيًا (فاتح/داكن) — لا فرض وضع فاتح يدويًا.
     );
     if (picked != null) {
       setState(() => _paymentDate = picked);
@@ -129,7 +119,7 @@ class _AddPaymentContentState extends State<AddPaymentContent> {
     final horizontalPadding = Responsive.getHorizontalPadding(context);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: const CustomAppBar(title: 'تسجيل دفعة جديدة'),
       body: ResponsiveContainer(
         maxWidth: 800,

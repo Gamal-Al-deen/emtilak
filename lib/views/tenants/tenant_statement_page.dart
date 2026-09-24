@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../core/colors.dart';
 import '../../utils/responsive.dart';
 import '../../controllers/app_controllers.dart';
 import '../../widgets/common/custom_app_bar.dart';
@@ -58,7 +57,7 @@ class TenantStatementPage extends StatelessWidget {
     final horizontalPadding = Responsive.getHorizontalPadding(context);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: CustomAppBar(title: 'كشف حساب: $tenantName'),
       body: ResponsiveContainer(
         maxWidth: 900,

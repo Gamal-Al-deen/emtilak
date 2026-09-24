@@ -18,19 +18,19 @@ class CollectionChart extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: Theme.of(context).colorScheme.outline),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'نظرة عامة',
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
+              color: Theme.of(context).colorScheme.onSurface,
               fontFamily: 'Cairo',
             ),
           ),
@@ -50,7 +50,7 @@ class CollectionChart extends StatelessWidget {
                       child: CircularProgressIndicator(
                         value: collectedRatio,
                         strokeWidth: 10,
-                        backgroundColor: AppColors.divider,
+                        backgroundColor: Theme.of(context).colorScheme.outlineVariant,
                         color: AppColors.success,
                       ),
                     ),
@@ -59,18 +59,18 @@ class CollectionChart extends StatelessWidget {
                       children: [
                         Text(
                           '${(collectedRatio * 100).toInt()}%',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.textPrimary,
+                            color: Theme.of(context).colorScheme.onSurface,
                             fontFamily: 'Cairo',
                           ),
                         ),
-                        const Text(
+                        Text(
                           'نسبة التحصيل',
                           style: TextStyle(
                             fontSize: 9,
-                            color: AppColors.textSecondary,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                             fontFamily: 'Cairo',
                           ),
                         ),
@@ -85,18 +85,21 @@ class CollectionChart extends StatelessWidget {
                 child: Column(
                   children: [
                     _buildLegendItem(
+                      context,
                       'مدفوع',
                       '${(collectedRatio * 100).toInt()}%',
                       AppColors.success,
                     ),
                     const SizedBox(height: 6),
                     _buildLegendItem(
+                      context,
                       'متأخر',
                       '${(delayedRatio * 100).toInt()}%',
                       AppColors.info,
                     ),
                     const SizedBox(height: 6),
                     _buildLegendItem(
+                      context,
                       'قيد التحصيل',
                       '${(pendingRatio * 100).toInt()}%',
                       AppColors.warning,
@@ -111,7 +114,12 @@ class CollectionChart extends StatelessWidget {
     );
   }
 
-  Widget _buildLegendItem(String title, String percent, Color color) {
+  Widget _buildLegendItem(
+    BuildContext context,
+    String title,
+    String percent,
+    Color color,
+  ) {
     return Row(
       children: [
         Container(
@@ -122,19 +130,19 @@ class CollectionChart extends StatelessWidget {
         const SizedBox(width: 8),
         Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 12,
-            color: AppColors.textSecondary,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontFamily: 'Cairo',
           ),
         ),
         const Spacer(),
         Text(
           percent,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
+            color: Theme.of(context).colorScheme.onSurface,
             fontFamily: 'Cairo',
           ),
         ),

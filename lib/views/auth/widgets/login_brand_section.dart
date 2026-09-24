@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/colors.dart';
 import '../../../../widgets/common/app_brand_logo.dart';
 
 class LoginBrandSection extends StatelessWidget {
@@ -30,13 +29,13 @@ class LoginBrandSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        const FractionallySizedBox(
+        FractionallySizedBox(
           widthFactor: 0.8,
           child: Text(
             'منصة متكاملة لإدارة العقارات والموارد',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: AppColors.textSecondary,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontSize: 13,
               fontFamily: 'Cairo',
             ),

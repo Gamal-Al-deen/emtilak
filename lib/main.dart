@@ -12,13 +12,8 @@ import 'supabase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // تهيئة Firebase مرة واحدة قبل تشغيل التطبيق، باستخدام الإعدادات المولّدة
-  // من FlutterFire — دون تثبيت أي بيانات اعتماد داخل الكود.
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // تهيئة Supabase كقاعدة وتخزين فقط — بلا Supabase Auth: التوكن يأتي من
-  // مزوّد خارجي (accessToken) يحقنه Edge Function بعد توثيق Firebase.
-  // بفشلها لا يتعطل التطبيق: بقية الميزات تعمل، وشاشة الملف تعرض خطأ عربيًا.
   try {
     await Supabase.initialize(
       url: SupabaseOptions.projectUrl,

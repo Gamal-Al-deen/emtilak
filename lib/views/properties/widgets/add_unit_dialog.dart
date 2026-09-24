@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../core/colors.dart';
 import '../../../widgets/auth/auth_text_field.dart';
 
 class AddUnitDialog extends StatefulWidget {
@@ -36,7 +35,7 @@ class _AddUnitDialogState extends State<AddUnitDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: AppColors.surface,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       title: Text(
         'إضافة وحدة لـ ${widget.buildingName}',
         style: const TextStyle(
@@ -106,14 +105,14 @@ class _AddUnitDialogState extends State<AddUnitDialog> {
                   },
                   decoration: InputDecoration(
                     labelText: 'الحالة',
-                    labelStyle: const TextStyle(
+                    labelStyle: TextStyle(
                       fontFamily: 'Cairo',
-                      color: AppColors.textSecondary,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(
-                        color: AppColors.border,
+                      borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.outline,
                       ),
                     ),
                     contentPadding: const EdgeInsets.symmetric(
@@ -130,11 +129,11 @@ class _AddUnitDialogState extends State<AddUnitDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text(
+          child: Text(
             'إلغاء',
             style: TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textSecondary,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
           ),
         ),

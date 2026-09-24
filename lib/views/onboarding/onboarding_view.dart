@@ -18,25 +18,25 @@ class OnboardingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const pageDecoration = PageDecoration(
+    final pageDecoration = PageDecoration(
       titleTextStyle: TextStyle(
         fontSize: 22.0,
         fontWeight: FontWeight.bold,
-        color: AppColors.primary,
+        color: Theme.of(context).colorScheme.primary,
         fontFamily: 'Cairo',
       ),
       bodyTextStyle: TextStyle(
         fontSize: 14.0,
-        color: AppColors.textSecondary,
+        color: Theme.of(context).colorScheme.onSurfaceVariant,
         fontFamily: 'Cairo',
         height: 1.6,
       ),
       imagePadding: EdgeInsets.only(top: 40, bottom: 20),
-      pageColor: AppColors.surface,
+      pageColor: Theme.of(context).colorScheme.surfaceContainerLow,
     );
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: ResponsiveContainer(
           maxWidth: 900,
@@ -45,7 +45,7 @@ class OnboardingView extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(24),
               child: IntroductionScreen(
-                globalBackgroundColor: AppColors.surface,
+                globalBackgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
                 pages: [
                   PageViewModel(
                     title: 'تقارير دقيقة و واضحة',
@@ -81,19 +81,19 @@ class OnboardingView extends StatelessWidget {
                 onDone: () => _onIntroEnd(context),
                 onSkip: () => _onIntroEnd(context),
                 showSkipButton: true,
-                skip: const Text(
+                skip: Text(
                   'ابدأ الآن',
                   style: TextStyle(
                     fontFamily: 'Cairo',
-                    color: AppColors.textSecondary,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                next: const Text(
+                next: Text(
                   'التالي',
                   style: TextStyle(
                     fontFamily: 'Cairo',
-                    color: AppColors.primary,
+                    color: Theme.of(context).colorScheme.primary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -109,7 +109,7 @@ class OnboardingView extends StatelessWidget {
                   size: const Size.square(10.0),
                   activeSize: const Size(22.0, 10.0),
                   activeColor: AppColors.gold,
-                  color: AppColors.border,
+                  color: Theme.of(context).colorScheme.outline,
                   spacing: const EdgeInsets.symmetric(horizontal: 4.0),
                   activeShape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25.0),

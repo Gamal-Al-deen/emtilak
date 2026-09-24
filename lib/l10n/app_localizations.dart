@@ -1664,6 +1664,36 @@ abstract class AppLocalizations {
   /// **'English'**
   String get settingsLanguageEnglish;
 
+  /// Settings: theme item title
+  ///
+  /// In ar, this message translates to:
+  /// **'المظهر'**
+  String get settingsTheme;
+
+  /// Theme selection dialog title
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر المظهر'**
+  String get settingsThemeDialogTitle;
+
+  /// Light theme option
+  ///
+  /// In ar, this message translates to:
+  /// **'فاتح'**
+  String get settingsThemeLight;
+
+  /// Dark theme option
+  ///
+  /// In ar, this message translates to:
+  /// **'داكن'**
+  String get settingsThemeDark;
+
+  /// Follow system theme option
+  ///
+  /// In ar, this message translates to:
+  /// **'حسب النظام'**
+  String get settingsThemeSystem;
+
   /// Settings: notifications toggle title
   ///
   /// In ar, this message translates to:

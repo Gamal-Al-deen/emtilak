@@ -29,19 +29,7 @@ class ProfileFailure implements Exception {
   String toString() => message;
 }
 
-/// المصدر الوحيد لعمليات الملف الشخصي في التطبيق.
-///
-/// المعمارية المعتمدة: Firebase وحيدًا مصدر المصادقة والهوية، و`profiles.id`
-/// = معرّف Firebase (UID) حرفيًا. Supabase قاعدة وتخزين فقط — **لا توجد أي
-/// جلسة Supabase Auth**. التوكن يأتي من Edge Function `firebase-session`
-/// التي تتحقق من هوية Firebase ثم تُصدّر JWT حاملًا `sub` = Firebase UID
-/// (وضع التوكيل الخارجي الرسمي — `Supabase.initialize(accessToken:)`).
-///
-/// قواعد أمنية مطبّقة هنا:
-/// - لا تُخزَّن أي كلمة مرور في `profiles` (البريد من Firebase فقط).
-/// - لا يُستخدم أي مفتاح service-role — المفاتيح العامة للعميل فقط.
-/// - كل استعلام مقيّد بمعرّف المستخدم الحالي، وRLS هو حارس القاعدة.
-/// - كل مسار شبكة له مهلة قصوى حتى يصل إلى حالة نهائية (لا دوران أبدي).
+
 class ProfileService {
   ProfileService._();
 

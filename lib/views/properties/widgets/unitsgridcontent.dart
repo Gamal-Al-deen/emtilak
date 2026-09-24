@@ -51,7 +51,7 @@ class _UnitsGridContentState extends State<UnitsGridContent> {
       case 'بعد الخروج':
         return AppColors.afterExit;
       default:
-        return AppColors.textLight;
+        return Theme.of(context).hintColor;
     }
   }
 
@@ -113,7 +113,7 @@ class _UnitsGridContentState extends State<UnitsGridContent> {
   void _showUnitOptionsModal(BuildContext context, Unit unit) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.surface,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -147,12 +147,12 @@ class _UnitsGridContentState extends State<UnitsGridContent> {
     final horizontalPadding = Responsive.getHorizontalPadding(context);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: CustomAppBar(
         title: 'وحدات $buildingName',
         actions: [
           IconButton(
-            icon: const Icon(Icons.add, color: AppColors.primary),
+            icon: Icon(Icons.add, color: Theme.of(context).colorScheme.primary),
             onPressed: () => _showAddUnitDialog(buildingName),
           ),
         ],

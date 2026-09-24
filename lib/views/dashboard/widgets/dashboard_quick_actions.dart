@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../core/colors.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../routes/routes.dart';
 
@@ -14,7 +13,7 @@ class DashboardMobileQuickActions extends StatelessWidget {
         Expanded(
           child: ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
+              backgroundColor: Theme.of(context).colorScheme.primary,
               padding: const EdgeInsets.symmetric(vertical: 14),
             ),
             onPressed: () {
@@ -31,7 +30,7 @@ class DashboardMobileQuickActions extends StatelessWidget {
         Expanded(
           child: OutlinedButton.icon(
             style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: AppColors.primary),
+              side: BorderSide(color: Theme.of(context).colorScheme.primary),
               padding: const EdgeInsets.symmetric(vertical: 14),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -40,15 +39,15 @@ class DashboardMobileQuickActions extends StatelessWidget {
             onPressed: () {
               Navigator.pushNamed(context, AppRoutes.addContract);
             },
-            icon: const Icon(
+            icon: Icon(
               Icons.note_add_outlined,
-              color: AppColors.primary,
+              color: Theme.of(context).colorScheme.primary,
               size: 18,
             ),
             label: Text(
               l10n.newContract,
-              style: const TextStyle(
-                color: AppColors.primary,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Cairo',
@@ -70,26 +69,26 @@ class DashboardWideQuickActions extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: Theme.of(context).colorScheme.outline),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             l10n.quickActions,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
+              color: Theme.of(context).colorScheme.onSurface,
               fontFamily: 'Cairo',
             ),
           ),
           const SizedBox(height: 16),
           ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
+              backgroundColor: Theme.of(context).colorScheme.primary,
               minimumSize: const Size.fromHeight(48),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
@@ -105,18 +104,18 @@ class DashboardWideQuickActions extends StatelessWidget {
           const SizedBox(height: 12),
           OutlinedButton.icon(
             style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: AppColors.primary),
+              side: BorderSide(color: Theme.of(context).colorScheme.primary),
               minimumSize: const Size.fromHeight(48),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
             onPressed: () {
               Navigator.pushNamed(context, AppRoutes.addContract);
             },
-            icon: const Icon(Icons.note_add_outlined, color: AppColors.primary, size: 20),
+            icon: Icon(Icons.note_add_outlined, color: Theme.of(context).colorScheme.primary, size: 20),
             label: Text(
               l10n.createNewContract,
-              style: const TextStyle(
-                color: AppColors.primary,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
                 fontFamily: 'Cairo',
                 fontWeight: FontWeight.bold,
               ),
@@ -125,18 +124,18 @@ class DashboardWideQuickActions extends StatelessWidget {
           const SizedBox(height: 12),
           OutlinedButton.icon(
             style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: AppColors.border),
+              side: BorderSide(color: Theme.of(context).colorScheme.outline),
               minimumSize: const Size.fromHeight(48),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
             onPressed: () {
               Navigator.pushNamed(context, AppRoutes.addMaintenance);
             },
-            icon: const Icon(Icons.build_outlined, color: AppColors.textSecondary, size: 20),
+            icon: Icon(Icons.build_outlined, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 20),
             label: Text(
               l10n.recordMaintenance,
-              style: const TextStyle(
-                color: AppColors.textPrimary,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface,
                 fontFamily: 'Cairo',
                 fontWeight: FontWeight.w600,
               ),

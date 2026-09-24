@@ -45,7 +45,7 @@ class AppBrandLogo extends StatelessWidget {
         //   style: const TextStyle(
         //     fontSize: 30,
         //     fontWeight: FontWeight.bold,
-        //     color: AppColors.primary,
+        //     color: Theme.of(context).colorScheme.primary,
         //     fontFamily: 'Cairo',
         //   ),
         // ),

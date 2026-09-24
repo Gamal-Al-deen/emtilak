@@ -23,9 +23,9 @@ class TenantCard extends StatelessWidget {
     final t = tenant;
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: Theme.of(context).colorScheme.outline),
         boxShadow: const [
           BoxShadow(
             color: AppColors.cardShadow,
@@ -40,19 +40,19 @@ class TenantCard extends StatelessWidget {
           vertical: 4,
         ),
         onTap: onTap,
-        leading: const CircleAvatar(
-          backgroundColor: AppColors.divider,
+        leading: CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.outlineVariant,
           child: Icon(
             Icons.person,
-            color: AppColors.textSecondary,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ),
         title: Text(
           t.name,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
+            color: Theme.of(context).colorScheme.onSurface,
             fontFamily: 'Cairo',
           ),
           maxLines: 1,
@@ -60,9 +60,9 @@ class TenantCard extends StatelessWidget {
         ),
         subtitle: Text(
           unitDisplay ?? 'بدون وحدة سكنية حالياً',
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 12,
-            color: AppColors.textSecondary,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontFamily: 'Cairo',
           ),
           maxLines: 1,
@@ -72,9 +72,9 @@ class TenantCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.phone_outlined,
-                color: AppColors.primary,
+                color: Theme.of(context).colorScheme.primary,
                 size: 20,
               ),
               onPressed: onCall,

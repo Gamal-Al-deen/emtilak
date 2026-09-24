@@ -26,9 +26,9 @@ class ForgotPasswordFormCard extends StatelessWidget {
       constraints: const BoxConstraints(maxWidth: 520),
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: Theme.of(context).colorScheme.outline),
         boxShadow: const [
           BoxShadow(
             color: AppColors.cardShadow,
@@ -42,23 +42,23 @@ class ForgotPasswordFormCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
+            Text(
               'استعادة كلمة المرور',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
-                color: AppColors.primary,
+                color: Theme.of(context).colorScheme.primary,
                 fontFamily: 'Cairo',
               ),
             ),
             const SizedBox(height: 6),
-            const Text(
+            Text(
               'أدخل بريدك الإلكتروني لاستلام رابط إعادة التعيين.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 13,
-                color: AppColors.textSecondary,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 fontFamily: 'Cairo',
               ),
             ),
@@ -77,7 +77,7 @@ class ForgotPasswordFormCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(14),
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: AppColors.primary,
+                backgroundColor: Theme.of(context).colorScheme.primary,
               ),
               child: isLoading
                   ? const SizedBox(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../core/colors.dart';
 
 class SettingsTile extends StatelessWidget {
   final IconData icon;
@@ -22,19 +21,19 @@ class SettingsTile extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: Theme.of(context).colorScheme.outline),
       ),
       child: ListTile(
         onTap: onTap,
-        leading: Icon(icon, color: titleColor ?? AppColors.primary),
+        leading: Icon(icon, color: titleColor ?? Theme.of(context).colorScheme.primary),
         title: Text(
           title,
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.bold,
-            color: titleColor ?? AppColors.textPrimary,
+            color: titleColor ?? Theme.of(context).colorScheme.onSurface,
             fontFamily: 'Cairo',
           ),
         ),
@@ -44,17 +43,17 @@ class SettingsTile extends StatelessWidget {
             if (subtitle != null)
               Text(
                 subtitle!,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12,
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontFamily: 'Cairo',
                 ),
               ),
             const SizedBox(width: 8),
-            const Icon(
+            Icon(
               Icons.arrow_forward_ios,
               size: 14,
-              color: AppColors.textLight,
+              color: Theme.of(context).hintColor,
             ),
           ],
         ),

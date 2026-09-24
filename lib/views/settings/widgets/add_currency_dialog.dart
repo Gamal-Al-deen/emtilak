@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../core/colors.dart';
 import '../../../widgets/auth/auth_text_field.dart';
 
 class AddCurrencyDialog extends StatefulWidget {
@@ -38,7 +37,7 @@ class _AddCurrencyDialogState extends State<AddCurrencyDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: AppColors.surface,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       title: const Text(
         'إضافة عملة جديدة',
         style: TextStyle(
@@ -90,11 +89,11 @@ class _AddCurrencyDialogState extends State<AddCurrencyDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text(
+          child: Text(
             'إلغاء',
             style: TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textSecondary,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
           ),
         ),

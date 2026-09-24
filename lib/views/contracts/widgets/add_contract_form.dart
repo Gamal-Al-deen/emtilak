@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../core/colors.dart';
 import '../../../widgets/auth/auth_text_field.dart';
 
 class AddContractForm extends StatelessWidget {
@@ -36,6 +35,7 @@ class AddContractForm extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildDropdown(
+            context,
             label: 'المستأجر',
             hint: 'اختر المستأجر',
             value: selectedTenant,
@@ -47,6 +47,7 @@ class AddContractForm extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           _buildDropdown(
+            context,
             label: 'الوحدة',
             hint: 'اختر الوحدة',
             value: selectedUnit,
@@ -58,6 +59,7 @@ class AddContractForm extends StatelessWidget {
           summarySection,
           const SizedBox(height: 12),
           _buildTextField(
+            context,
             controller: notesController,
             label: 'ملاحظات',
             hint: 'أي ملاحظات إضافية...',
@@ -67,7 +69,7 @@ class AddContractForm extends StatelessWidget {
           const SizedBox(height: 24),
           ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
+              backgroundColor: Theme.of(context).colorScheme.primary,
               padding: const EdgeInsets.symmetric(vertical: 16),
             ),
             onPressed: onSubmit,
@@ -82,7 +84,8 @@ class AddContractForm extends StatelessWidget {
     );
   }
 
-  Widget _buildDropdown({
+  Widget _buildDropdown(
+    BuildContext context, {
     required String label,
     required String hint,
     required String? value,
@@ -99,26 +102,26 @@ class AddContractForm extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 12,
-            color: AppColors.textSecondary,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontFamily: 'Cairo',
           ),
         ),
         const SizedBox(height: 6),
         Container(
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: Theme.of(context).colorScheme.surfaceContainerLow,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: Theme.of(context).colorScheme.outline),
           ),
           child: DropdownButtonFormField<String>(
             initialValue: validValue,
             hint: Text(
               hint,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 13,
-                color: AppColors.textLight,
+                color: Theme.of(context).hintColor,
                 fontFamily: 'Cairo',
               ),
             ),
@@ -135,19 +138,20 @@ class AddContractForm extends StatelessWidget {
                 .toList(),
             onChanged: onChanged,
             decoration: InputDecoration(
-              prefixIcon: Icon(icon, color: AppColors.textSecondary, size: 20),
+              prefixIcon: Icon(icon, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 20),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.symmetric(vertical: 14),
             ),
             isExpanded: true,
-            dropdownColor: AppColors.surface,
+            dropdownColor: Theme.of(context).colorScheme.surfaceContainerLow,
           ),
         ),
       ],
     );
   }
 
-  Widget _buildTextField({
+  Widget _buildTextField(
+    BuildContext context, {
     required TextEditingController controller,
     required String label,
     required String hint,
@@ -162,9 +166,9 @@ class AddContractForm extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 12,
-            color: AppColors.textSecondary,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontFamily: 'Cairo',
           ),
         ),

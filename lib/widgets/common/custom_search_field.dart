@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../core/colors.dart';
 
 class CustomSearchField extends StatelessWidget {
   final String hintText;
@@ -17,9 +16,9 @@ class CustomSearchField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: Theme.of(context).colorScheme.outline),
       ),
       child: TextField(
         controller: controller,
@@ -27,12 +26,12 @@ class CustomSearchField extends StatelessWidget {
         style: const TextStyle(fontFamily: 'Cairo', fontSize: 14),
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: const TextStyle(
-            color: AppColors.textLight,
+          hintStyle: TextStyle(
+            color: Theme.of(context).hintColor,
             fontSize: 14,
             fontFamily: 'Cairo',
           ),
-          prefixIcon: const Icon(Icons.search, color: AppColors.textSecondary),
+          prefixIcon: Icon(Icons.search, color: Theme.of(context).colorScheme.onSurfaceVariant),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         ),

@@ -49,14 +49,14 @@ class _PaymentsContentState extends State<PaymentsContent> {
       case 'متأخر':
         return AppColors.error;
       default:
-        return AppColors.textSecondary;
+        return Theme.of(context).colorScheme.onSurfaceVariant;
     }
   }
 
   void _showPaymentDetailsModal(Payment p) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.surface,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -73,12 +73,12 @@ class _PaymentsContentState extends State<PaymentsContent> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         'تفاصيل الدفعة',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.primary,
+                          color: Theme.of(context).colorScheme.primary,
                           fontFamily: 'Cairo',
                         ),
                       ),
@@ -88,23 +88,24 @@ class _PaymentsContentState extends State<PaymentsContent> {
                       ),
                     ],
                   ),
-                  const Divider(height: 14, color: AppColors.divider),
-                  _buildRow('المستأجر', p.tenantName),
-                  _buildRow('العقد المرتبط', p.contractInfo),
+                  Divider(height: 14, color: Theme.of(context).colorScheme.outlineVariant),
+                  _buildRow(context, 'المستأجر', p.tenantName),
+                  _buildRow(context, 'العقد المرتبط', p.contractInfo),
                   _buildRow(
+                    context,
                     'المبلغ',
                     '${p.amount.toInt()} ${p.currency}',
                     color: AppColors.gold,
                   ),
-                  _buildRow('تاريخ الدفع', p.paymentDate),
-                  _buildRow('طريقة الدفع', p.method),
+                  _buildRow(context, 'تاريخ الدفع', p.paymentDate),
+                  _buildRow(context, 'طريقة الدفع', p.method),
                   if (p.notes != null && p.notes!.isNotEmpty) ...[
-                    _buildRow('ملاحظات', p.notes!),
+                    _buildRow(context, 'ملاحظات', p.notes!),
                   ],
                   const SizedBox(height: 14),
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
+                      backgroundColor: Theme.of(context).colorScheme.primary,
                       minimumSize: const Size.fromHeight(44),
                     ),
                     onPressed: () {
@@ -165,7 +166,7 @@ class _PaymentsContentState extends State<PaymentsContent> {
     }
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: ResponsiveContainer(
         maxWidth: 1400,
         child: Padding(
@@ -246,7 +247,12 @@ class _PaymentsContentState extends State<PaymentsContent> {
     );
   }
 
-  Widget _buildRow(String label, String value, {Color? color}) {
+  Widget _buildRow(
+    BuildContext context,
+    String label,
+    String value, {
+    Color? color,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
@@ -254,8 +260,8 @@ class _PaymentsContentState extends State<PaymentsContent> {
         children: [
           Text(
             label,
-            style: const TextStyle(
-              color: AppColors.textSecondary,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontSize: 13,
               fontFamily: 'Cairo',
             ),
@@ -263,7 +269,7 @@ class _PaymentsContentState extends State<PaymentsContent> {
           Text(
             value,
             style: TextStyle(
-              color: color ?? AppColors.textPrimary,
+              color: color ?? Theme.of(context).colorScheme.onSurface,
               fontWeight: FontWeight.bold,
               fontSize: 13,
               fontFamily: 'Cairo',

@@ -52,7 +52,7 @@ class DashboardStatsGrid extends StatelessWidget {
           title: 'الوحدات',
           value: '$unitsCount',
           icon: Icons.grid_view_rounded,
-          iconColor: AppColors.primary,
+          iconColor: Theme.of(context).colorScheme.primary,
         ),
         StatCard(
           title: 'المؤجرة',

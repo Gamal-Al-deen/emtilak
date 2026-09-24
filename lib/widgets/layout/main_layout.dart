@@ -92,15 +92,15 @@ class _MainLayoutState extends State<MainLayout> {
     final titles = _titlesFor(l10n);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: CustomAppBar(
         title: titles[_currentIndex],
         showBackButton: false,
         actions: [
           IconButton(
-            icon: const Icon(
+            icon: Icon(
               Icons.notifications_none_outlined,
-              color: AppColors.primary,
+              color: Theme.of(context).colorScheme.primary,
             ),
             onPressed: () {
               Navigator.pushNamed(context, AppRoutes.notifications);
@@ -113,10 +113,10 @@ class _MainLayoutState extends State<MainLayout> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Theme.of(context).colorScheme.surfaceContainerLow,
           boxShadow: [
             BoxShadow(
-              color: AppColors.primary.withValues(alpha: 0.08),
+              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.08),
               blurRadius: 10,
               offset: const Offset(0, -2),
             ),
@@ -131,7 +131,7 @@ class _MainLayoutState extends State<MainLayout> {
           },
           type: BottomNavigationBarType.shifting,
           selectedItemColor: AppColors.gold,
-          unselectedItemColor: AppColors.navUnselected,
+          unselectedItemColor: Theme.of(context).hintColor,
           selectedLabelStyle: const TextStyle(
             fontFamily: 'Cairo',
             fontWeight: FontWeight.bold,
@@ -146,27 +146,27 @@ class _MainLayoutState extends State<MainLayout> {
             BottomNavigationBarItem(
               icon: const Icon(Icons.home_filled),
               label: l10n.home,
-              backgroundColor: AppColors.surface,
+              backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
             ),
             BottomNavigationBarItem(
               icon: const Icon(Icons.apartment_rounded),
               label: l10n.buildings,
-              backgroundColor: AppColors.surface,
+              backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
             ),
             BottomNavigationBarItem(
               icon: const Icon(Icons.assignment_outlined),
               label: l10n.contracts,
-              backgroundColor: AppColors.surface,
+              backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
             ),
             BottomNavigationBarItem(
               icon: const Icon(Icons.receipt_outlined),
               label: l10n.payments,
-              backgroundColor: AppColors.surface,
+              backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
             ),
             BottomNavigationBarItem(
               icon: const Icon(Icons.group_outlined),
               label: l10n.tenants,
-              backgroundColor: AppColors.surface,
+              backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
             ),
           ],
         ),
@@ -180,7 +180,7 @@ class _MainLayoutState extends State<MainLayout> {
     final sidebarWidth = isDesktop ? 260.0 : 220.0;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Row(
           children: [
@@ -193,7 +193,7 @@ class _MainLayoutState extends State<MainLayout> {
             // Vertical divider separating sidebar and content
             Container(
               width: 1,
-              color: AppColors.border.withValues(alpha: 0.6),
+              color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.6),
             ),
 
             // Main Content Area with Header
@@ -237,16 +237,16 @@ class _MainLayoutState extends State<MainLayout> {
     );
 
     return Container(
-      color: AppColors.surface,
+      color: Theme.of(context).colorScheme.surfaceContainerLow,
       child: Column(
         children: [
           // User profile card header in sidebar
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
             decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.05),
+              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.05),
               border: Border(
-                bottom: BorderSide(color: AppColors.border.withValues(alpha: 0.5)),
+                bottom: BorderSide(color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5)),
               ),
             ),
             child: Row(
@@ -255,7 +255,7 @@ class _MainLayoutState extends State<MainLayout> {
                   radius: 20,
                   profile: profile,
                   fallbackName: firebaseName,
-                  backgroundColor: AppColors.primary,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
                   iconColor: AppColors.white,
                 ),
                 const SizedBox(width: 12),
@@ -266,20 +266,20 @@ class _MainLayoutState extends State<MainLayout> {
                     children: [
                       Text(
                         displayName,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Cairo',
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
-                          color: AppColors.textPrimary,
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
                         email,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Cairo',
                           fontSize: 11,
-                          color: AppColors.textSecondary,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -301,11 +301,11 @@ class _MainLayoutState extends State<MainLayout> {
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   child: Text(
                     l10n.sidebarMainSection,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Cairo',
                       fontSize: 11,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.textLight,
+                      color: Theme.of(context).hintColor,
                     ),
                   ),
                 ),
@@ -323,9 +323,9 @@ class _MainLayoutState extends State<MainLayout> {
                     },
                   ),
 
-                const Padding(
+                Padding(
                   padding: EdgeInsets.symmetric(vertical: 8),
-                  child: Divider(color: AppColors.divider, height: 1),
+                  child: Divider(color: Theme.of(context).colorScheme.outlineVariant, height: 1),
                 ),
 
                 // Drawer items integrated into sidebar on wide screens
@@ -334,11 +334,11 @@ class _MainLayoutState extends State<MainLayout> {
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   child: Text(
                     l10n.sidebarManagementSection,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Cairo',
                       fontSize: 11,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.textLight,
+                      color: Theme.of(context).hintColor,
                     ),
                   ),
                 ),
@@ -372,7 +372,7 @@ class _MainLayoutState extends State<MainLayout> {
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               border: Border(
-                top: BorderSide(color: AppColors.border.withValues(alpha: 0.5)),
+                top: BorderSide(color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5)),
               ),
             ),
             child: _buildSidebarActionItem(
@@ -397,10 +397,10 @@ class _MainLayoutState extends State<MainLayout> {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 3),
       decoration: BoxDecoration(
-        color: isSelected ? AppColors.primary.withValues(alpha: 0.1) : Colors.transparent,
+        color: isSelected ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.1) : Colors.transparent,
         borderRadius: BorderRadius.circular(10),
         border: isSelected
-            ? Border.all(color: AppColors.primary.withValues(alpha: 0.3), width: 1)
+            ? Border.all(color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3), width: 1)
             : null,
       ),
       child: ListTile(
@@ -408,7 +408,7 @@ class _MainLayoutState extends State<MainLayout> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         leading: Icon(
           icon,
-          color: isSelected ? AppColors.primary : AppColors.textSecondary,
+          color: isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurfaceVariant,
           size: 20,
         ),
         title: Text(
@@ -417,7 +417,7 @@ class _MainLayoutState extends State<MainLayout> {
             fontFamily: 'Cairo',
             fontSize: 13,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-            color: isSelected ? AppColors.primary : AppColors.textPrimary,
+            color: isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface,
           ),
         ),
         onTap: onTap,
@@ -432,11 +432,11 @@ class _MainLayoutState extends State<MainLayout> {
     Color? color,
     required VoidCallback onTap,
   }) {
-    final itemColor = color ?? AppColors.textPrimary;
+    final itemColor = color ?? Theme.of(context).colorScheme.onSurface;
     return ListTile(
       dense: true,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      leading: Icon(icon, color: color ?? AppColors.primary, size: 20),
+      leading: Icon(icon, color: color ?? Theme.of(context).colorScheme.primary, size: 20),
       title: Text(
         title,
         style: TextStyle(
@@ -457,9 +457,9 @@ class _MainLayoutState extends State<MainLayout> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
         border: Border(
-          bottom: BorderSide(color: AppColors.border.withValues(alpha: 0.6)),
+          bottom: BorderSide(color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.6)),
         ),
       ),
       child: Row(
@@ -468,10 +468,10 @@ class _MainLayoutState extends State<MainLayout> {
           // Current Page Title with Breadcrumb feel
           Text(
             titles[_currentIndex],
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: AppColors.primary,
+              color: Theme.of(context).colorScheme.primary,
               fontFamily: 'Cairo',
             ),
           ),
@@ -483,9 +483,9 @@ class _MainLayoutState extends State<MainLayout> {
                 tooltip: l10n.notifications,
                 icon: Stack(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.notifications_none_outlined,
-                      color: AppColors.primary,
+                      color: Theme.of(context).colorScheme.primary,
                       size: 24,
                     ),
                     Positioned(
@@ -509,21 +509,21 @@ class _MainLayoutState extends State<MainLayout> {
               const SizedBox(width: 8),
               OutlinedButton.icon(
                 style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: AppColors.primary),
+                  side: BorderSide(color: Theme.of(context).colorScheme.primary),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                 ),
                 onPressed: () {
                   Navigator.pushNamed(context, AppRoutes.addPayment);
                 },
-                icon: const Icon(Icons.add, size: 16, color: AppColors.primary),
+                icon: Icon(Icons.add, size: 16, color: Theme.of(context).colorScheme.primary),
                 label: Text(
                   l10n.newPaymentButton,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Cairo',
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.primary,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
               ),

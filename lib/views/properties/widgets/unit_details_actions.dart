@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../core/colors.dart';
 import '../../../routes/routes.dart';
 import '../../../models/app_models.dart';
 
@@ -22,7 +21,7 @@ class UnitDetailsActions extends StatelessWidget {
             activeContract.tenantName.isNotEmpty) ...[
           ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
+              backgroundColor: Theme.of(context).colorScheme.primary,
               padding: const EdgeInsets.symmetric(vertical: 14),
             ),
             onPressed: () {
@@ -45,7 +44,7 @@ class UnitDetailsActions extends StatelessWidget {
         ],
         OutlinedButton.icon(
           style: OutlinedButton.styleFrom(
-            side: const BorderSide(color: AppColors.primary),
+            side: BorderSide(color: Theme.of(context).colorScheme.primary),
             padding: const EdgeInsets.symmetric(vertical: 14),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
@@ -54,11 +53,11 @@ class UnitDetailsActions extends StatelessWidget {
           onPressed: () {
             Navigator.pushNamed(context, AppRoutes.addMaintenance);
           },
-          icon: const Icon(Icons.build_outlined, color: AppColors.primary),
-          label: const Text(
+          icon: Icon(Icons.build_outlined, color: Theme.of(context).colorScheme.primary),
+          label: Text(
             'تسجيل مصروف صيانة للوحدة',
             style: TextStyle(
-              color: AppColors.primary,
+              color: Theme.of(context).colorScheme.primary,
               fontFamily: 'Cairo',
               fontWeight: FontWeight.bold,
             ),

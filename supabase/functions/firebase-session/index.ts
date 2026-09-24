@@ -1,26 +1,4 @@
-// ============================================================
-// Emtilak — Edge Function: firebase-session
-//
-// الدور: جسر الهوية بين Firebase وSupabase دون أي جلسة Supabase Auth:
-//   1) تستقبل Firebase ID Token في ترويسة Authorization.
-//   2) تتحقق منه بمفاتيح Google العامة (لا سرّ خاص بنا، ولا service-role).
-//   3) تُصدّر JWT خاصًا بمشروع Supabase حاملًا:
-//        sub  = معرّف Firebase (UID)   ← مصدر الهوية الوحيد
-//        role = authenticated          ← RLS يعمل باسم المستخدم نفسه
-//
-// النمط: third-party auth الرسمي المعتمد من Supabase (توقيع HS256 بسرّ
-// المشروع المحفوظ خادميًا فقط — لا يراه تطبيق Flutter أبدًا).
-//
-// النشر (مرة واحدة):
-//   npx supabase secrets set EMTILAK_JWT_SECRET=<JWT Secret من لوحة Supabase> \
-//     --project-ref ozsgjxyovhvivreuojfv
-//   npx supabase functions deploy firebase-session --project-ref ozsgjxyovhvivreuojfv \
-//     --no-verify-jwt
-//
-// لماذا --no-verify-jwt؟ بوابة Supabase لا تعرف توكنات Firebase ولا يمكنها
-// التحقق منها قبل وصول الطلب؛ التحقق الفعلي يتم داخل هذه الدالة نفسها ضد
-// مفاتيح Google العامة — أي توكن غير صالح يُرفض هنا بـ 401.
-// ============================================================
+
 
 import { SignJWT, createRemoteJWKSet, jwtVerify } from "npm:jose@5";
 

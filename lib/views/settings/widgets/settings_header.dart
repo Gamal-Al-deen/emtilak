@@ -58,7 +58,7 @@ class SettingsHeader extends StatelessWidget {
         (AppControllers.instance.profile?.avatarUrl ?? '').isNotEmpty;
     showModalBottomSheet<void>(
       context: context,
-      backgroundColor: AppColors.surface,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -77,9 +77,9 @@ class SettingsHeader extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             ListTile(
-              leading: const Icon(
+              leading: Icon(
                 Icons.photo_library_outlined,
-                color: AppColors.primary,
+                color: Theme.of(context).colorScheme.primary,
               ),
               title: Text(
                 AppLocalizations.of(sheetContext)!.profileAvatarFromGallery,
@@ -91,9 +91,9 @@ class SettingsHeader extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: const Icon(
+              leading: Icon(
                 Icons.photo_camera_outlined,
-                color: AppColors.primary,
+                color: Theme.of(context).colorScheme.primary,
               ),
               title: Text(
                 AppLocalizations.of(sheetContext)!.profileAvatarTakePhoto,
@@ -169,11 +169,11 @@ class SettingsHeader extends StatelessWidget {
     final String? phone = profile?.phone;
 
     if (controller.isLoading && profile == null) {
-      return const Center(
+      return Center(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 18),
           child: CircularProgressIndicator(
-            color: AppColors.primary,
+            color: Theme.of(context).colorScheme.primary,
             strokeWidth: 3,
           ),
         ),
@@ -185,9 +185,9 @@ class SettingsHeader extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Theme.of(context).colorScheme.surfaceContainerLow,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: Theme.of(context).colorScheme.outline),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -195,10 +195,10 @@ class SettingsHeader extends StatelessWidget {
             Text(
               controller.error!,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Cairo',
                 fontSize: 13,
-                color: AppColors.textSecondary,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
             const SizedBox(height: 6),
@@ -218,9 +218,9 @@ class SettingsHeader extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: Theme.of(context).colorScheme.outline),
       ),
       child: Row(
         children: [
@@ -232,7 +232,7 @@ class SettingsHeader extends StatelessWidget {
               radius: 30,
               profile: profile,
               fallbackName: firebaseName,
-              backgroundColor: AppColors.primary,
+              backgroundColor: Theme.of(context).colorScheme.primary,
             ),
           ),
           const SizedBox(width: 14),
@@ -243,21 +243,21 @@ class SettingsHeader extends StatelessWidget {
                 Text(
                   name,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Cairo',
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
-                    color: AppColors.textPrimary,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 const SizedBox(height: 3),
                 Text(
                   email,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Cairo',
                     fontSize: 12,
-                    color: AppColors.textSecondary,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -266,10 +266,10 @@ class SettingsHeader extends StatelessWidget {
                       ? phone
                       : AppLocalizations.of(context)!.profileNoPhone,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Cairo',
                     fontSize: 12,
-                    color: AppColors.textSecondary,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                 ),
               ],
@@ -281,9 +281,9 @@ class SettingsHeader extends StatelessWidget {
                 ? null
                 : () => _showEditDialog(context),
             tooltip: AppLocalizations.of(context)!.profileEditTitle,
-            icon: const Icon(
+            icon: Icon(
               Icons.edit_outlined,
-              color: AppColors.primary,
+              color: Theme.of(context).colorScheme.primary,
               size: 22,
             ),
           ),
@@ -362,7 +362,7 @@ class _EditProfileDialogState extends State<_EditProfileDialog> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return AlertDialog(
-      backgroundColor: AppColors.surface,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       title: Text(
         l10n.profileEditTitle,
         style: const TextStyle(
@@ -415,9 +415,9 @@ class _EditProfileDialogState extends State<_EditProfileDialog> {
           onPressed: _saving ? null : () => Navigator.pop(context, false),
           child: Text(
             l10n.cancel,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textSecondary,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
           ),
         ),

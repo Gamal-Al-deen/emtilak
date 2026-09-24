@@ -42,9 +42,9 @@ class SignUpFormCard extends StatelessWidget {
       constraints: const BoxConstraints(maxWidth: 560),
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: Theme.of(context).colorScheme.outline),
         boxShadow: const [
           BoxShadow(
             color: AppColors.cardShadow,
@@ -58,23 +58,23 @@ class SignUpFormCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
+            Text(
               'إنشاء حساب جديد',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
-                color: AppColors.primary,
+                color: Theme.of(context).colorScheme.primary,
                 fontFamily: 'Cairo',
               ),
             ),
             const SizedBox(height: 6),
-            const Text(
+            Text(
               'أدخل بياناتك للانضمام إلى منصة إمتلاك',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 13,
-                color: AppColors.textSecondary,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 fontFamily: 'Cairo',
               ),
             ),
@@ -111,7 +111,7 @@ class SignUpFormCard extends StatelessWidget {
                   obscurePassword
                       ? Icons.visibility_off_outlined
                       : Icons.visibility_outlined,
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
                 onPressed: onTogglePassword,
               ),
@@ -129,7 +129,7 @@ class SignUpFormCard extends StatelessWidget {
                   obscureConfirmPassword
                       ? Icons.visibility_off_outlined
                       : Icons.visibility_outlined,
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
                 onPressed: onToggleConfirmPassword,
               ),
@@ -142,7 +142,7 @@ class SignUpFormCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(14),
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: AppColors.primary,
+                backgroundColor: Theme.of(context).colorScheme.primary,
               ),
               child: isLoading
                   ? const SizedBox(
@@ -168,10 +168,10 @@ class SignUpFormCard extends StatelessWidget {
               crossAxisAlignment: WrapCrossAlignment.center,
               spacing: 4,
               children: [
-                const Text(
+                Text(
                   'لديك حساب بالفعل؟ ',
                   style: TextStyle(
-                    color: AppColors.textSecondary,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     fontSize: 13,
                     fontFamily: 'Cairo',
                   ),

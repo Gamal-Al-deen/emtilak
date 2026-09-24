@@ -146,9 +146,13 @@ class AuthService {
   // Facebook Sign-In
   // ---------------------------------------------------------------------------
 
-  /// يُضبط على `true` بعد إدخال معرّفات فيسبوك الحقيقية (App ID و Client
-  /// Token) في `android/app/src/main/res/values/strings.xml`.
-  static const bool _facebookLoginConfigured = false;
+  /// القفل الأمني لزر فيسبوك.
+  ///
+  /// أصبح `true`: المسار المعتمد حاليًا هو دخول عبر SDK الجهاز
+  /// (`LoginManager.logIn`) بـ App ID وحده — وهذا يكفي لأن دالة login لا
+  /// تستدعي Graph API (وهو وحده من يحتاج Client Token)، ولم يعد وجود
+  /// Client Token شرطًا لتسجيل الدخول.
+  static const bool _facebookLoginConfigured = true;
 
   /// يبدأ تسجيل الدخول عبر Facebook ثم يوثّق الحساب في Firebase.
   ///
@@ -156,7 +160,7 @@ class AuthService {
   Future<User?> signInWithFacebook() async {
     if (!_facebookLoginConfigured) {
       throw const AuthFailure(
-        'تسجيل الدخول عبر فيسبوك غير مفعّل حاليًا، سيتم تفعيله قريبًا.',
+        'تسجيل الدخول عبر فيسبوك غير مفعّل حاليًا.',
       );
     }
 

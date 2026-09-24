@@ -16,19 +16,19 @@ class UnitsGridHeader extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: Theme.of(context).colorScheme.outline),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             buildingName,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: AppColors.primary,
+              color: Theme.of(context).colorScheme.primary,
               fontFamily: 'Cairo',
             ),
           ),
@@ -36,14 +36,14 @@ class UnitsGridHeader extends StatelessWidget {
             children: [
               Text(
                 '$unitsCount وحدة',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 13,
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontFamily: 'Cairo',
                 ),
               ),
               const SizedBox(width: 8),
-              const Icon(Icons.apartment, color: AppColors.primary),
+              Icon(Icons.apartment, color: Theme.of(context).colorScheme.primary),
             ],
           ),
         ],
@@ -75,9 +75,9 @@ class UnitsGridLegendItem extends StatelessWidget {
         const SizedBox(width: 6),
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 11,
-            color: AppColors.textSecondary,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontFamily: 'Cairo',
           ),
         ),
@@ -119,11 +119,11 @@ class UnitsGridEmptyState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
+          Text(
             'لا توجد وحدات مسجلة لهذا المبنى',
             style: TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textSecondary,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: 12),

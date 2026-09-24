@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../core/colors.dart';
 import '../../routes/routes.dart';
 import '../../services/auth_service.dart';
 import '../../widgets/common/auth_message.dart';
@@ -73,7 +72,7 @@ class _SignUpPageState extends State<SignUpPage> {
     final bool isLoading = _pendingSignUp != null;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {

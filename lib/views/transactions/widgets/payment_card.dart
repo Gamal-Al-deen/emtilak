@@ -13,7 +13,7 @@ class PaymentCard extends StatelessWidget {
     this.onTap,
   });
 
-  Color _getStatusColor(String status) {
+  Color _getStatusColor(BuildContext context, String status) {
     switch (status) {
       case 'مدفوع':
         return AppColors.success;
@@ -22,7 +22,7 @@ class PaymentCard extends StatelessWidget {
       case 'متأخر':
         return AppColors.error;
       default:
-        return AppColors.textSecondary;
+        return Theme.of(context).colorScheme.onSurfaceVariant;
     }
   }
 
@@ -30,9 +30,9 @@ class PaymentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: Theme.of(context).colorScheme.outline),
         boxShadow: const [
           BoxShadow(
             color: AppColors.cardShadow,
@@ -55,10 +55,10 @@ class PaymentCard extends StatelessWidget {
                   children: [
                     Text(
                       payment.tenantName,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.textPrimary,
+                        color: Theme.of(context).colorScheme.onSurface,
                         fontFamily: 'Cairo',
                       ),
                       maxLines: 1,
@@ -66,9 +66,9 @@ class PaymentCard extends StatelessWidget {
                     ),
                     Text(
                       payment.contractInfo,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
-                        color: AppColors.textSecondary,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontFamily: 'Cairo',
                       ),
                       maxLines: 1,
@@ -77,9 +77,9 @@ class PaymentCard extends StatelessWidget {
                     const SizedBox(height: 2),
                     Text(
                       payment.paymentDate,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 11,
-                        color: AppColors.textLight,
+                        color: Theme.of(context).hintColor,
                         fontFamily: 'Cairo',
                       ),
                     ),
@@ -95,10 +95,10 @@ class PaymentCard extends StatelessWidget {
                     fit: BoxFit.scaleDown,
                     child: Text(
                       '${payment.amount.toInt()} ${payment.currency}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.primary,
+                        color: Theme.of(context).colorScheme.primary,
                         fontFamily: 'Cairo',
                       ),
                     ),
@@ -106,7 +106,7 @@ class PaymentCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   StatusBadge(
                     label: payment.status,
-                    color: _getStatusColor(payment.status),
+                    color: _getStatusColor(context, payment.status),
                   ),
                 ],
               ),

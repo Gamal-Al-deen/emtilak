@@ -20,9 +20,9 @@ class ContractCard extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: Theme.of(context).colorScheme.outline),
         boxShadow: const [
           BoxShadow(
             color: AppColors.cardShadow,
@@ -45,10 +45,10 @@ class ContractCard extends StatelessWidget {
                 children: [
                   Text(
                     'عقد #${c.id}',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.primary,
+                      color: Theme.of(context).colorScheme.primary,
                       fontFamily: 'Cairo',
                     ),
                   ),
@@ -61,10 +61,10 @@ class ContractCard extends StatelessWidget {
               const SizedBox(height: 2),
               Text(
                 c.tenantName,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.textPrimary,
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontFamily: 'Cairo',
                 ),
                 maxLines: 1,
@@ -72,17 +72,17 @@ class ContractCard extends StatelessWidget {
               ),
               Text(
                 c.unitName,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12,
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontFamily: 'Cairo',
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-              const Divider(
+              Divider(
                 height: 12,
-                color: AppColors.divider,
+                color: Theme.of(context).colorScheme.outlineVariant,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -91,11 +91,11 @@ class ContractCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'تاريخ النهاية',
                           style: TextStyle(
                             fontSize: 10,
-                            color: AppColors.textLight,
+                            color: Theme.of(context).hintColor,
                             fontFamily: 'Cairo',
                           ),
                         ),
@@ -116,11 +116,11 @@ class ContractCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'تاريخ البداية',
                           style: TextStyle(
                             fontSize: 10,
-                            color: AppColors.textLight,
+                            color: Theme.of(context).hintColor,
                             fontFamily: 'Cairo',
                           ),
                         ),
@@ -141,11 +141,11 @@ class ContractCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        const Text(
+                        Text(
                           'الإيجار الشهري',
                           style: TextStyle(
                             fontSize: 10,
-                            color: AppColors.textLight,
+                            color: Theme.of(context).hintColor,
                             fontFamily: 'Cairo',
                           ),
                         ),

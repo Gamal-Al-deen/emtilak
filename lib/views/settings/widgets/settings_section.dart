@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../core/colors.dart';
 
 class SettingsSection extends StatelessWidget {
   final String? title;
@@ -21,10 +20,10 @@ class SettingsSection extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
             child: Text(
               title!,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
-                color: AppColors.textSecondary,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 fontFamily: 'Cairo',
               ),
             ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../core/colors.dart';
 
 class CurrenciesEmptyState extends StatelessWidget {
   final String message;
@@ -14,9 +13,9 @@ class CurrenciesEmptyState extends StatelessWidget {
     return Center(
       child: Text(
         message,
-        style: const TextStyle(
+        style: TextStyle(
           fontFamily: 'Cairo',
-          color: AppColors.textSecondary,
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
         ),
       ),
     );

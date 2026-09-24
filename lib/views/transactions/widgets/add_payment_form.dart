@@ -46,6 +46,7 @@ class AddPaymentForm extends StatelessWidget {
       child: Column(
         children: [
           _buildDropdown(
+            context,
             label: 'المستأجر',
             hint: 'اختر المستأجر',
             value: selectedTenant,
@@ -55,6 +56,7 @@ class AddPaymentForm extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           _buildDropdown(
+            context,
             label: 'العقد المرتبط',
             hint: 'اختر العقد',
             value: selectedContract,
@@ -70,11 +72,11 @@ class AddPaymentForm extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'المبلغ المدفوع',
                       style: TextStyle(
                         fontSize: 12,
-                        color: AppColors.textSecondary,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontFamily: 'Cairo',
                       ),
                     ),
@@ -90,34 +92,34 @@ class AddPaymentForm extends StatelessWidget {
                       ),
                       decoration: InputDecoration(
                         hintText: '0.00',
-                        hintStyle: const TextStyle(
+                        hintStyle: TextStyle(
                           fontSize: 13,
-                          color: AppColors.textLight,
+                          color: Theme.of(context).hintColor,
                           fontFamily: 'Cairo',
                         ),
-                        prefixIcon: const Icon(
+                        prefixIcon: Icon(
                           Icons.attach_money,
-                          color: AppColors.textSecondary,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                           size: 20,
                         ),
                         filled: true,
-                        fillColor: AppColors.surface,
+                        fillColor: Theme.of(context).colorScheme.surfaceContainerLow,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
-                            color: AppColors.border,
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.outline,
                           ),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
-                            color: AppColors.border,
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.outline,
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
-                            color: AppColors.primary,
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.primary,
                             width: 1.5,
                           ),
                         ),
@@ -130,6 +132,7 @@ class AddPaymentForm extends StatelessWidget {
               Expanded(
                 flex: 2,
                 child: _buildDropdown(
+                  context,
                   label: 'العملة',
                   hint: 'العملة',
                   value: selectedCurrency,
@@ -146,11 +149,11 @@ class AddPaymentForm extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'تاريخ الدفع',
                 style: TextStyle(
                   fontSize: 12,
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontFamily: 'Cairo',
                 ),
               ),
@@ -163,23 +166,23 @@ class AddPaymentForm extends StatelessWidget {
                     vertical: 14,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.surface,
+                    color: Theme.of(context).colorScheme.surfaceContainerLow,
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppColors.border),
+                    border: Border.all(color: Theme.of(context).colorScheme.outline),
                   ),
                   child: Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.calendar_month_outlined,
-                        color: AppColors.textSecondary,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         size: 20,
                       ),
                       const SizedBox(width: 8),
                       Text(
                         '${paymentDate.year}/${paymentDate.month.toString().padLeft(2, '0')}/${paymentDate.day.toString().padLeft(2, '0')}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 13,
-                          color: AppColors.textPrimary,
+                          color: Theme.of(context).colorScheme.onSurface,
                           fontFamily: 'Cairo',
                           fontWeight: FontWeight.bold,
                         ),
@@ -194,11 +197,11 @@ class AddPaymentForm extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'طريقة الدفع',
                 style: TextStyle(
                   fontSize: 12,
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontFamily: 'Cairo',
                 ),
               ),
@@ -207,9 +210,9 @@ class AddPaymentForm extends StatelessWidget {
                 spacing: 8,
                 runSpacing: 8,
                 children: [
-                  _buildMethodChip('نقداً (Cash)'),
-                  _buildMethodChip('تحويل بنكي'),
-                  _buildMethodChip('شيك'),
+                  _buildMethodChip(context, 'نقداً (Cash)'),
+                  _buildMethodChip(context, 'تحويل بنكي'),
+                  _buildMethodChip(context, 'شيك'),
                 ],
               ),
             ],
@@ -218,11 +221,11 @@ class AddPaymentForm extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'ملاحظات',
                 style: TextStyle(
                   fontSize: 12,
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontFamily: 'Cairo',
                 ),
               ),
@@ -233,25 +236,25 @@ class AddPaymentForm extends StatelessWidget {
                 style: const TextStyle(fontFamily: 'Cairo', fontSize: 14),
                 decoration: InputDecoration(
                   hintText: 'ملاحظات اختيارية...',
-                  hintStyle: const TextStyle(
+                  hintStyle: TextStyle(
                     fontSize: 13,
-                    color: AppColors.textLight,
+                    color: Theme.of(context).hintColor,
                     fontFamily: 'Cairo',
                   ),
-                  prefixIcon: const Icon(
+                  prefixIcon: Icon(
                     Icons.notes,
-                    color: AppColors.textSecondary,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     size: 20,
                   ),
                   filled: true,
-                  fillColor: AppColors.surface,
+                  fillColor: Theme.of(context).colorScheme.surfaceContainerLow,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: AppColors.border),
+                    borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: AppColors.border),
+                    borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
                   ),
                 ),
               ),
@@ -263,7 +266,8 @@ class AddPaymentForm extends StatelessWidget {
     );
   }
 
-  Widget _buildDropdown({
+  Widget _buildDropdown(
+    BuildContext context, {
     required String label,
     required String hint,
     required String? value,
@@ -280,26 +284,26 @@ class AddPaymentForm extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 12,
-            color: AppColors.textSecondary,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontFamily: 'Cairo',
           ),
         ),
         const SizedBox(height: 6),
         Container(
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: Theme.of(context).colorScheme.surfaceContainerLow,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: Theme.of(context).colorScheme.outline),
           ),
           child: DropdownButtonFormField<String>(
             initialValue: validValue,
             hint: Text(
               hint,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 13,
-                color: AppColors.textLight,
+                color: Theme.of(context).hintColor,
                 fontFamily: 'Cairo',
               ),
             ),
@@ -316,32 +320,32 @@ class AddPaymentForm extends StatelessWidget {
                 .toList(),
             onChanged: onChanged,
             decoration: InputDecoration(
-              prefixIcon: Icon(icon, color: AppColors.textSecondary, size: 20),
+              prefixIcon: Icon(icon, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 20),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.symmetric(vertical: 14),
             ),
             isExpanded: true,
-            dropdownColor: AppColors.surface,
+            dropdownColor: Theme.of(context).colorScheme.surfaceContainerLow,
           ),
         ),
       ],
     );
   }
 
-  Widget _buildMethodChip(String label) {
+  Widget _buildMethodChip(BuildContext context, String label) {
     final isSelected = paymentMethod == label;
     return ChoiceChip(
       label: Text(
         label,
         style: TextStyle(
-          color: isSelected ? AppColors.white : AppColors.textPrimary,
+          color: isSelected ? AppColors.white : Theme.of(context).colorScheme.onSurface,
           fontSize: 12,
           fontFamily: 'Cairo',
         ),
       ),
       selected: isSelected,
-      selectedColor: AppColors.primary,
-      backgroundColor: AppColors.surface,
+      selectedColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       onSelected: (_) => onMethodChanged(label),
     );
   }

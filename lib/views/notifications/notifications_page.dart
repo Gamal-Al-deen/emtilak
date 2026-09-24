@@ -35,17 +35,17 @@ class NotificationsPage extends StatelessWidget {
     final horizontalPadding = Responsive.getHorizontalPadding(context);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: const CustomAppBar(title: 'الإشعارات والتنبيهات'),
       body: ResponsiveContainer(
         maxWidth: 900,
         child: notifications.isEmpty
-            ? const Center(
+            ? Center(
                 child: Text(
                   'لا توجد إشعارات حالياً',
                   style: TextStyle(
                     fontFamily: 'Cairo',
-                    color: AppColors.textSecondary,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                 ),
               )
@@ -57,9 +57,9 @@ class NotificationsPage extends StatelessWidget {
                   return Container(
                     margin: const EdgeInsets.only(bottom: 12),
                     decoration: BoxDecoration(
-                      color: AppColors.surface,
+                      color: Theme.of(context).colorScheme.surfaceContainerLow,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: AppColors.border),
+                      border: Border.all(color: Theme.of(context).colorScheme.outline),
                     ),
                     child: ListTile(
                       contentPadding: const EdgeInsets.all(14),
@@ -81,18 +81,18 @@ class NotificationsPage extends StatelessWidget {
                           const SizedBox(height: 4),
                           Text(
                             n['body'] as String,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
-                              color: AppColors.textSecondary,
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
                               fontFamily: 'Cairo',
                             ),
                           ),
                           const SizedBox(height: 6),
                           Text(
                             n['time'] as String,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 10,
-                              color: AppColors.textLight,
+                              color: Theme.of(context).hintColor,
                               fontFamily: 'Cairo',
                             ),
                           ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../core/colors.dart';
 import '../../../utils/responsive.dart';
 import '../../../widgets/common/custom_app_bar.dart';
 import 'report_filter_row.dart';
@@ -26,17 +25,7 @@ class _FinancialReportContentState extends State<FinancialReportContent> {
       firstDate: DateTime(2020),
       lastDate: DateTime(2030),
       initialDateRange: _selectedRange,
-      builder: (context, child) => Theme(
-        data: Theme.of(context).copyWith(
-          colorScheme: const ColorScheme.light(
-            primary: AppColors.primary,
-            onPrimary: AppColors.white,
-            surface: AppColors.white,
-            onSurface: AppColors.textPrimary,
-          ),
-        ),
-        child: child!,
-      ),
+      // المُنتقي يتبع ثيم التطبيق تلقائيًا (فاتح/داكن) — لا فرض وضع فاتح يدويًا.
     );
 
     if (picked != null) {
@@ -55,7 +44,7 @@ class _FinancialReportContentState extends State<FinancialReportContent> {
     final horizontalPadding = Responsive.getHorizontalPadding(context);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: const CustomAppBar(title: 'التقارير المالية'),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 16),

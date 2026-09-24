@@ -27,19 +27,19 @@ class UnitOptionsModal extends StatelessWidget {
             children: [
               Text(
                 'خيارات الوحدة ${unit.number} (${unit.status})',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.primary,
+                  color: Theme.of(context).colorScheme.primary,
                   fontFamily: 'Cairo',
                 ),
               ),
               const SizedBox(height: 10),
               ListTile(
                 dense: true,
-                leading: const Icon(
+                leading: Icon(
                   Icons.info_outline,
-                  color: AppColors.primary,
+                  color: Theme.of(context).colorScheme.primary,
                   size: 22,
                 ),
                 title: const Text(

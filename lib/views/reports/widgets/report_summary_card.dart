@@ -16,6 +16,7 @@ class ReportSummaryCard extends StatelessWidget {
         children: [
           Expanded(
             child: _buildStatCard(
+              context,
               title: 'إجمالي المحصل',
               value: '23,600 \$',
               valueColor: AppColors.rented,
@@ -24,14 +25,16 @@ class ReportSummaryCard extends StatelessWidget {
           const SizedBox(width: 12),
           Expanded(
             child: _buildStatCard(
+              context,
               title: 'إجمالي المستحقات',
               value: '28,500 \$',
-              valueColor: AppColors.primary,
+              valueColor: Theme.of(context).colorScheme.primary,
             ),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: _buildStatCard(
+              context,
               title: 'نسبة التحصيل',
               value: '82%',
               valueColor: AppColors.gold,
@@ -40,6 +43,7 @@ class ReportSummaryCard extends StatelessWidget {
           const SizedBox(width: 12),
           Expanded(
             child: _buildStatCard(
+              context,
               title: 'المتأخرات',
               value: '4,900 \$',
               valueColor: AppColors.error,
@@ -55,6 +59,7 @@ class ReportSummaryCard extends StatelessWidget {
           children: [
             Expanded(
               child: _buildStatCard(
+                context,
                 title: 'إجمالي المحصل',
                 value: '23,600 \$',
                 valueColor: AppColors.rented,
@@ -63,9 +68,10 @@ class ReportSummaryCard extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
               child: _buildStatCard(
+                context,
                 title: 'إجمالي المستحقات',
                 value: '28,500 \$',
-                valueColor: AppColors.primary,
+                valueColor: Theme.of(context).colorScheme.primary,
               ),
             ),
           ],
@@ -75,6 +81,7 @@ class ReportSummaryCard extends StatelessWidget {
           children: [
             Expanded(
               child: _buildStatCard(
+                context,
                 title: 'نسبة التحصيل',
                 value: '82%',
                 valueColor: AppColors.gold,
@@ -83,6 +90,7 @@ class ReportSummaryCard extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
               child: _buildStatCard(
+                context,
                 title: 'المتأخرات',
                 value: '4,900 \$',
                 valueColor: AppColors.error,
@@ -94,7 +102,8 @@ class ReportSummaryCard extends StatelessWidget {
     );
   }
 
-  Widget _buildStatCard({
+  Widget _buildStatCard(
+    BuildContext context, {
     required String title,
     required String value,
     required Color valueColor,
@@ -102,9 +111,9 @@ class ReportSummaryCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: Theme.of(context).colorScheme.outline),
         boxShadow: const [
           BoxShadow(
             color: AppColors.cardShadow,
@@ -117,9 +126,9 @@ class ReportSummaryCard extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
-              color: AppColors.textSecondary,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontFamily: 'Cairo',
             ),
           ),

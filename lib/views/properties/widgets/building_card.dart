@@ -24,9 +24,9 @@ class BuildingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: Theme.of(context).colorScheme.outline),
         boxShadow: const [
           BoxShadow(
             color: AppColors.cardShadow,
@@ -46,12 +46,12 @@ class BuildingCard extends StatelessWidget {
                 width: 64,
                 height: 64,
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.08),
+                  color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.apartment_rounded,
-                  color: AppColors.primary,
+                  color: Theme.of(context).colorScheme.primary,
                   size: 36,
                 ),
               ),
@@ -63,10 +63,10 @@ class BuildingCard extends StatelessWidget {
                   children: [
                     Text(
                       building.name,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.textPrimary,
+                        color: Theme.of(context).colorScheme.onSurface,
                         fontFamily: 'Cairo',
                       ),
                       maxLines: 1,
@@ -74,9 +74,9 @@ class BuildingCard extends StatelessWidget {
                     ),
                     Text(
                       building.location,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
-                        color: AppColors.textSecondary,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontFamily: 'Cairo',
                       ),
                       maxLines: 1,
@@ -86,9 +86,23 @@ class BuildingCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _buildInfoItem('$totalUnits', 'إجمالي الوحدات'),
-                        _buildInfoItem('$rentedUnits', 'مؤجرة', color: AppColors.rented),
-                        _buildInfoItem('$vacantUnits', 'فارغة', color: AppColors.vacant),
+                        _buildInfoItem(
+                          context,
+                          '$totalUnits',
+                          'إجمالي الوحدات',
+                        ),
+                        _buildInfoItem(
+                          context,
+                          '$rentedUnits',
+                          'مؤجرة',
+                          color: AppColors.rented,
+                        ),
+                        _buildInfoItem(
+                          context,
+                          '$vacantUnits',
+                          'فارغة',
+                          color: AppColors.vacant,
+                        ),
                       ],
                     ),
                   ],
@@ -101,7 +115,12 @@ class BuildingCard extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoItem(String count, String label, {Color? color}) {
+  Widget _buildInfoItem(
+    BuildContext context,
+    String count,
+    String label, {
+    Color? color,
+  }) {
     return Column(
       children: [
         Text(
@@ -109,15 +128,15 @@ class BuildingCard extends StatelessWidget {
           style: TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.bold,
-            color: color ?? AppColors.textPrimary,
+            color: color ?? Theme.of(context).colorScheme.onSurface,
             fontFamily: 'Cairo',
           ),
         ),
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 10,
-            color: AppColors.textSecondary,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontFamily: 'Cairo',
           ),
         ),

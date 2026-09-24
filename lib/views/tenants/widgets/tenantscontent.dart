@@ -77,7 +77,7 @@ class _TenantsContentState extends State<TenantsContent> {
   void _showTenantDetailsModal(Tenant t) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.surface,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -123,7 +123,7 @@ class _TenantsContentState extends State<TenantsContent> {
     }
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: ResponsiveContainer(
         maxWidth: 1400,
         child: Padding(

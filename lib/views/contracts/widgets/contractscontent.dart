@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../core/colors.dart';
 import '../../../utils/responsive.dart';
 import '../../../controllers/app_controllers.dart';
 import '../../../models/app_models.dart';
@@ -65,7 +64,7 @@ class _ContractsContentState extends State<ContractsContent> {
     }
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: ResponsiveContainer(
         maxWidth: 1400,
         child: Padding(

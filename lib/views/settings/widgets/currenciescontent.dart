@@ -75,7 +75,7 @@ class _CurrenciesContentState extends State<CurrenciesContent> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: AppColors.surface,
+          backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
           title: Text(
             'تعديل سعر صرف ${c.name}',
             style: const TextStyle(
@@ -99,11 +99,11 @@ class _CurrenciesContentState extends State<CurrenciesContent> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text(
+              child: Text(
                 'إلغاء',
                 style: TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
             ),
@@ -130,7 +130,7 @@ class _CurrenciesContentState extends State<CurrenciesContent> {
     final horizontalPadding = Responsive.getHorizontalPadding(context);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: const CustomAppBar(title: 'إدارة العملات وأسعار الصرف'),
       body: ResponsiveContainer(
         maxWidth: 1000,
@@ -141,22 +141,22 @@ class _CurrenciesContentState extends State<CurrenciesContent> {
               Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.08),
+                  color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: AppColors.primary.withValues(alpha: 0.2),
+                    color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
                   ),
                 ),
                 child: Row(
-                  children: const [
-                    Icon(Icons.info_outline, color: AppColors.primary),
+                  children: [
+                    Icon(Icons.info_outline, color: Theme.of(context).colorScheme.primary),
                     SizedBox(width: 10),
                     Expanded(
                       child: Text(
                         'العملة الأساسية هي التي تُستخدم في التقارير المالية وحسابات الصافي.',
                         style: TextStyle(
                           fontSize: 12,
-                          color: AppColors.primary,
+                          color: Theme.of(context).colorScheme.primary,
                           fontFamily: 'Cairo',
                         ),
                       ),

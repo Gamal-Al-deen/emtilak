@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../core/colors.dart';
 
 class AddContractHeader extends StatelessWidget {
   final String title;
@@ -18,17 +17,17 @@ class AddContractHeader extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: AppColors.primary,
+            color: Theme.of(context).colorScheme.primary,
             fontFamily: 'Cairo',
           ),
         ),
         if (onClose != null)
           IconButton(
             onPressed: onClose,
-            icon: const Icon(Icons.close, color: AppColors.textSecondary),
+            icon: Icon(Icons.close, color: Theme.of(context).colorScheme.onSurfaceVariant),
             splashRadius: 20,
           ),
       ],

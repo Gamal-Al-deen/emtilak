@@ -39,11 +39,11 @@ class MainDrawer extends StatelessWidget {
     );
 
     return Drawer(
-      backgroundColor: AppColors.surface,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       child: Column(
         children: [
           UserAccountsDrawerHeader(
-            decoration: const BoxDecoration(color: AppColors.primary),
+            decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary),
             currentAccountPicture: UserAvatar(
               radius: 36,
               profile: profile,
@@ -69,9 +69,9 @@ class MainDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: const Icon(
+            leading: Icon(
               Icons.analytics_outlined,
-              color: AppColors.primary,
+              color: Theme.of(context).colorScheme.primary,
             ),
             title: Text(
               l10n.reportsAndProfits,
@@ -83,9 +83,9 @@ class MainDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(
+            leading: Icon(
               Icons.currency_exchange,
-              color: AppColors.primary,
+              color: Theme.of(context).colorScheme.primary,
             ),
             title: Text(
               l10n.manageCurrencies,
@@ -97,7 +97,7 @@ class MainDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.build_outlined, color: AppColors.primary),
+            leading: Icon(Icons.build_outlined, color: Theme.of(context).colorScheme.primary),
             title: Text(
               l10n.maintenanceExpenses,
               style: const TextStyle(fontFamily: 'Cairo'),
@@ -109,9 +109,9 @@ class MainDrawer extends StatelessWidget {
           ),
           const Divider(),
           ListTile(
-            leading: const Icon(
+            leading: Icon(
               Icons.settings_outlined,
-              color: AppColors.primary,
+              color: Theme.of(context).colorScheme.primary,
             ),
             title: Text(
               l10n.settingsAndBackup,
@@ -123,7 +123,7 @@ class MainDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.info_outline, color: AppColors.primary),
+            leading: Icon(Icons.info_outline, color: Theme.of(context).colorScheme.primary),
             title: Text(
               l10n.settingsAbout,
               style: const TextStyle(fontFamily: 'Cairo'),
@@ -134,9 +134,9 @@ class MainDrawer extends StatelessWidget {
                 context: context,
                 applicationName: l10n.appName,
                 applicationVersion: '1.0.0',
-                applicationIcon: const Icon(
+                applicationIcon: Icon(
                   Icons.home_work,
-                  color: AppColors.primary,
+                  color: Theme.of(context).colorScheme.primary,
                   size: 40,
                 ),
                 children: [

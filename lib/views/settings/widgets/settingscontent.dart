@@ -68,7 +68,7 @@ class _SettingsContentState extends State<SettingsContent> {
       builder: (context) {
         final l10n = AppLocalizations.of(context)!;
         return AlertDialog(
-          backgroundColor: AppColors.surface,
+          backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
           title: Text(
             l10n.settingsBackupDialogTitle,
             style: const TextStyle(
@@ -89,9 +89,9 @@ class _SettingsContentState extends State<SettingsContent> {
               onPressed: () => Navigator.pop(context),
               child: Text(
                 l10n.cancel,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
             ),
@@ -124,7 +124,7 @@ class _SettingsContentState extends State<SettingsContent> {
       builder: (context) {
         final l10n = AppLocalizations.of(context)!;
         return AlertDialog(
-          backgroundColor: AppColors.surface,
+          backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
           title: Text(
             l10n.settingsChangePasswordTitle,
             style: const TextStyle(
@@ -166,9 +166,9 @@ class _SettingsContentState extends State<SettingsContent> {
               onPressed: () => Navigator.pop(context),
               child: Text(
                 l10n.cancel,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
             ),
@@ -215,7 +215,7 @@ class _SettingsContentState extends State<SettingsContent> {
             ),
             leading: Icon(
               icon,
-              color: selected ? AppColors.primary : AppColors.textSecondary,
+              color: selected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurfaceVariant,
             ),
             title: Text(
               label,
@@ -223,12 +223,12 @@ class _SettingsContentState extends State<SettingsContent> {
                 fontFamily: 'Cairo',
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
-                color: selected ? AppColors.primary : AppColors.textPrimary,
+                color: selected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface,
               ),
             ),
             trailing: selected
-                ? const Icon(Icons.check_circle, color: AppColors.primary)
-                : const Icon(Icons.circle_outlined, color: AppColors.textLight),
+                ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.primary)
+                : Icon(Icons.circle_outlined, color: Theme.of(context).hintColor),
             onTap: () {
               Navigator.pop(dialogContext);
               controller.setLocale(Locale(code));
@@ -237,7 +237,7 @@ class _SettingsContentState extends State<SettingsContent> {
         }
 
         return AlertDialog(
-          backgroundColor: AppColors.surface,
+          backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
           title: Text(
             l10n.settingsLanguageDialogTitle,
             style: const TextStyle(
@@ -269,9 +269,9 @@ class _SettingsContentState extends State<SettingsContent> {
               onPressed: () => Navigator.pop(dialogContext),
               child: Text(
                 l10n.cancel,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Cairo',
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
             ),
@@ -289,7 +289,7 @@ class _SettingsContentState extends State<SettingsContent> {
         AppControllers.instance.localeController.locale.languageCode == 'ar';
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: CustomAppBar(title: l10n.settingsTitle),
       body: ResponsiveContainer(
         maxWidth: 850,
@@ -326,30 +326,30 @@ class _SettingsContentState extends State<SettingsContent> {
                 Container(
                   margin: const EdgeInsets.only(bottom: 12),
                   decoration: BoxDecoration(
-                    color: AppColors.surface,
+                    color: Theme.of(context).colorScheme.surfaceContainerLow,
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppColors.border),
+                    border: Border.all(color: Theme.of(context).colorScheme.outline),
                   ),
                   child: SwitchListTile(
-                    secondary: const Icon(
+                    secondary: Icon(
                       Icons.notifications_none_outlined,
-                      color: AppColors.primary,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                     title: Text(
                       l10n.settingsNotifications,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'Cairo',
-                        color: AppColors.textPrimary,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                     subtitle: Text(
                       l10n.settingsNotificationsSubtitle,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
                         fontFamily: 'Cairo',
-                        color: AppColors.textSecondary,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                     ),
                     value: _notificationsEnabled,
@@ -360,30 +360,30 @@ class _SettingsContentState extends State<SettingsContent> {
                 Container(
                   margin: const EdgeInsets.only(bottom: 12),
                   decoration: BoxDecoration(
-                    color: AppColors.surface,
+                    color: Theme.of(context).colorScheme.surfaceContainerLow,
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppColors.border),
+                    border: Border.all(color: Theme.of(context).colorScheme.outline),
                   ),
                   child: SwitchListTile(
-                    secondary: const Icon(
+                    secondary: Icon(
                       Icons.fingerprint,
-                      color: AppColors.primary,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                     title: Text(
                       l10n.settingsBiometric,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'Cairo',
-                        color: AppColors.textPrimary,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                     subtitle: Text(
                       l10n.settingsBiometricSubtitle,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
                         fontFamily: 'Cairo',
-                        color: AppColors.textSecondary,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                     ),
                     value: _biometricLoginEnabled,
@@ -408,9 +408,9 @@ class _SettingsContentState extends State<SettingsContent> {
                       context: context,
                       applicationName: l10n.appName,
                       applicationVersion: '1.0.0',
-                      applicationIcon: const Icon(
+                      applicationIcon: Icon(
                         Icons.home_work,
-                        color: AppColors.primary,
+                        color: Theme.of(context).colorScheme.primary,
                         size: 40,
                       ),
                       children: [

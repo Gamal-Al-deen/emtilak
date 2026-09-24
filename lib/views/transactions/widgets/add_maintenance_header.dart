@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import '../../../core/colors.dart';
 
 class AddMaintenanceHeader extends StatelessWidget {
   const AddMaintenanceHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
@@ -14,7 +13,7 @@ class AddMaintenanceHeader extends StatelessWidget {
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: AppColors.primary,
+            color: Theme.of(context).colorScheme.primary,
             fontFamily: 'Cairo',
           ),
         ),

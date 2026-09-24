@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../../core/colors.dart';
 
 class TenantStatementExportButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -13,7 +12,7 @@ class TenantStatementExportButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         minimumSize: const Size.fromHeight(48),
       ),
       onPressed: onPressed,

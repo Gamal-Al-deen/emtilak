@@ -47,4 +47,36 @@ class AppColors {
   static const Color white70 = Color(0xB3FFFFFF);
   static const Color white24 = Color(0x3DFFFFFF);
   static const Color primaryDark = Color(0xFF0D3B7A);
+
+  // ---------------------------------------------------------------------------
+  // Dark Theme Palette (تكييف داكن لهوية العلامة نفسها — لا انعكاس للألوان)
+  //
+  // القيم الداكنة تُعرَّف هنا كي يبقى `AppColors` مصدرًا واحدًا لكل قيم الألوان،
+  // ويبقى `core/theme.dart` المكان الذي يركّبها داخل `ColorScheme`.
+  // ---------------------------------------------------------------------------
+
+  /// كحلي أفتح للنصوص والأيقونات والأزرار في الوضع الداكن — الكحلي الأصلي
+  /// `primary` يصعب قراءته على خلفية داكنة، فهذا هو بديله التفاعلي.
+  static const Color darkPrimary = Color(0xFF3D6FD1);
+
+  /// خلفية الصفحة (Scaffold) في الوضع الداكن — كحلي داكن جدًا لا أسود.
+  static const Color darkBackground = Color(0xFF0A1120);
+
+  /// البطاقات والأسطح في الوضع الداكن — أفتح قليلًا من خلفية الصفحة.
+  static const Color darkSurface = Color(0xFF141E33);
+
+  /// الأسطح المرتفعة (النوافذ، الشيتات، درج التنقّل، شريط التطبيق).
+  static const Color darkSurfaceElevated = Color(0xFF1A2740);
+
+  /// حدود مرئية لكن هادئة في الوضع الداكن.
+  static const Color darkBorder = Color(0xFF2E3D5C);
+
+  /// النص الأساسي في الوضع الداكن — أبيض مائل للزرقة لا أبيض صرف.
+  static const Color darkTextPrimary = Color(0xFFE8EDF7);
+
+  /// النص الثانوي في الوضع الداكن.
+  static const Color darkTextSecondary = Color(0xFF9BA8C2);
+
+  /// النص الخافت (تلميحات الحقول) في الوضع الداكن.
+  static const Color darkTextLight = Color(0xFF7E8DA8);
 }

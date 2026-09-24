@@ -18,8 +18,8 @@ class DashboardWelcomeCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(isWide ? 24 : 16),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [AppColors.primary, AppColors.primaryDark],
+        gradient: LinearGradient(
+          colors: [Theme.of(context).colorScheme.primary, AppColors.primaryDark],
           begin: Alignment.topRight,
           end: Alignment.bottomLeft,
         ),

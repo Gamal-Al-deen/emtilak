@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../core/colors.dart';
 
 class AddPaymentSummary extends StatelessWidget {
   final VoidCallback? onSubmit;
@@ -13,7 +12,7 @@ class AddPaymentSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         padding: const EdgeInsets.symmetric(vertical: 16),
       ),
       onPressed: onSubmit,

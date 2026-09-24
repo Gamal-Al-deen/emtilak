@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../core/colors.dart';
 import '../../../utils/responsive.dart';
 import '../../../controllers/app_controllers.dart';
 import '../../../models/app_models.dart';
@@ -48,7 +47,7 @@ class UnitDetailsContent extends StatelessWidget {
     final horizontalPadding = Responsive.getHorizontalPadding(context);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: CustomAppBar(title: 'تفاصيل الوحدة ${unit.number}'),
       body: ResponsiveContainer(
         maxWidth: 900,

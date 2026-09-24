@@ -23,17 +23,16 @@ dependencies:
   # تستخدم AGP 7.1.2 القديمة فتفشل ترجمة Java (android.jar غير مضافة).
   flutter_facebook_auth: ^7.2.0
   local_auth: ^3.0.2
-  # نفس الإصدار المثبَّت أصلاً كتنفيذ مُعتمد لـ local_auth — يُستخدم لنصوص العربية
-  # في نافذة طلب البصمة.
+  
   local_auth_android: ^2.2.0
   # 10.3.x مطلوبة للتوافق مع flutter_facebook_auth 7.x (facebook_auth_desktop).
   flutter_secure_storage: ^10.3.4
   # SQL Lite
   sqflite: ^2.4.4
   path: ^1.9.1
-  # قاعدة بيانات/تخزين الملف الشخصي (توافق مع Firebase: جلسة موازية فقط).
+ 
   supabase_flutter: ^2.8.0
-  # اختيار صورة من المعرض أو التقاطها بالكاميرا (لا توجد حزمة صور بديلة في المشروع).
+
   image_picker: ^1.1.2
 
 dev_dependencies:

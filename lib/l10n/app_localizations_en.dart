@@ -833,6 +833,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsLanguageEnglish => 'English';
 
   @override
+  String get settingsTheme => 'Theme';
+
+  @override
+  String get settingsThemeDialogTitle => 'Select Theme';
+
+  @override
+  String get settingsThemeLight => 'Light';
+
+  @override
+  String get settingsThemeDark => 'Dark';
+
+  @override
+  String get settingsThemeSystem => 'System';
+
+  @override
   String get settingsNotifications => 'Notifications & Alerts';
 
   @override

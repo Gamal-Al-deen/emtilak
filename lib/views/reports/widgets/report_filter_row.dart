@@ -21,9 +21,9 @@ class ReportFilterRow extends StatelessWidget {
         constraints: const BoxConstraints(maxWidth: 400),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Theme.of(context).colorScheme.surfaceContainerLow,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.primary),
+          border: Border.all(color: Theme.of(context).colorScheme.primary),
           boxShadow: const [
             BoxShadow(color: AppColors.cardShadow, blurRadius: 4),
           ],
@@ -31,19 +31,19 @@ class ReportFilterRow extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.calendar_month, size: 18, color: AppColors.primary),
+            Icon(Icons.calendar_month, size: 18, color: Theme.of(context).colorScheme.primary),
             const SizedBox(width: 8),
             Text(
               '$startStr - $endStr',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
-                color: AppColors.primary,
+                color: Theme.of(context).colorScheme.primary,
                 fontFamily: 'Cairo',
               ),
             ),
             const SizedBox(width: 6),
-            const Icon(Icons.arrow_drop_down, color: AppColors.primary),
+            Icon(Icons.arrow_drop_down, color: Theme.of(context).colorScheme.primary),
           ],
         ),
       ),

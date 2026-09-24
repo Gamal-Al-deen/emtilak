@@ -122,32 +122,32 @@ class AuthTextField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,
-        hintStyle: const TextStyle(
+        hintStyle: TextStyle(
           fontFamily: 'Cairo',
           fontSize: 13,
-          color: AppColors.textLight,
+          color: Theme.of(context).hintColor,
         ),
-        floatingLabelStyle: const TextStyle(
+        floatingLabelStyle: TextStyle(
           fontFamily: 'Cairo',
-          color: AppColors.primary,
+          color: Theme.of(context).colorScheme.primary,
         ),
         prefixIcon: prefixIcon != null
-            ? Icon(prefixIcon, color: AppColors.textSecondary, size: 20)
+            ? Icon(prefixIcon, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 20)
             : null,
         suffixIcon: suffixIcon,
         filled: true,
-        fillColor: AppColors.background,
+        fillColor: Theme.of(context).colorScheme.surface,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: AppColors.border),
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: AppColors.border),
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),

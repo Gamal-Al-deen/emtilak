@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../core/colors.dart';
 import '../../../widgets/auth/auth_text_field.dart';
 
 class AddContractSummary extends StatelessWidget {
@@ -34,6 +33,7 @@ class AddContractSummary extends StatelessWidget {
             Expanded(
               flex: 3,
               child: _buildTextField(
+                context,
                 controller: rentController,
                 label: 'قيمة الإيجار الشهري',
                 hint: '0.00',
@@ -48,6 +48,7 @@ class AddContractSummary extends StatelessWidget {
             Expanded(
               flex: 2,
               child: _buildDropdown(
+                context,
                 label: 'العملة',
                 hint: 'العملة',
                 value: selectedCurrency,
@@ -65,6 +66,7 @@ class AddContractSummary extends StatelessWidget {
           children: [
             Expanded(
               child: _buildDatePicker(
+                context,
                 label: 'تاريخ البداية',
                 date: startDate,
                 onTap: onStartDateTapped,
@@ -73,6 +75,7 @@ class AddContractSummary extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
               child: _buildDatePicker(
+                context,
                 label: 'تاريخ النهاية',
                 date: endDate,
                 onTap: onEndDateTapped,
@@ -84,7 +87,8 @@ class AddContractSummary extends StatelessWidget {
     );
   }
 
-  Widget _buildDropdown({
+  Widget _buildDropdown(
+    BuildContext context, {
     required String label,
     required String hint,
     required String? value,
@@ -101,26 +105,26 @@ class AddContractSummary extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 12,
-            color: AppColors.textSecondary,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontFamily: 'Cairo',
           ),
         ),
         const SizedBox(height: 6),
         Container(
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: Theme.of(context).colorScheme.surfaceContainerLow,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: Theme.of(context).colorScheme.outline),
           ),
           child: DropdownButtonFormField<String>(
             initialValue: validValue,
             hint: Text(
               hint,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 13,
-                color: AppColors.textLight,
+                color: Theme.of(context).hintColor,
                 fontFamily: 'Cairo',
               ),
             ),
@@ -137,19 +141,20 @@ class AddContractSummary extends StatelessWidget {
                 .toList(),
             onChanged: onChanged,
             decoration: InputDecoration(
-              prefixIcon: Icon(icon, color: AppColors.textSecondary, size: 20),
+              prefixIcon: Icon(icon, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 20),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.symmetric(vertical: 14),
             ),
             isExpanded: true,
-            dropdownColor: AppColors.surface,
+            dropdownColor: Theme.of(context).colorScheme.surfaceContainerLow,
           ),
         ),
       ],
     );
   }
 
-  Widget _buildTextField({
+  Widget _buildTextField(
+    BuildContext context, {
     required TextEditingController controller,
     required String label,
     required String hint,
@@ -164,9 +169,9 @@ class AddContractSummary extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 12,
-            color: AppColors.textSecondary,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontFamily: 'Cairo',
           ),
         ),
@@ -184,7 +189,8 @@ class AddContractSummary extends StatelessWidget {
     );
   }
 
-  Widget _buildDatePicker({
+  Widget _buildDatePicker(
+    BuildContext context, {
     required String label,
     required DateTime? date,
     required VoidCallback onTap,
@@ -194,9 +200,9 @@ class AddContractSummary extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 12,
-            color: AppColors.textSecondary,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontFamily: 'Cairo',
           ),
         ),
@@ -206,15 +212,15 @@ class AddContractSummary extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
             decoration: BoxDecoration(
-              color: AppColors.surface,
+              color: Theme.of(context).colorScheme.surfaceContainerLow,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.border),
+              border: Border.all(color: Theme.of(context).colorScheme.outline),
             ),
             child: Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.calendar_month_outlined,
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   size: 20,
                 ),
                 const SizedBox(width: 8),
@@ -225,8 +231,8 @@ class AddContractSummary extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 13,
                     color: date != null
-                        ? AppColors.textPrimary
-                        : AppColors.textLight,
+                        ? Theme.of(context).colorScheme.onSurface
+                        : Theme.of(context).hintColor,
                     fontFamily: 'Cairo',
                   ),
                 ),

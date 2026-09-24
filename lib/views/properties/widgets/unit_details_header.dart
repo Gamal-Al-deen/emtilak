@@ -15,9 +15,9 @@ class UnitDetailsHeader extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: Theme.of(context).colorScheme.outline),
       ),
       child: Column(
         children: [
@@ -26,10 +26,10 @@ class UnitDetailsHeader extends StatelessWidget {
             children: [
               Text(
                 'شقة رقم ${unit.number}',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.primary,
+                  color: Theme.of(context).colorScheme.primary,
                   fontFamily: 'Cairo',
                 ),
               ),
@@ -57,16 +57,16 @@ class UnitDetailsHeader extends StatelessWidget {
           const SizedBox(height: 8),
           Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.apartment_rounded,
-                color: AppColors.textSecondary,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 size: 16,
               ),
               const SizedBox(width: 6),
               Text(
                 '${unit.buildingName} - الطابق الأول',
-                style: const TextStyle(
-                  color: AppColors.textSecondary,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontFamily: 'Cairo',
                   fontSize: 13,
                 ),

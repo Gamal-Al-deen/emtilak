@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../../core/colors.dart';
 import '../../../../models/app_models.dart';
 import 'tenant_statement_tile.dart';
 
@@ -13,24 +12,24 @@ class TenantStatementList extends StatelessWidget {
     return Expanded(
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Theme.of(context).colorScheme.surfaceContainerLow,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: Theme.of(context).colorScheme.outline),
         ),
         child: payments.isEmpty
-            ? const Center(
+            ? Center(
                 child: Text(
                   'لا توجد حركات مسجلة لهذا المستأجر حالياً',
                   style: TextStyle(
                     fontFamily: 'Cairo',
-                    color: AppColors.textSecondary,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                 ),
               )
             : ListView.separated(
                 itemCount: payments.length,
                 separatorBuilder: (context, index) =>
-                    const Divider(height: 1, color: AppColors.divider),
+                    Divider(height: 1, color: Theme.of(context).colorScheme.outlineVariant),
                 itemBuilder: (context, index) {
                   final p = payments[index];
                   return TenantStatementTile(payment: p);

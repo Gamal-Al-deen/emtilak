@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../../core/colors.dart';
 import '../../../../widgets/auth/auth_text_field.dart';
 
 class AddTenantDialog extends StatefulWidget {
@@ -28,7 +27,7 @@ class _AddTenantDialogState extends State<AddTenantDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: AppColors.surface,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       title: const Text(
         'إضافة مستأجر جديد',
         style: TextStyle(
@@ -73,11 +72,11 @@ class _AddTenantDialogState extends State<AddTenantDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text(
+          child: Text(
             'إلغاء',
             style: TextStyle(
               fontFamily: 'Cairo',
-              color: AppColors.textSecondary,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
           ),
         ),
