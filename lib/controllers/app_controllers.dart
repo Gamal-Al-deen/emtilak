@@ -6,6 +6,8 @@ import 'contract_controller.dart';
 import 'payment_controller.dart';
 import 'maintenance_controller.dart';
 import 'currency_controller.dart';
+import 'profile_controller.dart';
+import 'locale_controller.dart';
 import '../models/app_models.dart';
 
 export 'building_controller.dart';
@@ -15,6 +17,8 @@ export 'contract_controller.dart';
 export 'payment_controller.dart';
 export 'maintenance_controller.dart';
 export 'currency_controller.dart';
+export 'profile_controller.dart';
+export 'locale_controller.dart';
 
 class AppControllers extends ChangeNotifier {
   static final AppControllers _instance = AppControllers._internal();
@@ -28,6 +32,8 @@ class AppControllers extends ChangeNotifier {
   final PaymentController paymentController = PaymentController();
   final MaintenanceController maintenanceController = MaintenanceController();
   final CurrencyController currencyController = CurrencyController();
+  final ProfileController profileController = ProfileController();
+  final LocaleController localeController = LocaleController();
 
   bool _isInitialized = false;
 
@@ -40,6 +46,8 @@ class AppControllers extends ChangeNotifier {
     paymentController.addListener(notifyListeners);
     maintenanceController.addListener(notifyListeners);
     currencyController.addListener(notifyListeners);
+    profileController.addListener(notifyListeners);
+    localeController.addListener(notifyListeners);
 
     initControllers();
   }
@@ -47,6 +55,7 @@ class AppControllers extends ChangeNotifier {
   Future<void> initControllers() async {
     if (_isInitialized) return;
     try {
+      await localeController.loadLocale();
       await buildingController.loadBuildings();
       await unitController.loadUnits();
       await tenantController.loadTenants();
@@ -70,6 +79,11 @@ class AppControllers extends ChangeNotifier {
   List<Payment> get payments => paymentController.payments;
   List<MaintenanceExpense> get maintenances => maintenanceController.maintenances;
   List<CurrencyModel> get currencies => currencyController.currencies;
+  UserProfile? get profile => profileController.profile;
+
+  /// يحمّل الملف الشخصي من Supabase (يتجاهل التكرار إلا مع [force]).
+  Future<void> loadProfile({bool force = false}) =>
+      profileController.loadProfile(force: force);
 
   // Summary helpers for Dashboard
   int get totalBuildingsCount => buildingController.totalBuildingsCount;

@@ -1,0 +1,927 @@
+{
+  "@@locale": "ar",
+
+  "appName": "إمتلاك",
+  "@appName": { "description": "Application name" },
+
+  "appTagline": "منصة متكاملة لإدارة العقارات والموارد",
+  "@appTagline": { "description": "App tagline shown on login screen" },
+
+  "appSmartDashboard": "لوحة إدارة العقارات الذكية",
+  "@appSmartDashboard": { "description": "Dashboard subtitle" },
+
+  "notifications": "الإشعارات والتنبيهات",
+  "@notifications": { "description": "Notifications page title" },
+
+  "noNotifications": "لا توجد إشعارات حالياً",
+  "@noNotifications": { "description": "Empty notifications message" },
+
+  "rentDueSoon": "إيجار مستحق قريبًا",
+  "@rentDueSoon": { "description": "Notification type: rent due soon" },
+
+  "rentDueSoonBody": "إيجار شقة A102 (محمد أحمد) يستحق بعد 3 أيام (500 $)",
+  "@rentDueSoonBody": { "description": "Rent due soon notification body" },
+
+  "paymentReceived": "تم استلام دفعة جديدة",
+  "@paymentReceived": { "description": "Notification type: payment received" },
+
+  "paymentReceivedBody": "قام المستأجر أحمد علي بدفع مبلغ 250 $ لعقد #104",
+  "@paymentReceivedBody": { "description": "Payment received notification body" },
+
+  "contractExpiringSoon": "عقد ينتهي قريباً",
+  "@contractExpiringSoon": { "description": "Notification type: contract expiring" },
+
+  "contractExpiringSoonBody": "عقد #103 للمستأجر عبدالله حسين ينتهي بنهاية الشهر الحالي",
+  "@contractExpiringSoonBody": { "description": "Contract expiring notification body" },
+
+  "hoursAgo2": "منذ ساعتين",
+  "@hoursAgo2": { "description": "Time ago: 2 hours" },
+
+  "dayAgo1": "منذ يوم واحد",
+  "@dayAgo1": { "description": "Time ago: 1 day" },
+
+  "daysAgo3": "منذ 3 أيام",
+  "@daysAgo3": { "description": "Time ago: 3 days" },
+
+  "onboardingTitle1": "تقارير دقيقة و واضحة",
+  "@onboardingTitle1": { "description": "Onboarding page 1 title" },
+
+  "onboardingBody1": "احصل على تقارير مالية شاملة واستعرض أداء عقاراتك في مكان واحد.",
+  "@onboardingBody1": { "description": "Onboarding page 1 body" },
+
+  "onboardingTitle2": "تتبع الإيرادات والمدفوعات",
+  "@onboardingTitle2": { "description": "Onboarding page 2 title" },
+
+  "onboardingBody2": "سجل الإيجارات والمدفوعات واطلع على المتأخرات وأصدر سندات قبض رسمية.",
+  "@onboardingBody2": { "description": "Onboarding page 2 body" },
+
+  "onboardingTitle3": "إدارة عقاراتك بسهولة",
+  "@onboardingTitle3": { "description": "Onboarding page 3 title" },
+
+  "onboardingBody3": "أضف مبانيك ووحداتك وتابع حالة كل وحدة بكل سهولة واحترافية.",
+  "@onboardingBody3": { "description": "Onboarding page 3 body" },
+
+  "onboardingSkip": "ابدأ الآن",
+  "@onboardingSkip": { "description": "Onboarding skip button" },
+
+  "onboardingNext": "التالي",
+  "@onboardingNext": { "description": "Onboarding next button" },
+
+  "onboardingDone": "تسجيل الدخول",
+  "@onboardingDone": { "description": "Onboarding done button" },
+
+  "loginTitle": "تسجيل الدخول",
+  "@loginTitle": { "description": "Login screen title" },
+
+  "loginWelcome": "مرحباً بك مرة أخرى",
+  "@loginWelcome": { "description": "Login welcome subtitle" },
+
+  "loginEmailHint": "البريد الإلكتروني أو رقم الهاتف",
+  "@loginEmailHint": { "description": "Login email/phone field hint" },
+
+  "loginPasswordHint": "كلمة المرور",
+  "@loginPasswordHint": { "description": "Login password field hint" },
+
+  "loginForgotPassword": "نسيت كلمة المرور؟",
+  "@loginForgotPassword": { "description": "Forgot password link" },
+
+  "loginButton": "تسجيل الدخول",
+  "@loginButton": { "description": "Login button text" },
+
+  "loginOr": "أو",
+  "@loginOr": { "description": "Or divider text on login" },
+
+  "loginWithGoogle": "تسجيل الدخول باستخدام Google",
+  "@loginWithGoogle": { "description": "Google sign in button" },
+
+  "loginWithFacebook": "تسجيل الدخول باستخدام Facebook",
+  "@loginWithFacebook": { "description": "Facebook sign in button" },
+
+  "loginWithBiometric": "تسجيل الدخول بالبصمة",
+  "@loginWithBiometric": { "description": "Biometric sign in button" },
+
+  "loginVerifying": "جارٍ التحقق...",
+  "@loginVerifying": { "description": "Loading text on social login buttons" },
+
+  "loginNoAccount": "ليس لديك حساب؟ ",
+  "@loginNoAccount": { "description": "No account prompt" },
+
+  "loginCreateAccount": "إنشاء حساب",
+  "@loginCreateAccount": { "description": "Create account link" },
+
+  "loginCancelledGoogle": "تم إلغاء تسجيل الدخول باستخدام Google.",
+  "@loginCancelledGoogle": { "description": "Google sign-in cancelled message" },
+
+  "loginCancelledFacebook": "تم إلغاء تسجيل الدخول باستخدام فيسبوك.",
+  "@loginCancelledFacebook": { "description": "Facebook sign-in cancelled message" },
+
+  "loginCancelledBiometric": "تم إلغاء التحقق بالبصمة.",
+  "@loginCancelledBiometric": { "description": "Biometric cancelled message" },
+
+  "loginUnexpectedError": "حدث خطأ غير متوقع، حاول مرة أخرى.",
+  "@loginUnexpectedError": { "description": "Generic login error" },
+
+  "signUpTitle": "إنشاء حساب",
+  "@signUpTitle": { "description": "Sign up screen title" },
+
+  "signUpSubtitle": "سجل حسابك لبدء إدارة عقاراتك",
+  "@signUpSubtitle": { "description": "Sign up subtitle" },
+
+  "signUpNameHint": "الاسم الكامل",
+  "@signUpNameHint": { "description": "Sign up name field hint" },
+
+  "signUpEmailHint": "البريد الإلكتروني",
+  "@signUpEmailHint": { "description": "Sign up email field hint" },
+
+  "signUpPasswordHint": "كلمة المرور",
+  "@signUpPasswordHint": { "description": "Sign up password field hint" },
+
+  "signUpConfirmHint": "تأكيد كلمة المرور",
+  "@signUpConfirmHint": { "description": "Sign up confirm password hint" },
+
+  "signUpButton": "إنشاء الحساب",
+  "@signUpButton": { "description": "Sign up button text" },
+
+  "signUpHaveAccount": "لديك حساب بالفعل؟ ",
+  "@signUpHaveAccount": { "description": "Already have account prompt" },
+
+  "signUpLogin": "تسجيل الدخول",
+  "@signUpLogin": { "description": "Sign in link on sign up page" },
+
+  "forgotPasswordTitle": "استعادة كلمة المرور",
+  "@forgotPasswordTitle": { "description": "Forgot password screen title" },
+
+  "forgotPasswordSubtitle": "أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة التعيين",
+  "@forgotPasswordSubtitle": { "description": "Forgot password subtitle" },
+
+  "forgotPasswordEmailHint": "البريد الإلكتروني",
+  "@forgotPasswordEmailHint": { "description": "Forgot password email hint" },
+
+  "forgotPasswordButton": "إرسال رابط الاستعادة",
+  "@forgotPasswordButton": { "description": "Forgot password send button" },
+
+  "forgotPasswordBack": "العودة لتسجيل الدخول",
+  "@forgotPasswordBack": { "description": "Back to login link" },
+
+  "dashboard": "لوحة التحكم",
+  "@dashboard": { "description": "Dashboard navigation label" },
+
+  "home": "الرئيسية",
+  "@home": { "description": "Home navigation label" },
+
+  "buildings": "المباني",
+  "@buildings": { "description": "Buildings navigation label" },
+
+  "contracts": "العقود",
+  "@contracts": { "description": "Contracts navigation label" },
+
+  "payments": "الدفعات",
+  "@payments": { "description": "Payments navigation label" },
+
+  "tenants": "المستأجرون",
+  "@tenants": { "description": "Tenants navigation label" },
+
+  "welcomeGreeting": "مرحباً بك",
+  "@welcomeGreeting": { "description": "Welcome greeting on dashboard" },
+
+  "totalCollected": "إجمالي التدفق المحصل",
+  "@totalCollected": { "description": "Total collected income label on dashboard" },
+
+  "vsLastMonth": "12.5%+ عن الشهر الماضي",
+  "@vsLastMonth": { "description": "Comparison vs last month" },
+
+  "totalUnits": "الوحدات",
+  "@totalUnits": { "description": "Total units stat card label" },
+
+  "rentedUnits": "المؤجرة",
+  "@rentedUnits": { "description": "Rented units stat card label" },
+
+  "vacantUnits": "الفارغة",
+  "@vacantUnits": { "description": "Vacant units stat card label" },
+
+  "collectionOverview": "نظرة عامة",
+  "@collectionOverview": { "description": "Collection chart title" },
+
+  "collectionRate": "نسبة التحصيل",
+  "@collectionRate": { "description": "Collection rate label in chart" },
+
+  "statusPaid": "مدفوع",
+  "@statusPaid": { "description": "Payment status: paid" },
+
+  "statusDelayed": "متأخر",
+  "@statusDelayed": { "description": "Payment status: delayed" },
+
+  "statusPending": "قيد التحصيل",
+  "@statusPending": { "description": "Payment status: pending collection" },
+
+  "statusPartial": "جزئي",
+  "@statusPartial": { "description": "Payment status: partial" },
+
+  "quickActions": "الإجراءات السريعة",
+  "@quickActions": { "description": "Quick actions section title" },
+
+  "recordPayment": "تسجيل دفعة",
+  "@recordPayment": { "description": "Record payment quick action button" },
+
+  "recordPaymentNew": "تسجيل دفعة جديدة",
+  "@recordPaymentNew": { "description": "Record new payment button (wide screen)" },
+
+  "newContract": "عقد جديد",
+  "@newContract": { "description": "New contract quick action button" },
+
+  "createNewContract": "إنشاء عقد جديد",
+  "@createNewContract": { "description": "Create new contract button (wide screen)" },
+
+  "recordMaintenance": "تسجيل مصروف صيانة",
+  "@recordMaintenance": { "description": "Record maintenance expense button" },
+
+  "sidebarMainSection": "الرئيسية",
+  "@sidebarMainSection": { "description": "Sidebar main section label" },
+
+  "sidebarManagementSection": "الإدارة والتقارير",
+  "@sidebarManagementSection": { "description": "Sidebar management section label" },
+
+  "reportsAndProfits": "التقارير والأرباح",
+  "@reportsAndProfits": { "description": "Reports and profits menu item" },
+
+  "manageCurrencies": "إدارة العملات",
+  "@manageCurrencies": { "description": "Manage currencies menu item" },
+
+  "maintenanceExpenses": "مصاريف الصيانة",
+  "@maintenanceExpenses": { "description": "Maintenance expenses menu item" },
+
+  "settings": "الإعدادات",
+  "@settings": { "description": "Settings menu item / page title" },
+
+  "settingsAndBackup": "الإعدادات والنسخ الاحتياطي",
+  "@settingsAndBackup": { "description": "Settings and backup menu item" },
+
+  "aboutApp": "حول التطبيق",
+  "@aboutApp": { "description": "About app menu/page item" },
+
+  "aboutAppDescription": "نظام احترافي لإدارة العقارات السكنية وتتبع الإيجارات.",
+  "@aboutAppDescription": { "description": "About app description" },
+
+  "signOut": "تسجيل الخروج",
+  "@signOut": { "description": "Sign out button" },
+
+  "signOutError": "تعذّر تسجيل الخروج، حاول مرة أخرى.",
+  "@signOutError": { "description": "Sign out error message" },
+
+  "newPaymentButton": "دفعة جديدة",
+  "@newPaymentButton": { "description": "New payment button in wide header" },
+
+  "buildingsTotalUnits": "إجمالي الوحدات",
+  "@buildingsTotalUnits": { "description": "Building card: total units label" },
+
+  "buildingsRented": "مؤجرة",
+  "@buildingsRented": { "description": "Building card: rented units label" },
+
+  "buildingsVacant": "فارغة",
+  "@buildingsVacant": { "description": "Building card: vacant units label" },
+
+  "buildingsSearchHint": "البحث في المباني...",
+  "@buildingsSearchHint": { "description": "Buildings search bar hint" },
+
+  "addBuilding": "إضافة مبنى",
+  "@addBuilding": { "description": "Add building button" },
+
+  "addBuildingTitle": "إضافة مبنى جديد",
+  "@addBuildingTitle": { "description": "Add building dialog title" },
+
+  "addBuildingNameHint": "اسم المبنى (مثال: عمارة السلام)",
+  "@addBuildingNameHint": { "description": "Building name field hint" },
+
+  "addBuildingLocationHint": "العنوان / الموقع",
+  "@addBuildingLocationHint": { "description": "Building location field hint" },
+
+  "addBuildingUnitsHint": "عدد الوحدات الكلي",
+  "@addBuildingUnitsHint": { "description": "Building total units field hint" },
+
+  "cancel": "إلغاء",
+  "@cancel": { "description": "Cancel button" },
+
+  "add": "إضافة",
+  "@add": { "description": "Add button" },
+
+  "buildingAddedSuccess": "تم إضافة المبنى بنجاح!",
+  "@buildingAddedSuccess": { "description": "Building added success snackbar" },
+
+  "buildingsEmpty": "لا توجد مباني مسجلة بعد",
+  "@buildingsEmpty": { "description": "Buildings empty state message" },
+
+  "buildingsEmptySubtitle": "أضف مبنى جديد للبدء",
+  "@buildingsEmptySubtitle": { "description": "Buildings empty state subtitle" },
+
+  "unitStatusRented": "مؤجرة",
+  "@unitStatusRented": { "description": "Unit status: rented" },
+
+  "unitStatusVacant": "فارغة",
+  "@unitStatusVacant": { "description": "Unit status: vacant" },
+
+  "unitStatusPreparing": "قيد التجهيز",
+  "@unitStatusPreparing": { "description": "Unit status: under preparation" },
+
+  "unitStatusMaintenance": "صيانة",
+  "@unitStatusMaintenance": { "description": "Unit status: maintenance" },
+
+  "unitStatusAfterExit": "بعد الخروج",
+  "@unitStatusAfterExit": { "description": "Unit status: after exit" },
+
+  "unitsOfBuilding": "وحدات {buildingName}",
+  "@unitsOfBuilding": {
+    "description": "Units grid page title",
+    "placeholders": { "buildingName": { "type": "String" } }
+  },
+
+  "unitCount": "{count} وحدة",
+  "@unitCount": {
+    "description": "Unit count label",
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "unitsEmpty": "لا توجد وحدات مسجلة لهذا المبنى",
+  "@unitsEmpty": { "description": "Units empty state message" },
+
+  "addUnit": "إضافة وحدة جديدة",
+  "@addUnit": { "description": "Add unit button" },
+
+  "addUnitTitle": "إضافة وحدة لـ {buildingName}",
+  "@addUnitTitle": {
+    "description": "Add unit dialog title",
+    "placeholders": { "buildingName": { "type": "String" } }
+  },
+
+  "addUnitNumberHint": "رقم الوحدة (مثال: C101)",
+  "@addUnitNumberHint": { "description": "Unit number field hint" },
+
+  "addUnitRentHint": "الإيجار المقترح (اختياري)",
+  "@addUnitRentHint": { "description": "Unit rent field hint" },
+
+  "addUnitStatusLabel": "الحالة",
+  "@addUnitStatusLabel": { "description": "Unit status dropdown label" },
+
+  "unitAddedSuccess": "تم إضافة الوحدة السكنية بنجاح!",
+  "@unitAddedSuccess": { "description": "Unit added success snackbar" },
+
+  "unitDetailsTitle": "تفاصيل الوحدة {unitNumber}",
+  "@unitDetailsTitle": {
+    "description": "Unit details page title",
+    "placeholders": { "unitNumber": { "type": "String" } }
+  },
+
+  "unitApartmentNumber": "شقة رقم {unitNumber}",
+  "@unitApartmentNumber": {
+    "description": "Apartment number label in unit details",
+    "placeholders": { "unitNumber": { "type": "String" } }
+  },
+
+  "unitFloor": "{buildingName} - الطابق الأول",
+  "@unitFloor": {
+    "description": "Unit floor info",
+    "placeholders": { "buildingName": { "type": "String" } }
+  },
+
+  "unitActiveContract": "العقد النشط حالياً",
+  "@unitActiveContract": { "description": "Unit details: active contract section title" },
+
+  "contractTenant": "المستأجر",
+  "@contractTenant": { "description": "Contract row: tenant label" },
+
+  "contractRentValue": "قيمة الإيجار",
+  "@contractRentValue": { "description": "Contract row: rent value label" },
+
+  "contractRentMonthly": "{amount} $ / شهرياً",
+  "@contractRentMonthly": {
+    "description": "Contract monthly rent display",
+    "placeholders": { "amount": { "type": "int" } }
+  },
+
+  "contractStartDate": "تاريخ بداية العقد",
+  "@contractStartDate": { "description": "Contract start date label" },
+
+  "contractEndDate": "تاريخ نهاية العقد",
+  "@contractEndDate": { "description": "Contract end date label" },
+
+  "contractStatus": "حالة العقد",
+  "@contractStatus": { "description": "Contract status label" },
+
+  "viewTenantStatement": "عرض كشف حساب المستأجر",
+  "@viewTenantStatement": { "description": "View tenant statement button" },
+
+  "recordMaintenanceForUnit": "تسجيل مصروف صيانة للوحدة",
+  "@recordMaintenanceForUnit": { "description": "Record maintenance for unit button" },
+
+  "changeUnitStatus": "تغيير حالة الوحدة",
+  "@changeUnitStatus": { "description": "Change unit status dialog title / option" },
+
+  "viewContractDetails": "عرض تفاصيل العقد",
+  "@viewContractDetails": { "description": "View contract details option" },
+
+  "unitOptionsTitle": "خيارات الوحدة",
+  "@unitOptionsTitle": { "description": "Unit options modal title" },
+
+  "contractsSearchHint": "البحث في العقود...",
+  "@contractsSearchHint": { "description": "Contracts search hint" },
+
+  "addContract": "إضافة عقد",
+  "@addContract": { "description": "Add contract button" },
+
+  "addContractTitle": "إنشاء عقد جديد",
+  "@addContractTitle": { "description": "Add contract page title" },
+
+  "contractDataTitle": "بيانات العقد",
+  "@contractDataTitle": { "description": "Contract form section title" },
+
+  "contractTenantLabel": "المستأجر",
+  "@contractTenantLabel": { "description": "Contract form: tenant dropdown label" },
+
+  "contractTenantHint": "اختر المستأجر",
+  "@contractTenantHint": { "description": "Contract form: tenant dropdown hint" },
+
+  "contractUnitLabel": "الوحدة",
+  "@contractUnitLabel": { "description": "Contract form: unit dropdown label" },
+
+  "contractUnitHint": "اختر الوحدة",
+  "@contractUnitHint": { "description": "Contract form: unit dropdown hint" },
+
+  "contractMonthlyRentLabel": "قيمة الإيجار الشهري",
+  "@contractMonthlyRentLabel": { "description": "Contract form: monthly rent label" },
+
+  "contractEnterRent": "أدخل قيمة الإيجار",
+  "@contractEnterRent": { "description": "Contract form: rent validation message" },
+
+  "contractCurrencyLabel": "العملة",
+  "@contractCurrencyLabel": { "description": "Contract form: currency label" },
+
+  "contractStartDateLabel": "تاريخ البداية",
+  "@contractStartDateLabel": { "description": "Contract form: start date label" },
+
+  "contractEndDateLabel": "تاريخ النهاية",
+  "@contractEndDateLabel": { "description": "Contract form: end date label" },
+
+  "contractNotesLabel": "ملاحظات",
+  "@contractNotesLabel": { "description": "Contract form: notes label" },
+
+  "contractNotesHint": "أي ملاحظات إضافية...",
+  "@contractNotesHint": { "description": "Contract form: notes hint" },
+
+  "contractSaveButton": "حفظ العقد",
+  "@contractSaveButton": { "description": "Save contract button" },
+
+  "contractSavedSuccess": "تم إنشاء وحفظ العقد بنجاح!",
+  "@contractSavedSuccess": { "description": "Contract saved success snackbar" },
+
+  "contractSelectDate": "اختر تاريخ",
+  "@contractSelectDate": { "description": "Date picker placeholder" },
+
+  "contractDefaultTenant": "مستأجر افتراضي",
+  "@contractDefaultTenant": { "description": "Default tenant option in contract form" },
+
+  "contractDefaultUnit": "وحدة افتراضية",
+  "@contractDefaultUnit": { "description": "Default unit option in contract form" },
+
+  "contractsEmpty": "لا توجد عقود مسجلة بعد",
+  "@contractsEmpty": { "description": "Contracts empty state" },
+
+  "contractsEmptySubtitle": "أضف عقد إيجار جديد للبدء",
+  "@contractsEmptySubtitle": { "description": "Contracts empty state subtitle" },
+
+  "contractCardId": "عقد #{contractId}",
+  "@contractCardId": {
+    "description": "Contract card ID label",
+    "placeholders": { "contractId": { "type": "String" } }
+  },
+
+  "contractDetailsTitle": "تفاصيل العقد",
+  "@contractDetailsTitle": { "description": "Contract details modal title" },
+
+  "addPaymentForContract": "تسجيل دفعة",
+  "@addPaymentForContract": { "description": "Add payment for contract button" },
+
+  "viewStatement": "كشف الحساب",
+  "@viewStatement": { "description": "View statement button in contract modal" },
+
+  "paymentsFilterAll": "الكل",
+  "@paymentsFilterAll": { "description": "Payments filter: all" },
+
+  "addPaymentTitle": "تسجيل دفعة جديدة",
+  "@addPaymentTitle": { "description": "Add payment page title" },
+
+  "addPaymentHeaderTitle": "تسجيل دفعة إيجار جديدة",
+  "@addPaymentHeaderTitle": { "description": "Add payment header title" },
+
+  "paymentTenantLabel": "المستأجر",
+  "@paymentTenantLabel": { "description": "Payment form: tenant label" },
+
+  "paymentTenantHint": "اختر المستأجر",
+  "@paymentTenantHint": { "description": "Payment form: tenant hint" },
+
+  "paymentContractLabel": "عقد المستأجر",
+  "@paymentContractLabel": { "description": "Payment form: contract label" },
+
+  "paymentContractHint": "اختر العقد",
+  "@paymentContractHint": { "description": "Payment form: contract hint" },
+
+  "paymentAmountLabel": "المبلغ",
+  "@paymentAmountLabel": { "description": "Payment form: amount label" },
+
+  "paymentAmountHint": "المبلغ",
+  "@paymentAmountHint": { "description": "Payment form: amount hint" },
+
+  "paymentDateLabel": "تاريخ الدفع",
+  "@paymentDateLabel": { "description": "Payment form: date label" },
+
+  "paymentCurrentDate": "التاريخ الحالي",
+  "@paymentCurrentDate": { "description": "Payment form: current date label" },
+
+  "paymentMethodLabel": "طريقة الدفع",
+  "@paymentMethodLabel": { "description": "Payment form: method label" },
+
+  "paymentMethodCash": "نقداً (Cash)",
+  "@paymentMethodCash": { "description": "Payment method: cash" },
+
+  "paymentMethodBank": "تحويل بنكي",
+  "@paymentMethodBank": { "description": "Payment method: bank transfer" },
+
+  "paymentMethodCheck": "شيك",
+  "@paymentMethodCheck": { "description": "Payment method: check" },
+
+  "paymentNotesLabel": "ملاحظات",
+  "@paymentNotesLabel": { "description": "Payment form: notes label" },
+
+  "paymentNotesHint": "ملاحظات إضافية...",
+  "@paymentNotesHint": { "description": "Payment form: notes hint" },
+
+  "paymentSummaryTitle": "ملخص الدفعة الجديدة",
+  "@paymentSummaryTitle": { "description": "Payment summary section title" },
+
+  "paymentSummarySubmit": "تسجيل وحفظ الدفعة",
+  "@paymentSummarySubmit": { "description": "Payment submit button" },
+
+  "paymentSavedSuccess": "تم تسجيل الدفعة وحفظها بنجاح!",
+  "@paymentSavedSuccess": { "description": "Payment saved success snackbar" },
+
+  "paymentValidationError": "يرجى ملء جميع الحقول المطلوبة أولاً!",
+  "@paymentValidationError": { "description": "Payment validation error snackbar" },
+
+  "paymentsEmpty": "لا توجد دفعات مسجلة بعد",
+  "@paymentsEmpty": { "description": "Payments empty state" },
+
+  "paymentsSearchHint": "البحث في الدفعات...",
+  "@paymentsSearchHint": { "description": "Payments search hint" },
+
+  "paymentDetailsTitle": "تفاصيل الدفعة",
+  "@paymentDetailsTitle": { "description": "Payment details modal title" },
+
+  "paymentDetailsTenant": "المستأجر",
+  "@paymentDetailsTenant": { "description": "Payment details: tenant label" },
+
+  "paymentDetailsContract": "العقد المرتبط",
+  "@paymentDetailsContract": { "description": "Payment details: contract label" },
+
+  "paymentDetailsAmount": "المبلغ",
+  "@paymentDetailsAmount": { "description": "Payment details: amount label" },
+
+  "paymentDetailsDate": "تاريخ الدفع",
+  "@paymentDetailsDate": { "description": "Payment details: date label" },
+
+  "paymentDetailsMethod": "طريقة الدفع",
+  "@paymentDetailsMethod": { "description": "Payment details: method label" },
+
+  "paymentDetailsNotes": "ملاحظات",
+  "@paymentDetailsNotes": { "description": "Payment details: notes label" },
+
+  "printReceiptPdf": "طباعة / مشاركة سند القبض (PDF)",
+  "@printReceiptPdf": { "description": "Print receipt PDF button" },
+
+  "printReceiptLoading": "جاري تحميل وتصدير سند القبض PDF...",
+  "@printReceiptLoading": { "description": "Print receipt loading snackbar" },
+
+  "maintenanceTitle": "تسجيل مصروف صيانة",
+  "@maintenanceTitle": { "description": "Add maintenance page title" },
+
+  "maintenanceHeaderTitle": "تسجيل مصاريف الصيانة / المصاريف",
+  "@maintenanceHeaderTitle": { "description": "Add maintenance header title" },
+
+  "maintenanceDescLabel": "الوصف",
+  "@maintenanceDescLabel": { "description": "Maintenance description label" },
+
+  "maintenanceDescHint": "مثال: إصلاح سخان الماء الساخن في شقة...",
+  "@maintenanceDescHint": { "description": "Maintenance description hint" },
+
+  "maintenanceDescRequired": "الوصف مطلوب",
+  "@maintenanceDescRequired": { "description": "Maintenance description validation" },
+
+  "maintenanceAmountLabel": "المبلغ (بالعملة الافتراضية)",
+  "@maintenanceAmountLabel": { "description": "Maintenance amount label" },
+
+  "maintenanceAmountRequired": "أدخل المبلغ",
+  "@maintenanceAmountRequired": { "description": "Maintenance amount validation" },
+
+  "maintenanceUnitLabel": "الوحدة السكنية (اختياري)",
+  "@maintenanceUnitLabel": { "description": "Maintenance unit label" },
+
+  "maintenanceUnitGeneral": "مصروف عام (بدون تحديد وحدة)",
+  "@maintenanceUnitGeneral": { "description": "General maintenance option (no specific unit)" },
+
+  "maintenanceNotesLabel": "ملاحظات",
+  "@maintenanceNotesLabel": { "description": "Maintenance notes label" },
+
+  "maintenanceNotesHint": "ملاحظات إضافية...",
+  "@maintenanceNotesHint": { "description": "Maintenance notes hint" },
+
+  "maintenanceSubmitButton": "تسجيل المصروف",
+  "@maintenanceSubmitButton": { "description": "Maintenance submit button" },
+
+  "maintenanceSavedSuccess": "تم تسجيل مصروف الصيانة بنجاح!",
+  "@maintenanceSavedSuccess": { "description": "Maintenance saved success snackbar" },
+
+  "maintenanceValidationError": "يرجى ملء جميع الحقول المطلوبة أولاً!",
+  "@maintenanceValidationError": { "description": "Maintenance validation error" },
+
+  "maintenanceGeneralUnit": "مصروف عام",
+  "@maintenanceGeneralUnit": { "description": "General maintenance unit name (short)" },
+
+  "tenantsSearchHint": "البحث في المستأجرين...",
+  "@tenantsSearchHint": { "description": "Tenants search bar hint" },
+
+  "addTenant": "إضافة مستأجر",
+  "@addTenant": { "description": "Add tenant button" },
+
+  "addTenantTitle": "إضافة مستأجر جديد",
+  "@addTenantTitle": { "description": "Add tenant dialog title" },
+
+  "addTenantNameHint": "الاسم الكامل",
+  "@addTenantNameHint": { "description": "Tenant name field hint" },
+
+  "addTenantPhoneHint": "رقم الهاتف",
+  "@addTenantPhoneHint": { "description": "Tenant phone field hint" },
+
+  "addTenantIdHint": "رقم الهوية (اختياري)",
+  "@addTenantIdHint": { "description": "Tenant national ID field hint" },
+
+  "addTenantSave": "إضافة المستأجر",
+  "@addTenantSave": { "description": "Save tenant button" },
+
+  "tenantAddedSuccess": "تم إضافة المستأجر بنجاح!",
+  "@tenantAddedSuccess": { "description": "Tenant added success snackbar" },
+
+  "tenantsEmpty": "لا يوجد مستأجرون مسجلون بعد",
+  "@tenantsEmpty": { "description": "Tenants empty state message" },
+
+  "tenantsEmptySubtitle": "أضف مستأجرًا جديدًا للبدء",
+  "@tenantsEmptySubtitle": { "description": "Tenants empty state subtitle" },
+
+  "tenantNoUnit": "بدون وحدة سكنية حالياً",
+  "@tenantNoUnit": { "description": "Tenant card: no unit assigned" },
+
+  "tenantCallingPrefix": "جاري الاتصال بـ {phone}...",
+  "@tenantCallingPrefix": {
+    "description": "Calling tenant snackbar message",
+    "placeholders": { "phone": { "type": "String" } }
+  },
+
+  "tenantDetailsPhone": "رقم الهاتف:",
+  "@tenantDetailsPhone": { "description": "Tenant details: phone label" },
+
+  "tenantDetailsId": "رقم الهوية:",
+  "@tenantDetailsId": { "description": "Tenant details: national ID label" },
+
+  "tenantDetailsContracts": "العقود والوحدات المرتبطة:",
+  "@tenantDetailsContracts": { "description": "Tenant details: contracts section title" },
+
+  "tenantNoContracts": "لا توجد عقود نشطة حالياً لهذا المستأجر.",
+  "@tenantNoContracts": { "description": "No active contracts for tenant" },
+
+  "tenantContractInfo": "عقد #{contractId} • الإيجار: {rent} $",
+  "@tenantContractInfo": {
+    "description": "Tenant contract row info",
+    "placeholders": {
+      "contractId": { "type": "String" },
+      "rent": { "type": "int" }
+    }
+  },
+
+  "tenantViewStatement": "عرض كشف الحساب الشامل",
+  "@tenantViewStatement": { "description": "View full statement button" },
+
+  "tenantStatementTitle": "كشف حساب المستأجر",
+  "@tenantStatementTitle": { "description": "Tenant statement page title" },
+
+  "tenantStatementExportPdf": "تصدير كشف الحساب (PDF)",
+  "@tenantStatementExportPdf": { "description": "Export statement PDF button" },
+
+  "tenantStatementNoPayments": "لا توجد دفعات مسجلة لهذا المستأجر بعد.",
+  "@tenantStatementNoPayments": { "description": "Tenant statement: no payments message" },
+
+  "tenantStatementBalanceLabel": "الرصيد / المستحقات",
+  "@tenantStatementBalanceLabel": { "description": "Tenant statement balance label" },
+
+  "tenantStatementPaidStatus": "مدفوع",
+  "@tenantStatementPaidStatus": { "description": "Tenant statement: paid status" },
+
+  "tenantStatementPaymentInfo": "دفعة من {contractInfo} ({method})",
+  "@tenantStatementPaymentInfo": {
+    "description": "Tenant statement tile payment info",
+    "placeholders": {
+      "contractInfo": { "type": "String" },
+      "method": { "type": "String" }
+    }
+  },
+
+  "tenantStatementPaymentStatus": "الحالة: {status}",
+  "@tenantStatementPaymentStatus": {
+    "description": "Tenant statement tile status",
+    "placeholders": { "status": { "type": "String" } }
+  },
+
+  "financialReportTitle": "التقارير المالية",
+  "@financialReportTitle": { "description": "Financial reports page title" },
+
+  "reportFilterLabel": "تصفية حسب الفترة",
+  "@reportFilterLabel": { "description": "Report filter label" },
+
+  "reportTotalCollected": "إجمالي المحصل",
+  "@reportTotalCollected": { "description": "Report: total collected stat" },
+
+  "reportTotalDue": "إجمالي المستحقات",
+  "@reportTotalDue": { "description": "Report: total due stat" },
+
+  "reportCollectionRate": "نسبة التحصيل",
+  "@reportCollectionRate": { "description": "Report: collection rate stat" },
+
+  "reportArrears": "المتأخرات",
+  "@reportArrears": { "description": "Report: arrears stat" },
+
+  "currenciesTitle": "إدارة العملات",
+  "@currenciesTitle": { "description": "Currencies page title" },
+
+  "currenciesEmpty": "لا توجد عملات مضافة بعد",
+  "@currenciesEmpty": { "description": "Currencies empty state" },
+
+  "addCurrency": "إضافة عملة",
+  "@addCurrency": { "description": "Add currency button" },
+
+  "addCurrencyTitle": "إضافة عملة جديدة",
+  "@addCurrencyTitle": { "description": "Add currency dialog title" },
+
+  "currencyCodeHint": "رمز العملة (USD)",
+  "@currencyCodeHint": { "description": "Currency code field hint" },
+
+  "currencyNameHint": "اسم العملة (دولار أمريكي)",
+  "@currencyNameHint": { "description": "Currency name field hint" },
+
+  "currencySymbolHint": "رمز العملة ($)",
+  "@currencySymbolHint": { "description": "Currency symbol field hint" },
+
+  "currencyRateHint": "سعر الصرف مقابل الأساس",
+  "@currencyRateHint": { "description": "Currency rate field hint" },
+
+  "currencySaveButton": "إضافة العملة",
+  "@currencySaveButton": { "description": "Save currency button" },
+
+  "settingsTitle": "الإعدادات",
+  "@settingsTitle": { "description": "Settings page title" },
+
+  "settingsBackup": "النسخ الاحتياطي",
+  "@settingsBackup": { "description": "Settings: backup item title" },
+
+  "settingsBackupSubtitle": "Google Drive",
+  "@settingsBackupSubtitle": { "description": "Settings: backup subtitle" },
+
+  "settingsBackupDialogTitle": "النسخ الاحتياطي",
+  "@settingsBackupDialogTitle": { "description": "Backup dialog title" },
+
+  "settingsBackupDialogBody": "سيتم نسخ قاعدة بيانات العقارات والمستأجرين كاملة إلى حساب Google Drive الخاص بك.",
+  "@settingsBackupDialogBody": { "description": "Backup dialog body text" },
+
+  "settingsBackupNow": "نسخ الآن",
+  "@settingsBackupNow": { "description": "Backup now button" },
+
+  "settingsBackupSuccess": "تم رفع النسخة الاحتياطية إلى Google Drive بنجاح!",
+  "@settingsBackupSuccess": { "description": "Backup success snackbar" },
+
+  "settingsCurrency": "العملة الافتراضية وإدارتها",
+  "@settingsCurrency": { "description": "Settings: currency item title" },
+
+  "settingsCurrencySubtitle": "دولار أمريكي - USD",
+  "@settingsCurrencySubtitle": { "description": "Settings: currency subtitle" },
+
+  "settingsLanguage": "اللغة الحالية",
+  "@settingsLanguage": { "description": "Settings: language item title" },
+
+  "settingsLanguageSubtitle": "العربية (RTL)",
+  "@settingsLanguageSubtitle": { "description": "Settings: language subtitle (Arabic)" },
+
+  "settingsLanguageSubtitleEn": "English (LTR)",
+  "@settingsLanguageSubtitleEn": { "description": "Settings: language subtitle (English)" },
+
+  "settingsLanguageDialogTitle": "اختر اللغة",
+  "@settingsLanguageDialogTitle": { "description": "Language selection dialog title" },
+
+  "settingsLanguageArabic": "العربية",
+  "@settingsLanguageArabic": { "description": "Arabic language option" },
+
+  "settingsLanguageEnglish": "English",
+  "@settingsLanguageEnglish": { "description": "English language option" },
+
+  "settingsNotifications": "التنبيهات والإشعارات",
+  "@settingsNotifications": { "description": "Settings: notifications toggle title" },
+
+  "settingsNotificationsSubtitle": "تنبيهات الإيجارات المتأخرة والعقود",
+  "@settingsNotificationsSubtitle": { "description": "Settings: notifications subtitle" },
+
+  "settingsBiometric": "تسجيل الدخول بالبصمة",
+  "@settingsBiometric": { "description": "Settings: biometric toggle title" },
+
+  "settingsBiometricSubtitle": "إظهار زر البصمة في شاشة تسجيل الدخول",
+  "@settingsBiometricSubtitle": { "description": "Settings: biometric subtitle" },
+
+  "settingsChangePassword": "تغيير كلمة المرور",
+  "@settingsChangePassword": { "description": "Settings: change password item" },
+
+  "settingsChangePasswordTitle": "تغيير كلمة المرور",
+  "@settingsChangePasswordTitle": { "description": "Change password dialog title" },
+
+  "settingsChangePasswordOldHint": "كلمة المرور الحالية",
+  "@settingsChangePasswordOldHint": { "description": "Old password field hint" },
+
+  "settingsChangePasswordNewHint": "كلمة المرور الجديدة",
+  "@settingsChangePasswordNewHint": { "description": "New password field hint" },
+
+  "settingsChangePasswordButton": "تغيير",
+  "@settingsChangePasswordButton": { "description": "Change password button" },
+
+  "settingsChangePasswordSuccess": "تم تغيير كلمة المرور بنجاح",
+  "@settingsChangePasswordSuccess": { "description": "Change password success snackbar" },
+
+  "settingsAbout": "حول التطبيق",
+  "@settingsAbout": { "description": "Settings: about item" },
+
+  "settingsAboutVersion": "v1.0.0",
+  "@settingsAboutVersion": { "description": "App version in settings" },
+
+  "settingsSignOut": "تسجيل الخروج",
+  "@settingsSignOut": { "description": "Sign out button in settings" },
+
+  "validationRequired": "هذا الحقل مطلوب",
+  "@validationRequired": { "description": "Field required validation message" },
+
+  "validationEmail": "يرجى إدخال بريد إلكتروني صحيح",
+  "@validationEmail": { "description": "Invalid email validation message" },
+
+  "validationPasswordLength": "كلمة المرور يجب أن تكون 6 أحرف على الأقل",
+  "@validationPasswordLength": { "description": "Password too short validation" },
+
+  "validationPasswordMismatch": "كلمة المرور غير متطابقة",
+  "@validationPasswordMismatch": { "description": "Password mismatch validation" },
+
+  "validationPhoneTooShort": "رقم الهاتف قصير جدًا",
+  "@validationPhoneTooShort": { "description": "Phone too short validation" },
+
+  "validationPhoneInvalid": "رقم الهاتف يجب أن يحتوي على أرقام فقط",
+  "@validationPhoneInvalid": { "description": "Invalid phone validation" },
+
+  "validationNameTooShort": "الاسم قصير جدًا",
+  "@validationNameTooShort": { "description": "Name too short validation" },
+
+  "validationNumberInvalid": "يرجى إدخال رقم صحيح",
+  "@validationNumberInvalid": { "description": "Invalid number validation" },
+
+  "save": "حفظ",
+  "@save": { "description": "Generic save button" },
+
+  "profileRetry": "إعادة المحاولة",
+  "@profileRetry": { "description": "Retry button when profile fails to load" },
+
+  "profileEditTitle": "تعديل البيانات",
+  "@profileEditTitle": { "description": "Edit profile dialog title" },
+
+  "profileSaved": "تم حفظ البيانات بنجاح",
+  "@profileSaved": { "description": "Profile saved snackbar" },
+
+  "profileNoPhone": "لم يُضف رقم هاتف بعد",
+  "@profileNoPhone": { "description": "Shown when the profile has no phone" },
+
+  "profileAvatarSheetTitle": "صورة الملف الشخصي",
+  "@profileAvatarSheetTitle": { "description": "Avatar options bottom sheet title" },
+
+  "profileAvatarFromGallery": "اختيار من المعرض",
+  "@profileAvatarFromGallery": { "description": "Pick avatar from gallery" },
+
+  "profileAvatarTakePhoto": "التقاط صورة بالكاميرا",
+  "@profileAvatarTakePhoto": { "description": "Take avatar with camera" },
+
+  "profileAvatarRemove": "إزالة الصورة",
+  "@profileAvatarRemove": { "description": "Remove current avatar" },
+
+  "profileAvatarUpdated": "تم تحديث الصورة بنجاح",
+  "@profileAvatarUpdated": { "description": "Avatar updated snackbar" },
+
+  "profileAvatarRemoved": "تم حذف صورة الملف الشخصي",
+  "@profileAvatarRemoved": { "description": "Avatar removed snackbar" },
+
+  "reportRevenuePeriod": "الإيرادات خلال الفترة المحددة",
+  "@reportRevenuePeriod": { "description": "Report chart section title: revenue for the selected period" }
+}

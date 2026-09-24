@@ -9,6 +9,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.2
   cupertino_icons: ^1.0.8
   introduction_screen: ^4.0.0
   shared_preferences: ^2.3.0
@@ -28,6 +31,10 @@ dependencies:
   # SQL Lite
   sqflite: ^2.4.4
   path: ^1.9.1
+  # قاعدة بيانات/تخزين الملف الشخصي (توافق مع Firebase: جلسة موازية فقط).
+  supabase_flutter: ^2.8.0
+  # اختيار صورة من المعرض أو التقاطها بالكاميرا (لا توجد حزمة صور بديلة في المشروع).
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:
@@ -35,6 +42,7 @@ dev_dependencies:
   flutter_lints: ^5.0.0
 
 flutter:
+  generate: true
   uses-material-design: true
 
   assets:

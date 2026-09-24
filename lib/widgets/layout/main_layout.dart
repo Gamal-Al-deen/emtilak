@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+
+import '../../controllers/app_controllers.dart';
 import '../../core/colors.dart';
+import '../../l10n/app_localizations.dart';
 import '../../services/auth_service.dart';
+import '../common/user_avatar.dart';
 import '../../utils/responsive.dart';
 import '../../routes/routes.dart';
 import '../../views/contracts/contracts_page.dart';
@@ -30,13 +34,14 @@ class _MainLayoutState extends State<MainLayout> {
     TenantsPage(),
   ];
 
-  final List<String> _titles = const [
-    'لوحة التحكم',
-    'المباني',
-    'العقود',
-    'الدفعات',
-    'المستأجرون',
-  ];
+  /// عناوين الصفحات بلغة التطبيق الحالية — تتغيّر فور تبديل اللغة.
+  List<String> _titlesFor(AppLocalizations l10n) => [
+        l10n.dashboard,
+        l10n.buildings,
+        l10n.contracts,
+        l10n.payments,
+        l10n.tenants,
+      ];
 
   final List<IconData> _icons = const [
     Icons.home_filled,
@@ -46,12 +51,30 @@ class _MainLayoutState extends State<MainLayout> {
     Icons.group_outlined,
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    // تحميل الملف الشخصي + إعادة بناء الهيكل عند أي تغيّر فيه (الاسم/الصورة).
+    AppControllers.instance.loadProfile();
+    AppControllers.instance.addListener(_onDataChanged);
+  }
+
+  void _onDataChanged() {
+    if (mounted) setState(() {});
+  }
+
+  @override
+  void dispose() {
+    AppControllers.instance.removeListener(_onDataChanged);
+    super.dispose();
+  }
+
   /// ينهي جلسة المستخدم ثم يعيدها إلى شاشة تسجيل الدخول.
   Future<void> _signOut(BuildContext context) async {
     final bool signedOut = await AuthService.instance.signOut();
     if (!context.mounted) return;
     if (!signedOut) {
-      showAuthMessage(context, 'تعذّر تسجيل الخروج، حاول مرة أخرى.');
+      showAuthMessage(context, AppLocalizations.of(context)!.signOutError);
       return;
     }
     Navigator.pushReplacementNamed(context, AppRoutes.login);
@@ -65,10 +88,13 @@ class _MainLayoutState extends State<MainLayout> {
     }
 
     // Standard Mobile Layout (< 600px) - Unchanged for 100% mobile fidelity
+    final l10n = AppLocalizations.of(context)!;
+    final titles = _titlesFor(l10n);
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: CustomAppBar(
-        title: _titles[_currentIndex],
+        title: titles[_currentIndex],
         showBackButton: false,
         actions: [
           IconButton(
@@ -116,30 +142,30 @@ class _MainLayoutState extends State<MainLayout> {
             fontSize: 11,
           ),
           elevation: 4,
-          items: const [
+          items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home_filled),
-              label: 'الرئيسية',
+              icon: const Icon(Icons.home_filled),
+              label: l10n.home,
               backgroundColor: AppColors.surface,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.apartment_rounded),
-              label: 'المباني',
+              icon: const Icon(Icons.apartment_rounded),
+              label: l10n.buildings,
               backgroundColor: AppColors.surface,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.assignment_outlined),
-              label: 'العقود',
+              icon: const Icon(Icons.assignment_outlined),
+              label: l10n.contracts,
               backgroundColor: AppColors.surface,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.receipt_outlined),
-              label: 'الدفعات',
+              icon: const Icon(Icons.receipt_outlined),
+              label: l10n.payments,
               backgroundColor: AppColors.surface,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.group_outlined),
-              label: 'المستأجرون',
+              icon: const Icon(Icons.group_outlined),
+              label: l10n.tenants,
               backgroundColor: AppColors.surface,
             ),
           ],
@@ -195,6 +221,21 @@ class _MainLayoutState extends State<MainLayout> {
 
   /// Sidebar for wide screens (Tablet & Desktop) - Clean navigation without logo
   Widget _buildSidebar(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final titles = _titlesFor(l10n);
+    // بيانات المستخدم الحقيقية: Supabase أولًا ثم Firebase (لا أسماء ثابتة).
+    final profile = AppControllers.instance.profile;
+    final String firebaseName =
+        AuthService.instance.currentUser?.displayName ?? '';
+    final String displayName = ProfileController.resolveName(
+      profile,
+      fallback: firebaseName,
+    );
+    final String email = ProfileController.resolveEmail(
+      profile,
+      fallback: AuthService.instance.currentUser?.email,
+    );
+
     return Container(
       color: AppColors.surface,
       child: Column(
@@ -210,20 +251,22 @@ class _MainLayoutState extends State<MainLayout> {
             ),
             child: Row(
               children: [
-                const CircleAvatar(
-                  backgroundColor: AppColors.primary,
+                UserAvatar(
                   radius: 20,
-                  child: Icon(Icons.person, color: AppColors.white, size: 22),
+                  profile: profile,
+                  fallbackName: firebaseName,
+                  backgroundColor: AppColors.primary,
+                  iconColor: AppColors.white,
                 ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Text(
-                        'أحمد محمد',
-                        style: TextStyle(
+                        displayName,
+                        style: const TextStyle(
                           fontFamily: 'Cairo',
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
@@ -232,12 +275,13 @@ class _MainLayoutState extends State<MainLayout> {
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        'مدير العقارات',
-                        style: TextStyle(
+                        email,
+                        style: const TextStyle(
                           fontFamily: 'Cairo',
                           fontSize: 11,
                           color: AppColors.textSecondary,
                         ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),
@@ -252,11 +296,12 @@ class _MainLayoutState extends State<MainLayout> {
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               children: [
                 // Main Section Label
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   child: Text(
-                    'الرئيسية',
-                    style: TextStyle(
+                    l10n.sidebarMainSection,
+                    style: const TextStyle(
                       fontFamily: 'Cairo',
                       fontSize: 11,
                       fontWeight: FontWeight.bold,
@@ -266,10 +311,10 @@ class _MainLayoutState extends State<MainLayout> {
                 ),
 
                 // Primary 5 Navigation Tabs
-                for (int i = 0; i < _titles.length; i++)
+                for (int i = 0; i < titles.length; i++)
                   _buildNavItem(
                     icon: _icons[i],
-                    title: _titles[i],
+                    title: titles[i],
                     isSelected: _currentIndex == i,
                     onTap: () {
                       setState(() {
@@ -284,11 +329,12 @@ class _MainLayoutState extends State<MainLayout> {
                 ),
 
                 // Drawer items integrated into sidebar on wide screens
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   child: Text(
-                    'الإدارة والتقارير',
-                    style: TextStyle(
+                    l10n.sidebarManagementSection,
+                    style: const TextStyle(
                       fontFamily: 'Cairo',
                       fontSize: 11,
                       fontWeight: FontWeight.bold,
@@ -299,22 +345,22 @@ class _MainLayoutState extends State<MainLayout> {
 
                 _buildSidebarActionItem(
                   icon: Icons.analytics_outlined,
-                  title: 'التقارير والأرباح',
+                  title: l10n.reportsAndProfits,
                   onTap: () => Navigator.pushNamed(context, AppRoutes.financialReport),
                 ),
                 _buildSidebarActionItem(
                   icon: Icons.currency_exchange,
-                  title: 'إدارة العملات',
+                  title: l10n.manageCurrencies,
                   onTap: () => Navigator.pushNamed(context, AppRoutes.currencies),
                 ),
                 _buildSidebarActionItem(
                   icon: Icons.build_outlined,
-                  title: 'مصاريف الصيانة',
+                  title: l10n.maintenanceExpenses,
                   onTap: () => Navigator.pushNamed(context, AppRoutes.addMaintenance),
                 ),
                 _buildSidebarActionItem(
                   icon: Icons.settings_outlined,
-                  title: 'الإعدادات',
+                  title: l10n.settings,
                   onTap: () => Navigator.pushNamed(context, AppRoutes.settings),
                 ),
               ],
@@ -331,7 +377,7 @@ class _MainLayoutState extends State<MainLayout> {
             ),
             child: _buildSidebarActionItem(
               icon: Icons.logout,
-              title: 'تسجيل الخروج',
+              title: l10n.settingsSignOut,
               color: AppColors.error,
               onTap: () => _signOut(context),
             ),
@@ -406,6 +452,8 @@ class _MainLayoutState extends State<MainLayout> {
 
   /// Wide Screen Header
   Widget _buildWideHeader(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final titles = _titlesFor(l10n);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
       decoration: BoxDecoration(
@@ -419,7 +467,7 @@ class _MainLayoutState extends State<MainLayout> {
         children: [
           // Current Page Title with Breadcrumb feel
           Text(
-            _titles[_currentIndex],
+            titles[_currentIndex],
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -432,7 +480,7 @@ class _MainLayoutState extends State<MainLayout> {
           Row(
             children: [
               IconButton(
-                tooltip: 'الإشعارات',
+                tooltip: l10n.notifications,
                 icon: Stack(
                   children: [
                     const Icon(
@@ -469,9 +517,9 @@ class _MainLayoutState extends State<MainLayout> {
                   Navigator.pushNamed(context, AppRoutes.addPayment);
                 },
                 icon: const Icon(Icons.add, size: 16, color: AppColors.primary),
-                label: const Text(
-                  'دفعة جديدة',
-                  style: TextStyle(
+                label: Text(
+                  l10n.newPaymentButton,
+                  style: const TextStyle(
                     fontFamily: 'Cairo',
                     fontSize: 12,
                     fontWeight: FontWeight.bold,

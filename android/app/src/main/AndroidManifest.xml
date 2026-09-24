@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <!-- Supabase (الملف الشخصي) يحتاج الشبكة في كل البناءات، لا في debug فقط -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:label="إمتلاك"
         android:name="${applicationName}"

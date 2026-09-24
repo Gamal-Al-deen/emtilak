@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../core/colors.dart';
 import '../../routes/routes.dart';
 import '../../services/auth_service.dart';
+import '../../l10n/app_localizations.dart';
 import '../../widgets/common/auth_message.dart';
 import 'widgets/login_brand_section.dart';
 import 'widgets/login_form_card.dart';
@@ -63,13 +64,20 @@ class _LoginPageState extends State<LoginPage> {
     if (_pendingSignIn != null) return;
     _activeAction = actionType;
     final Future<void> future = action();
-    setState(() => _pendingSignIn = future);
+    // يجب أن يعيد الـ closure لا شيء: استخدام `=>` مع إسناد Future كان
+    // يعيد الـ Future نفسها فيرمي setState استثناءً قبل تسجيل try/catch،
+    // فتختفي رسالة الخطأ العربية ويتعلّق مؤشر التحميل.
+    setState(() {
+      _pendingSignIn = future;
+    });
     try {
       await future;
     } on AuthFailure catch (e) {
       _showMessage(e.message, isError: !e.isCanceled);
     } catch (_) {
-      _showMessage('حدث خطأ غير متوقع، حاول مرة أخرى.');
+      if (mounted) {
+        _showMessage(AppLocalizations.of(context)!.loginUnexpectedError);
+      }
     } finally {
       if (mounted) {
         setState(() {
@@ -104,10 +112,12 @@ class _LoginPageState extends State<LoginPage> {
       () async {
         final User? user = await AuthService.instance.signInWithGoogle();
         if (user == null) {
-          _showMessage(
-            'تم إلغاء تسجيل الدخول باستخدام Google.',
-            isError: false,
-          );
+          if (mounted) {
+            _showMessage(
+              AppLocalizations.of(context)!.loginCancelledGoogle,
+              isError: false,
+            );
+          }
           return;
         }
         _goToApp();
@@ -121,10 +131,12 @@ class _LoginPageState extends State<LoginPage> {
       () async {
         final User? user = await AuthService.instance.signInWithFacebook();
         if (user == null) {
-          _showMessage(
-            'تم إلغاء تسجيل الدخول باستخدام فيسبوك.',
-            isError: false,
-          );
+          if (mounted) {
+            _showMessage(
+              AppLocalizations.of(context)!.loginCancelledFacebook,
+              isError: false,
+            );
+          }
           return;
         }
         _goToApp();
@@ -138,7 +150,9 @@ class _LoginPageState extends State<LoginPage> {
       () async {
         final User? user = await AuthService.instance.signInWithBiometric();
         if (user == null) {
-          _showMessage('تم إلغاء التحقق بالبصمة.', isError: false);
+          if (mounted) {
+            _showMessage(AppLocalizations.of(context)!.loginCancelledBiometric, isError: false);
+          }
           return;
         }
         _goToApp();

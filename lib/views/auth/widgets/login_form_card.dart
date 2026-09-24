@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/colors.dart';
 import '../../../../routes/routes.dart';
 import '../../../../widgets/auth/auth_text_field.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class LoginFormCard extends StatelessWidget {
   const LoginFormCard({
@@ -50,6 +51,7 @@ class LoginFormCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       constraints: const BoxConstraints(maxWidth: 520),
       padding: const EdgeInsets.all(24),
@@ -70,10 +72,10 @@ class LoginFormCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              'تسجيل الدخول',
+            Text(
+              l10n.loginTitle,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
                 color: AppColors.primary,
@@ -81,10 +83,10 @@ class LoginFormCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 6),
-            const Text(
-              'مرحباً بك مرة أخرى',
+            Text(
+              l10n.loginWelcome,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 13,
                 color: AppColors.textSecondary,
                 fontFamily: 'Cairo',
@@ -93,14 +95,14 @@ class LoginFormCard extends StatelessWidget {
             const SizedBox(height: 16),
             AuthFormField(
               controller: emailPhoneController,
-              hintText: 'البريد الإلكتروني أو رقم الهاتف',
+              hintText: l10n.loginEmailHint,
               prefixIcon: Icons.email_outlined,
               fieldType: AuthFieldType.email,
             ),
             const SizedBox(height: 16),
             AuthFormField(
               controller: passwordController,
-              hintText: 'كلمة المرور',
+              hintText: l10n.loginPasswordHint,
               prefixIcon: Icons.lock_outline,
               fieldType: AuthFieldType.password,
               obscureText: obscurePassword,
@@ -122,9 +124,9 @@ class LoginFormCard extends StatelessWidget {
                   context,
                   AppRoutes.forgotPassword,
                 ),
-                child: const Text(
-                  'نسيت كلمة المرور؟',
-                  style: TextStyle(
+                child: Text(
+                  l10n.loginForgotPassword,
+                  style: const TextStyle(
                     color: AppColors.gold,
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
@@ -152,9 +154,9 @@ class LoginFormCard extends StatelessWidget {
                         color: AppColors.white,
                       ),
                     )
-                  : const Text(
-                      'تسجيل الدخول',
-                      style: TextStyle(
+                  : Text(
+                      l10n.loginButton,
+                      style: const TextStyle(
                         fontFamily: 'Cairo',
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
@@ -204,7 +206,7 @@ class LoginFormCard extends StatelessWidget {
                       color: AppColors.error,
                     ),
               label: Text(
-                isGoogleLoading ? 'جارٍ التحقق...' : 'تسجيل الدخول باستخدام Google',
+                isGoogleLoading ? l10n.loginVerifying : l10n.loginWithGoogle,
                 style: const TextStyle(
                   color: AppColors.textPrimary,
                   fontSize: 13,
@@ -239,8 +241,8 @@ class LoginFormCard extends StatelessWidget {
                     ),
               label: Text(
                 isFacebookLoading
-                    ? 'جارٍ التحقق...'
-                    : 'تسجيل الدخول باستخدام Facebook',
+                    ? l10n.loginVerifying
+                    : l10n.loginWithFacebook,
                 style: const TextStyle(
                   color: AppColors.textPrimary,
                   fontSize: 13,
@@ -275,7 +277,7 @@ class LoginFormCard extends StatelessWidget {
                         color: AppColors.primary,
                       ),
                 label: Text(
-                  isBiometricLoading ? 'جارٍ التحقق...' : 'تسجيل الدخول بالبصمة',
+                  isBiometricLoading ? l10n.loginVerifying : l10n.loginWithBiometric,
                   style: const TextStyle(
                     color: AppColors.textPrimary,
                     fontSize: 13,
@@ -291,9 +293,9 @@ class LoginFormCard extends StatelessWidget {
               crossAxisAlignment: WrapCrossAlignment.center,
               spacing: 4,
               children: [
-                const Text(
-                  'ليس لديك حساب؟ ',
-                  style: TextStyle(
+                Text(
+                  l10n.loginNoAccount,
+                  style: const TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 13,
                     fontFamily: 'Cairo',
@@ -302,9 +304,9 @@ class LoginFormCard extends StatelessWidget {
                 GestureDetector(
                   onTap: () =>
                       Navigator.pushReplacementNamed(context, AppRoutes.signUp),
-                  child: const Text(
-                    'إنشاء حساب',
-                    style: TextStyle(
+                  child: Text(
+                    l10n.loginCreateAccount,
+                    style: const TextStyle(
                       color: AppColors.gold,
                       fontSize: 13,
                       fontWeight: FontWeight.bold,

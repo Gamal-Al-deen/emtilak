@@ -5,3 +5,4 @@ export 'contract_model.dart';
 export 'payment_model.dart';
 export 'maintenance_model.dart';
 export 'currency_model.dart';
+export 'profile_model.dart';

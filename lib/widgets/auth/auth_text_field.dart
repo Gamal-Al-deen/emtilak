@@ -109,7 +109,8 @@ class AuthTextField extends StatelessWidget {
       keyboardType: effectiveKeyboardType,
       obscureText: obscureText,
       maxLines: maxLines,
-      textAlign: TextAlign.right,
+      // يتبع اتجاه اللغة تلقائيًا: يمين للعربية ويسار للإنجليزية.
+      textAlign: TextAlign.start,
       validator: (value) {
         if (validator != null) {
           final customResult = validator!(value);

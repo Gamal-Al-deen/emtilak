@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../routes/routes.dart';
 
 class DashboardMobileQuickActions extends StatelessWidget {
@@ -7,6 +8,7 @@ class DashboardMobileQuickActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Row(
       children: [
         Expanded(
@@ -19,9 +21,9 @@ class DashboardMobileQuickActions extends StatelessWidget {
               Navigator.pushNamed(context, AppRoutes.addPayment);
             },
             icon: const Icon(Icons.add_card, size: 18),
-            label: const Text(
-              'تسجيل دفعة',
-              style: TextStyle(fontSize: 13),
+            label: Text(
+              l10n.recordPayment,
+              style: const TextStyle(fontSize: 13),
             ),
           ),
         ),
@@ -43,9 +45,9 @@ class DashboardMobileQuickActions extends StatelessWidget {
               color: AppColors.primary,
               size: 18,
             ),
-            label: const Text(
-              'عقد جديد',
-              style: TextStyle(
+            label: Text(
+              l10n.newContract,
+              style: const TextStyle(
                 color: AppColors.primary,
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
@@ -64,6 +66,7 @@ class DashboardWideQuickActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -74,9 +77,9 @@ class DashboardWideQuickActions extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'الإجراءات السريعة',
-            style: TextStyle(
+          Text(
+            l10n.quickActions,
+            style: const TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.bold,
               color: AppColors.textPrimary,
@@ -94,9 +97,9 @@ class DashboardWideQuickActions extends StatelessWidget {
               Navigator.pushNamed(context, AppRoutes.addPayment);
             },
             icon: const Icon(Icons.add_card, size: 20),
-            label: const Text(
-              'تسجيل دفعة جديدة',
-              style: TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold),
+            label: Text(
+              l10n.recordPaymentNew,
+              style: const TextStyle(fontFamily: 'Cairo', fontWeight: FontWeight.bold),
             ),
           ),
           const SizedBox(height: 12),
@@ -110,9 +113,9 @@ class DashboardWideQuickActions extends StatelessWidget {
               Navigator.pushNamed(context, AppRoutes.addContract);
             },
             icon: const Icon(Icons.note_add_outlined, color: AppColors.primary, size: 20),
-            label: const Text(
-              'إنشاء عقد جديد',
-              style: TextStyle(
+            label: Text(
+              l10n.createNewContract,
+              style: const TextStyle(
                 color: AppColors.primary,
                 fontFamily: 'Cairo',
                 fontWeight: FontWeight.bold,
@@ -130,9 +133,9 @@ class DashboardWideQuickActions extends StatelessWidget {
               Navigator.pushNamed(context, AppRoutes.addMaintenance);
             },
             icon: const Icon(Icons.build_outlined, color: AppColors.textSecondary, size: 20),
-            label: const Text(
-              'تسجيل مصروف صيانة',
-              style: TextStyle(
+            label: Text(
+              l10n.recordMaintenance,
+              style: const TextStyle(
                 color: AppColors.textPrimary,
                 fontFamily: 'Cairo',
                 fontWeight: FontWeight.w600,

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
+import '../../../controllers/app_controllers.dart';
 import '../../../core/colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../routes/routes.dart';
 import '../../../services/auth_service.dart';
 import '../../../utils/responsive.dart';
@@ -26,6 +29,19 @@ class _SettingsContentState extends State<SettingsContent> {
   void initState() {
     super.initState();
     _loadBiometricPreference();
+    // تحميل الملف الشخصي من Supabase + إعادة البناء عند أي تغيّر فيه.
+    AppControllers.instance.loadProfile();
+    AppControllers.instance.addListener(_onDataChanged);
+  }
+
+  void _onDataChanged() {
+    if (mounted) setState(() {});
+  }
+
+  @override
+  void dispose() {
+    AppControllers.instance.removeListener(_onDataChanged);
+    super.dispose();
   }
 
   Future<void> _loadBiometricPreference() async {
@@ -40,7 +56,7 @@ class _SettingsContentState extends State<SettingsContent> {
     final bool signedOut = await AuthService.instance.signOut();
     if (!context.mounted) return;
     if (!signedOut) {
-      showAuthMessage(context, 'تعذّر تسجيل الخروج، حاول مرة أخرى.');
+      showAuthMessage(context, AppLocalizations.of(context)!.signOutError);
       return;
     }
     Navigator.pushReplacementNamed(context, AppRoutes.login);
@@ -50,11 +66,12 @@ class _SettingsContentState extends State<SettingsContent> {
     showDialog(
       context: context,
       builder: (context) {
+        final l10n = AppLocalizations.of(context)!;
         return AlertDialog(
           backgroundColor: AppColors.surface,
-          title: const Text(
-            'النسخ الاحتياطي',
-            style: TextStyle(
+          title: Text(
+            l10n.settingsBackupDialogTitle,
+            style: const TextStyle(
               fontFamily: 'Cairo',
               fontWeight: FontWeight.bold,
               fontSize: 16,
@@ -62,17 +79,17 @@ class _SettingsContentState extends State<SettingsContent> {
           ),
           content: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 400),
-            child: const Text(
-              'سيتم نسخ قاعدة بيانات العقارات والمستأجرين كاملة إلى حساب Google Drive الخاص بك.',
-              style: TextStyle(fontFamily: 'Cairo', fontSize: 13),
+            child: Text(
+              l10n.settingsBackupDialogBody,
+              style: const TextStyle(fontFamily: 'Cairo', fontSize: 13),
             ),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text(
-                'إلغاء',
-                style: TextStyle(
+              child: Text(
+                l10n.cancel,
+                style: const TextStyle(
                   fontFamily: 'Cairo',
                   color: AppColors.textSecondary,
                 ),
@@ -82,16 +99,14 @@ class _SettingsContentState extends State<SettingsContent> {
               onPressed: () {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text(
-                      'تم رفع النسخة الاحتياطية إلى Google Drive بنجاح!',
-                    ),
+                  SnackBar(
+                    content: Text(l10n.settingsBackupSuccess),
                     backgroundColor: AppColors.success,
                     behavior: SnackBarBehavior.floating,
                   ),
                 );
               },
-              child: const Text('نسخ الآن'),
+              child: Text(l10n.settingsBackupNow),
             ),
           ],
         );
@@ -107,11 +122,12 @@ class _SettingsContentState extends State<SettingsContent> {
     showDialog(
       context: context,
       builder: (context) {
+        final l10n = AppLocalizations.of(context)!;
         return AlertDialog(
           backgroundColor: AppColors.surface,
-          title: const Text(
-            'تغيير كلمة المرور',
-            style: TextStyle(
+          title: Text(
+            l10n.settingsChangePasswordTitle,
+            style: const TextStyle(
               fontFamily: 'Cairo',
               fontWeight: FontWeight.bold,
               fontSize: 16,
@@ -127,7 +143,7 @@ class _SettingsContentState extends State<SettingsContent> {
                   children: [
                     AuthFormField(
                       controller: oldPass,
-                      hintText: 'كلمة المرور الحالية',
+                      hintText: l10n.settingsChangePasswordOldHint,
                       fieldType: AuthFieldType.password,
                       obscureText: true,
                       prefixIcon: Icons.lock_outline,
@@ -135,7 +151,7 @@ class _SettingsContentState extends State<SettingsContent> {
                     const SizedBox(height: 12),
                     AuthFormField(
                       controller: newPass,
-                      hintText: 'كلمة المرور الجديدة',
+                      hintText: l10n.settingsChangePasswordNewHint,
                       fieldType: AuthFieldType.password,
                       obscureText: true,
                       prefixIcon: Icons.lock_reset_outlined,
@@ -148,9 +164,9 @@ class _SettingsContentState extends State<SettingsContent> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text(
-                'إلغاء',
-                style: TextStyle(
+              child: Text(
+                l10n.cancel,
+                style: const TextStyle(
                   fontFamily: 'Cairo',
                   color: AppColors.textSecondary,
                 ),
@@ -161,14 +177,103 @@ class _SettingsContentState extends State<SettingsContent> {
                 if (formKey.currentState!.validate()) {
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('تم تغيير كلمة المرور بنجاح'),
+                    SnackBar(
+                      content: Text(l10n.settingsChangePasswordSuccess),
                       behavior: SnackBarBehavior.floating,
                     ),
                   );
                 }
               },
-              child: const Text('تغيير'),
+              child: Text(l10n.settingsChangePasswordButton),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /// يعرض قائمة اختيار اللغة ويبدّلها فورًا عبر [LocaleController] —
+  /// يكفي تغيير.Locale حتى يعيد `MaterialApp` بناء التطبيق بالاتجاه الجديد.
+  void _showLanguageDialog(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final LocaleController controller = AppControllers.instance.localeController;
+
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        final String currentCode = controller.locale.languageCode;
+
+        Widget option({
+          required String code,
+          required String label,
+          required IconData icon,
+        }) {
+          final bool selected = currentCode == code;
+          return ListTile(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            leading: Icon(
+              icon,
+              color: selected ? AppColors.primary : AppColors.textSecondary,
+            ),
+            title: Text(
+              label,
+              style: TextStyle(
+                fontFamily: 'Cairo',
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: selected ? AppColors.primary : AppColors.textPrimary,
+              ),
+            ),
+            trailing: selected
+                ? const Icon(Icons.check_circle, color: AppColors.primary)
+                : const Icon(Icons.circle_outlined, color: AppColors.textLight),
+            onTap: () {
+              Navigator.pop(dialogContext);
+              controller.setLocale(Locale(code));
+            },
+          );
+        }
+
+        return AlertDialog(
+          backgroundColor: AppColors.surface,
+          title: Text(
+            l10n.settingsLanguageDialogTitle,
+            style: const TextStyle(
+              fontFamily: 'Cairo',
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
+          content: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 400),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                option(
+                  code: 'ar',
+                  label: l10n.settingsLanguageArabic,
+                  icon: Icons.translate,
+                ),
+                option(
+                  code: 'en',
+                  label: l10n.settingsLanguageEnglish,
+                  icon: Icons.translate_outlined,
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext),
+              child: Text(
+                l10n.cancel,
+                style: const TextStyle(
+                  fontFamily: 'Cairo',
+                  color: AppColors.textSecondary,
+                ),
+              ),
             ),
           ],
         );
@@ -178,17 +283,20 @@ class _SettingsContentState extends State<SettingsContent> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final horizontalPadding = Responsive.getHorizontalPadding(context);
+    final bool isArabic =
+        AppControllers.instance.localeController.locale.languageCode == 'ar';
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: const CustomAppBar(title: 'الإعدادات'),
+      appBar: CustomAppBar(title: l10n.settingsTitle),
       body: ResponsiveContainer(
         maxWidth: 850,
         child: ListView(
           padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 16),
           children: [
-            const SettingsHeader(),
+            SettingsHeader(),
             const SizedBox(height: 12),
             const SettingsThemeToggle(),
             SettingsSection(
@@ -201,24 +309,19 @@ class _SettingsContentState extends State<SettingsContent> {
                 ),
                 SettingsTile(
                   icon: Icons.currency_exchange,
-                  title: 'العملة الافتراضية وإدارتها',
-                  subtitle: 'دولار أمريكي - USD',
+                  title: l10n.settingsCurrency,
+                  subtitle: l10n.settingsCurrencySubtitle,
                   onTap: () {
                     Navigator.pushNamed(context, AppRoutes.currencies);
                   },
                 ),
                 SettingsTile(
                   icon: Icons.language_outlined,
-                  title: 'اللغة الحالية',
-                  subtitle: 'العربية (RTL)',
-                  onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('التطبيق يدعم اللغة العربية بالكامل حالياً'),
-                        behavior: SnackBarBehavior.floating,
-                      ),
-                    );
-                  },
+                  title: l10n.settingsLanguage,
+                  subtitle: isArabic
+                      ? l10n.settingsLanguageSubtitle
+                      : l10n.settingsLanguageSubtitleEn,
+                  onTap: () => _showLanguageDialog(context),
                 ),
                 Container(
                   margin: const EdgeInsets.only(bottom: 12),
@@ -232,18 +335,18 @@ class _SettingsContentState extends State<SettingsContent> {
                       Icons.notifications_none_outlined,
                       color: AppColors.primary,
                     ),
-                    title: const Text(
-                      'التنبيهات والإشعارات',
-                      style: TextStyle(
+                    title: Text(
+                      l10n.settingsNotifications,
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'Cairo',
                         color: AppColors.textPrimary,
                       ),
                     ),
-                    subtitle: const Text(
-                      'تنبيهات الإيجارات المتأخرة والعقود',
-                      style: TextStyle(
+                    subtitle: Text(
+                      l10n.settingsNotificationsSubtitle,
+                      style: const TextStyle(
                         fontSize: 12,
                         fontFamily: 'Cairo',
                         color: AppColors.textSecondary,
@@ -266,18 +369,18 @@ class _SettingsContentState extends State<SettingsContent> {
                       Icons.fingerprint,
                       color: AppColors.primary,
                     ),
-                    title: const Text(
-                      'تسجيل الدخول بالبصمة',
-                      style: TextStyle(
+                    title: Text(
+                      l10n.settingsBiometric,
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'Cairo',
                         color: AppColors.textPrimary,
                       ),
                     ),
-                    subtitle: const Text(
-                      'إظهار زر البصمة في شاشة تسجيل الدخول',
-                      style: TextStyle(
+                    subtitle: Text(
+                      l10n.settingsBiometricSubtitle,
+                      style: const TextStyle(
                         fontSize: 12,
                         fontFamily: 'Cairo',
                         color: AppColors.textSecondary,
@@ -293,27 +396,27 @@ class _SettingsContentState extends State<SettingsContent> {
                 ),
                 SettingsTile(
                   icon: Icons.lock_outline,
-                  title: 'تغيير كلمة المرور',
+                  title: l10n.settingsChangePassword,
                   onTap: _showChangePasswordDialog,
                 ),
                 SettingsTile(
                   icon: Icons.info_outline,
-                  title: 'حول التطبيق',
-                  subtitle: 'v1.0.0',
+                  title: l10n.settingsAbout,
+                  subtitle: l10n.settingsAboutVersion,
                   onTap: () {
                     showAboutDialog(
                       context: context,
-                      applicationName: 'إمتلاك',
+                      applicationName: l10n.appName,
                       applicationVersion: '1.0.0',
                       applicationIcon: const Icon(
                         Icons.home_work,
                         color: AppColors.primary,
                         size: 40,
                       ),
-                      children: const [
+                      children: [
                         Text(
-                          'نظام احترافي لإدارة العقارات السكنية وتتبع الإيجارات.',
-                          style: TextStyle(fontFamily: 'Cairo'),
+                          l10n.aboutAppDescription,
+                          style: const TextStyle(fontFamily: 'Cairo'),
                         ),
                       ],
                     );
@@ -324,7 +427,7 @@ class _SettingsContentState extends State<SettingsContent> {
             const SizedBox(height: 12),
             SettingsTile(
               icon: Icons.logout,
-              title: 'تسجيل الخروج',
+              title: l10n.settingsSignOut,
               titleColor: AppColors.error,
               onTap: () => _signOut(context),
             ),

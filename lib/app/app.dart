@@ -24,6 +24,9 @@ import '../views/tenants/tenants_page.dart';
 import '../views/transactions/add_maintenance_page.dart';
 import '../views/transactions/add_payment_page.dart';
 import '../views/transactions/payments_page.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import '../l10n/app_localizations.dart';
+import '../controllers/app_controllers.dart';
 import '../core/theme.dart';
 import '../routes/routes.dart';
 
@@ -78,18 +81,24 @@ class EmtilakApp extends StatelessWidget {
     Widget guard(Widget child) =>
         guardAuthenticatedRoutes ? AuthGuard(child: child) : child;
 
-    return MaterialApp(
-      title: 'إمتلاك',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      locale: const Locale('ar'),
-      builder: (context, child) {
-        return Directionality(
-          textDirection: TextDirection.rtl,
-          child: child ?? const SizedBox.shrink(),
-        );
-      },
-      initialRoute: initialRoute,
+    return ListenableBuilder(
+      listenable: AppControllers.instance.localeController,
+      builder: (context, _) {
+        final currentLocale = AppControllers.instance.localeController.locale;
+
+        return MaterialApp(
+          title: 'إمتلاك',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.lightTheme,
+          locale: currentLocale,
+          localizationsDelegates: [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          initialRoute: initialRoute,
       routes: {
         AppRoutes.onboarding: (_) => const OnboardingView(),
         AppRoutes.login: (_) => const LoginPage(),
@@ -114,6 +123,8 @@ class EmtilakApp extends StatelessWidget {
         AppRoutes.currencies: (_) => guard(const CurrenciesPage()),
         AppRoutes.notifications: (_) => guard(const NotificationsPage()),
         AppRoutes.settings: (_) => guard(const SettingsPage()),
+      },
+    );
       },
     );
   }
@@ -161,8 +172,12 @@ class _AuthLoadingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // اتجاه حسب لغة التطبيق: العربية RTL والإنجليزية LTR — لا يُفرض
+    // اتجاه ثابت حتى أثناء شاشة التحميل قبل بناء التطبيق.
+    final Locale locale = AppControllers.instance.localeController.locale;
     return Directionality(
-      textDirection: TextDirection.rtl,
+      textDirection:
+          locale.languageCode == 'ar' ? TextDirection.rtl : TextDirection.ltr,
       child: ColoredBox(
         color: AppColors.background,
         child: Center(

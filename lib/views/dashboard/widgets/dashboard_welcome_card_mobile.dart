@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../../controllers/app_controllers.dart';
 import '../../../core/colors.dart';
+import '../../../services/auth_service.dart';
+import '../../../widgets/common/user_avatar.dart';
 
 class DashboardWelcomeCardMobile extends StatelessWidget {
   final double totalIncome;
@@ -11,6 +14,13 @@ class DashboardWelcomeCardMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // اسم المستخدم الحقيقي (يتحدّث تلقائيًا مع الملف الشخصي — لا اسم ثابت).
+    final profile = AppControllers.instance.profile;
+    final String displayName = ProfileController.resolveName(
+      profile,
+      fallback: AuthService.instance.currentUser?.displayName ?? '',
+    );
+
     return Column(
       children: [
         Row(
@@ -19,8 +29,8 @@ class DashboardWelcomeCardMobile extends StatelessWidget {
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
+                children: [
+                  const Text(
                     'مرحباً بك',
                     style: TextStyle(
                       color: AppColors.white70,
@@ -29,8 +39,10 @@ class DashboardWelcomeCardMobile extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'أحمد محمد',
-                    style: TextStyle(
+                    displayName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
                       color: AppColors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -40,14 +52,12 @@ class DashboardWelcomeCardMobile extends StatelessWidget {
                 ],
               ),
             ),
-            const CircleAvatar(
+            UserAvatar(
               radius: 24,
+              profile: profile,
+              fallbackName: AuthService.instance.currentUser?.displayName ?? '',
               backgroundColor: AppColors.white24,
-              child: Icon(
-                Icons.person,
-                color: AppColors.white,
-                size: 28,
-              ),
+              iconColor: AppColors.white,
             ),
           ],
         ),
